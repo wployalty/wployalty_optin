@@ -18,7 +18,7 @@ class Main extends Base {
 	public static function checkStatus() {
 		$user_email = self::getEmail();
 		if ( empty( $user_email ) ) {
-			return true;
+			return apply_filters( 'wlopt_work_on_guest_user', true );
 		}
 		$user_data = get_user_by( 'email', $user_email );
 		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
