@@ -12,7 +12,6 @@ wlopt = window.wlopt || {};
 (function (wlopt) {
 
     wlopt_jquery(document).on('click', '#decline_wployalty_membership', function () {
-
         let decline_wployalty_membership = wlopt_jquery("#decline_wployalty_membership").is(':checked') ? 1 : 0;
         wlopt_jquery.ajax({
             url: wlopt_localize_data.ajax_url,
@@ -24,13 +23,24 @@ wlopt = window.wlopt || {};
                 decline_wployalty_membership: decline_wployalty_membership,
             },
             success: function (json) {
-                console.log(json)
-                // window.location.reload();
+                window.location.reload();
             }
         });
-
-
-
     });
-
+    wlopt_jquery(document).on('click', '#accept_wployalty_membership', function () {
+        let accept_wployalty_membership = wlopt_jquery("#accept_wployalty_membership").is(':checked') ? 1 : 0;
+        wlopt_jquery.ajax({
+            url: wlopt_localize_data.ajax_url,
+            type: "POST",
+            dataType: 'json',
+            data: {
+                action: "accept_wployalty_membership",
+                wlopt_nonce: wlopt_localize_data.accept_wployalty_membership,
+                accept_wployalty_membership: accept_wployalty_membership,
+            },
+            success: function (json) {
+                window.location.reload();
+            }
+        });
+    });
 })(wlopt_jquery);
