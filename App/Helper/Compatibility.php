@@ -6,93 +6,96 @@
  * */
 
 namespace Wlopt\App\Helper;
-defined("ASBPATH") or die();
-class Compatibility
-{
-    function check( $active_check = false ) {
+defined( "ABSPATH" ) or die();
 
-        $status = true;
-        if ( ! $this->isEnvironmentCompatible() ) {
-            if ( $active_check ) {
-                exit( WLOPT_PLUGIN_NAME . __( " plugin can not be activated because it requires minimum PHP version of ",
-                        "wp-loyalty-optin" ) . WLOPT_MINIMUM_PHP_VERSION );
-            }
-            $status = false;
-        }
+class Compatibility {
+	public static function check( $allow_exit = false ) {
 
-        if ( ! $this->isWordPressCompatible() ) {
-            if ( $active_check ) {
-                exit( WLOPT_PLUGIN_NAME . __( " plugin can not be activated because it requires minimum Wordpress version of ",
-                        "wp-loyalty-optin" ) . WLOPT_MINIMUM_WP_VERSION );
-            }
-            $status = false;
-        }
-        if ( ! $this->isWooCompatible() ) {
-            if ( $active_check ) {
-                exit( WLOPT_PLUGIN_NAME . __( " plugin can not be activated because it requires minimum Woocommerce version of ",
-                        "wp-loyalty-optin" ) . WLOPT_MINIMUM_WC_VERSION );
-            }
-            $status = false;
-        }
+		if ( ! self::isPHPCompatible() ) {
+			$message = sprintf( __( '%s requires minimum PHP version %s', 'wp-loyalty-optin' ), WLOPT_PLUGIN_NAME, WLOPT_MINIMUM_PHP_VERSION );
+			$allow_exit ? die( esc_html( $message ) ) : self::adminNotice( esc_html( $message ), 'error' );
 
-        return $status;
-    }
+			return false;
+		}
+		if ( ! self::isWordPressCompatible() ) {
+			$message = sprintf( __( '%s requires minimum WordPress version %s', 'wp-loyalty-optin' ), WLOPT_PLUGIN_NAME, WLOPT_MINIMUM_WP_VERSION );
+			$allow_exit ? exit( $message ) : self::adminNotice( esc_html( $message ), 'error' );
 
-    protected function isEnvironmentCompatible()
-    {
-        return version_compare(PHP_VERSION, WLOPT_MINIMUM_PHP_VERSION, ">=");
-    }
+			return false;
+		}
 
-    public function isWordPressCompatible()
-    {
-        return (!WLOPT_MINIMUM_WP_VERSION) ? true : version_compare(get_bloginfo("version"),
-            WLOPT_MINIMUM_WP_VERSION, ">=");
-    }
+		if ( ! self::isWooCompatible() ) {
+			$message = sprintf( __( '%s requires minimum Woocommerce version %s', 'wp-loyalty-optin' ), WLOPT_PLUGIN_NAME, WLOPT_MINIMUM_WC_VERSION );
+			$allow_exit ? exit( $message ) : self::adminNotice( esc_html( $message ), 'error' );
 
-    function isWooCompatible()
-    {
-        $woo_version = $this->woo_version();
+			return false;
+		}
 
-        return (!WLOPT_MINIMUM_WC_VERSION) ? true : version_compare($woo_version, WLOPT_MINIMUM_WC_VERSION, ">=");
-    }
+		return true;
+	}
 
-    function woo_version()
-    {
-        require_once ABSPATH . "/wp-admin/includes/plugin.php";
-        $plugin_folder = get_plugins("/woocommerce");
-        $plugin_file = "woocommerce.php";
+	/**
+	 * Add admin notice.
+	 *
+	 * @param string $message Message.
+	 * @param string $status Status.
+	 *
+	 * @return void
+	 */
+	public static function adminNotice( $message, $status = "success" ) {
+		add_action( 'admin_notices', function () use ( $message, $status ) {
+			?>
+            <div class="notice notice-<?php echo esc_attr( $status ); ?>">
+                <p><?php echo wp_kses_post( $message ); ?></p>
+            </div>
+			<?php
+		}, 1 );
+	}
 
-        return (isset($plugin_folder[$plugin_file]["Version"])) ? $plugin_folder[$plugin_file]["Version"] : "1.0.0";
-    }
+	/**
+	 * Check php version is compatible.
+	 *
+	 * @return bool
+	 */
+	protected static function isPHPCompatible() {
+		return (int) version_compare( PHP_VERSION, WLOPT_MINIMUM_PHP_VERSION, '>=' ) > 0;
+	}
 
-    function inActiveNotice()
-    {
-        $message = "";
-        if (!$this->isEnvironmentCompatible()) {
-            $message = WLOPT_PLUGIN_NAME . __(" is inactive. Because, it requires minimum PHP version of ",
-                    "wp-loyalty-optin") . WLOPT_MINIMUM_PHP_VERSION;
-        } elseif (!$this->isWordPressCompatible()) {
-            $message = WLOPT_PLUGIN_NAME . __(" is inactive. Because, it requires minimum Wordpress version of ",
-                    "wp-loyalty-optin") . WLOPT_MINIMUM_WP_VERSION;
-        } elseif (!$this->isWoocommerceActive()) {
-            $message = __("Woocommerce must installed and activated in-order to use ",
-                    "wp-loyalty-optin") . WLOPT_PLUGIN_NAME;
-        } elseif (!$this->isWooCompatible()) {
-            $message = WLOPT_PLUGIN_NAME . __(" is inactive. Because, it requires minimum Woocommerce version of ",
-                    "wp-loyalty-optin") . WLOPT_MINIMUM_WC_VERSION;
-        }
+	/**
+	 * Check WordPress required version.
+	 *
+	 * @return bool
+	 */
+	protected static function isWordPressCompatible() {
+		return (int) version_compare( get_bloginfo( 'version' ), WLOPT_MINIMUM_WP_VERSION, '>=' ) > 0;
+	}
 
-        return '<div class="error"><p><strong>' . $message . '</strong></p></div>';
-    }
+	/**
+	 * Check woocommerce is compatible.
+	 *
+	 * @return bool
+	 */
+	protected static function isWooCompatible() {
+		$woo_version = self::getWooVersion();
 
-    function isWoocommerceActive()
-    {
-        $active_plugins = apply_filters("active_plugins", get_option("active_plugins", array()));
-        if (is_multisite()) {
-            $active_plugins = array_merge($active_plugins, get_site_option("active_sitewide_plugins", array()));
-        }
+		return (int) version_compare( $woo_version, WLOPT_MINIMUM_WC_VERSION, '>=' ) > 0;
+	}
 
-        return (in_array("woocommerce/woocommerce.php",
-                $active_plugins) || array_key_exists("woocommerce/woocommerce.php", $active_plugins));
-    }
+	/**
+	 * Get Woocommerce version.
+	 *
+	 * @return string
+	 */
+	protected static function getWooVersion() {
+		if ( defined( 'WC_VERSION' ) ) {
+			return WC_VERSION;
+		}
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		}
+		$plugin_folder = get_plugins( '/woocommerce' );
+
+		return isset( $plugin_folder['woocommerce.php']['Version'] ) ? $plugin_folder['woocommerce.php']['Version'] : '1.0.0';
+	}
+
 }

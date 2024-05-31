@@ -10,46 +10,34 @@ namespace Wlopt\App;
 use Wlopt\App\Controller\Admin\Main;
 
 
-defined("ABSPATH") or die();
+defined( "ABSPATH" ) or die();
 
-class Router
-{
-    private static $admin, $site;
+class Router {
 
-    function init()
-    {
+	static function init() {
 
-        self::$admin = empty(self::$admin) ? new Main() : self::$admin;
-
-        //1. compatibility check
-//        $compatibility = new \Wlopt\App\Helper\Compatibility();
-//        if (!$compatibility->check()) {
-//            return;
-//        }
-        self::$site = empty(self::$site) ? new \Wlopt\App\Controller\Site\Main() : self::$site;
-        //2. add on menu
-        if (is_admin()) {
+		if ( is_admin() ) {
 //            register_activation_hook( WLOPT_PLUGIN_FILE, array( self::$admin, "activatePlugin" ) );
-            add_action('admin_menu', [self::$admin, 'adminMenu']);
-            add_action('admin_enqueue_scripts', [self::$admin, 'adminAssets']);
-        } else {
-            add_action('wp_enqueue_scripts', [self::$site, 'siteAssets']);
-            add_action('woocommerce_init', [self::$site, 'preventWPLoyaltyMembership']);
-            add_shortcode('wlopt_decline_loyalty_membership', [self::$site, 'declineMembership']);
-            add_shortcode('wlopt_accept_loyalty_membership', [self::$site, 'acceptMembership']);
-        }
-        add_action('wp_ajax_decline_wployalty_membership', [self::$site, 'updateOptIn']);
-        add_action('wp_ajax_accept_wployalty_membership', [self::$site, 'updateAcceptance']);
+			add_action( 'admin_menu', 'Wlopt\App\Controller\Admin\Main::adminMenu' );
+			add_action( 'admin_enqueue_scripts', 'Wlopt\App\Controller\Admin\Main::adminAssets' );
+		} else {
+			add_action( 'wp_enqueue_scripts', 'Wlopt\App\Controller\Site\Main::siteAssets' );
+			add_action( 'woocommerce_init', 'Wlopt\App\Controller\Site\Main::preventWPLoyaltyMembership' );
+			add_shortcode( 'wlopt_decline_loyalty_membership', 'Wlopt\App\Controller\Site\Main::declineMembership' );
+			add_shortcode( 'wlopt_accept_loyalty_membership', 'Wlopt\App\Controller\Site\Main::acceptMembership' );
+		}
+		add_action( 'wp_ajax_decline_wployalty_membership', 'Wlopt\App\Controller\Site\Main::updateOptIn' );
+		add_action( 'wp_ajax_accept_wployalty_membership', 'Wlopt\App\Controller\Site\Main::updateAcceptance' );
 
-        //add check box in register page
+		//add check box in register page
 //        add_action( 'woocommerce_register_form', [self::$site,'addRegistrationCheckbox'] );
 //        add_action('woocommerce_register_post', array(self::$main, 'validateInRegisterForm'), 10, 3);
 //        add_action( 'woocommerce_created_customer', [self::$site,'saveRegisterCheckbox'] ,10,3);
 
-        //add checkbox in checkout
+		//add checkbox in checkout
 //        add_action( 'woocommerce_after_checkout_billing_form', [self::$site,'addCheckoutCheckbox'] );
 //        add_action('woocommerce_checkout_create_order', [self::$site, 'saveCheckoutFormData'], 10, 2);
 
-    }
+	}
 
 }
