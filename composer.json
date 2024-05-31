@@ -1,0 +1,19 @@
+{
+  "name": "wployalty/wployalty_optin",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "Ilaiyaraja",
+      "email": "ilayraja@cartrabbit.in"
+    }
+  ],
+  "require": {
+  },
+  "autoload": {
+    "psr-4": {
+      "Wlopt\\": ""
+    }
+  }
+}
