@@ -1,37 +1,45 @@
 <?php
+/**
+ * @author      Wployalty (Ilaiyaraja)
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @link        https://www.wployalty.net
+ * */
 
 namespace Wlopt\App;
+
 use Wlopt\App\Controller\Admin\Main;
 
 
 defined("ABSPATH") or die();
+
 class Router
 {
-    private static $admin,$site;
+    private static $admin, $site;
 
-    function init(){
+    function init()
+    {
 
         self::$admin = empty(self::$admin) ? new Main() : self::$admin;
 
         //1. compatibility check
 //        $compatibility = new \Wlopt\App\Helper\Compatibility();
-//        var_dump($compatibility);
-//        if (!$compatibility->check()){
+//        if (!$compatibility->check()) {
 //            return;
 //        }
         self::$site = empty(self::$site) ? new \Wlopt\App\Controller\Site\Main() : self::$site;
         //2. add on menu
-        if (is_admin()){
-            add_action('admin_menu', [self::$admin,'adminMenu']);
-            add_action('admin_enqueue_scripts', [self::$admin,'adminAssets']);
-        }else{
-            add_action('wp_enqueue_scripts', [self::$site,'siteAssets']);
-            add_action('woocommerce_init',[self::$site,'preventWPLoyaltyMembership']);
-            add_shortcode('wlopt_decline_loyalty_membership',[self::$site,'declineMembership']);
-            add_shortcode('wlopt_accept_loyalty_membership',[self::$site,'acceptMembership']);
+        if (is_admin()) {
+//            register_activation_hook( WLOPT_PLUGIN_FILE, array( self::$admin, "activatePlugin" ) );
+            add_action('admin_menu', [self::$admin, 'adminMenu']);
+            add_action('admin_enqueue_scripts', [self::$admin, 'adminAssets']);
+        } else {
+            add_action('wp_enqueue_scripts', [self::$site, 'siteAssets']);
+            add_action('woocommerce_init', [self::$site, 'preventWPLoyaltyMembership']);
+            add_shortcode('wlopt_decline_loyalty_membership', [self::$site, 'declineMembership']);
+            add_shortcode('wlopt_accept_loyalty_membership', [self::$site, 'acceptMembership']);
         }
-        add_action('wp_ajax_decline_wployalty_membership', [self::$site,'updateOptIn']);
-        add_action('wp_ajax_accept_wployalty_membership', [self::$site,'updateAcceptance']);
+        add_action('wp_ajax_decline_wployalty_membership', [self::$site, 'updateOptIn']);
+        add_action('wp_ajax_accept_wployalty_membership', [self::$site, 'updateAcceptance']);
 
         //add check box in register page
 //        add_action( 'woocommerce_register_form', [self::$site,'addRegistrationCheckbox'] );

@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author      Wployalty (Ilaiyaraja)
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @link        https://www.wployalty.net
+ * */
 
 namespace Wlopt\App\Controller;
 
@@ -7,7 +12,7 @@ use Wlr\App\Helpers\Woocommerce;
 
 class Base
 {
-    public static $input,$woocommerce;
+    public static $input, $woocommerce;
 
     public function __construct()
     {

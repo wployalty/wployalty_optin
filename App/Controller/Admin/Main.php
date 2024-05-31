@@ -1,4 +1,9 @@
 <?php
+/**
+ * @author      Wployalty (Ilaiyaraja)
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @link        https://www.wployalty.net
+ * */
 
 namespace Wlopt\App\Controller\Admin;
 
@@ -7,6 +12,24 @@ use Wlr\App\Helpers\Input;
 
 class Main extends Base
 {
+    /**
+     * Plugin activation.
+     *
+     * @return void
+     */
+    function activatePlugin(){
+        $compatibility = new \Wlopt\App\Helper\Compatibility();
+//        if (!$compatibility->check(true)) {
+//
+//        }
+
+    }
+
+    /**
+     * Adding menu.
+     *
+     * @return void
+     */
     function adminMenu()
     {
         if (current_user_can('manage_woocommerce')) {
@@ -16,26 +39,22 @@ class Main extends Base
         }
     }
 
+    /**
+     * Menu page.
+     *
+     * @return void
+     */
     function addMenuPage()
     {
-        echo "heeloo";
+        echo "hey dude!";
     }
 
+    /**
+     * Enqueueing styles and scripts.
+     *
+     * @return void
+     */
     function adminAssets()
-    {
-
-    }
-
-    function checkToShowOption()
-    {
-
-    }
-
-
-
-
-
-    function saveCheckoutFormData($order, $data)
     {
 
     }
