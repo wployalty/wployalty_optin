@@ -1,0 +1,89 @@
+# Copyright (C) 2024 WPLoyalty
+# This file is distributed under the GPLv2 or later.
+msgid ""
+msgstr ""
+"Project-Id-Version: WPLoyalty - Optin 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wployalty_optin\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2024-06-03T15:58:05+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.10.0\n"
+"X-Domain: wp-loyalty-optin\n"
+
+#. Plugin Name of the plugin
+#: wp-loyalty-optin.php
+msgid "WPLoyalty - Optin"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: wp-loyalty-optin.php
+msgid "https://www.wployalty.net"
+msgstr ""
+
+#. Description of the plugin
+#: wp-loyalty-optin.php
+msgid "Accept/Decline the WPLoyalty option to user."
+msgstr ""
+
+#. Author of the plugin
+#: wp-loyalty-optin.php
+msgid "WPLoyalty"
+msgstr ""
+
+#. Author URI of the plugin
+#: wp-loyalty-optin.php
+msgid "https://wployalty.net/"
+msgstr ""
+
+#: App/Controller/Admin/Main.php:35
+#: App/Controller/Admin/Main.php:36
+msgid "WPLoyalty: Optin"
+msgstr ""
+
+#: App/Controller/Site/Main.php:194
+#: App/Controller/Site/Main.php:225
+msgid "Update data failed"
+msgstr ""
+
+#: App/Controller/Site/Main.php:199
+#: App/Controller/Site/Main.php:230
+msgid "Invalid nonce"
+msgstr ""
+
+#: App/Controller/Site/Main.php:213
+#: App/Controller/Site/Main.php:245
+msgid "Updated successfully"
+msgstr ""
+
+#: App/Controller/Site/Main.php:271
+#: App/Controller/Site/Main.php:362
+msgid "Must be valid"
+msgstr ""
+
+#: App/Helper/Compatibility.php:15
+msgid "%s requires minimum PHP version %s"
+msgstr ""
+
+#: App/Helper/Compatibility.php:21
+msgid "%s requires minimum WordPress version %s"
+msgstr ""
+
+#: App/Helper/Compatibility.php:28
+msgid "%s requires minimum Woocommerce version %s"
+msgstr ""
+
+#: App/Views/Admin/main.php:22
+msgid "Settings"
+msgstr ""
+
+#: App/Views/Admin/main.php:30
+msgid "Use this shortcode for decline message: [wlopt_decline_loyalty_membership]"
+msgstr ""
+
+#: App/Views/Admin/main.php:31
+msgid "Use this shortcode for accept message: [wlopt_accept_loyalty_membership]"
+msgstr ""
