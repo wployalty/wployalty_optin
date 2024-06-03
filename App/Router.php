@@ -43,7 +43,8 @@ class Router {
 		add_action( 'woocommerce_after_checkout_validation', 'Wlopt\App\Controller\Site\Main::validateCheckoutForm', 10, 2 );
 		add_action( 'woocommerce_checkout_create_order', 'Wlopt\App\Controller\Site\Main::saveCheckoutFormData', 10, 2 );
 
-
+		//sending email check
+		add_filter( 'wlr_before_send_email', 'Wlopt\App\Controller\Site\Main::beforeSendEmail', 10, 2 );
 	}
 
 }

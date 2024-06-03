@@ -67,11 +67,47 @@ class Main extends Base {
 		add_filter( 'wlr_before_adding_birthday_fields', '__return_false' );
 		//prevent sent mail
 		add_filter( 'wlr_before_send_email', function ( $status, $data ) {
-			if ( $data['data']['user_email'] ) {
-				$email = get_user_by_email( $data['data']['user_email'] );
 
-			}
 		} );
+
+	}
+
+	/**
+	 * Check before sending email.
+	 *
+	 * @param $status
+	 * @param $data
+	 *
+	 * @return false
+	 */
+	static function beforeSendEmail( $status, $data ) {
+		$email = '';
+		if ( in_array( $data['email_type'], array(
+			'wlr_birthday_email',
+			'wlr_earn_point_email',
+			'wlr_earn_reward_email'
+		) ) ) {
+			$email = isset( $data['data']['user_email'] ) && ! empty( $data['data']['user_email'] ) ? $data['data']['user_email'] : '';
+		} elseif ( in_array( $data['email_type'], array( 'wlr_expire_email' ) ) ) {
+			$email = isset( $data['user_reward']->email ) && ! empty( $data['user_reward']->email ) ? $data['user_reward']->email : '';
+		} elseif ( in_array( $data['email_type'], array( 'wlr_new_level_email' ) ) ) {
+			$email = isset( $data['user_fields']['user_email'] ) && ! empty( $data['user_fields']['user_email'] ) ? $data['user_fields']['user_email'] : '';
+		} elseif ( in_array( $data['email_type'], array( 'wlr_point_expire_email' ) ) ) {
+			$email = isset( $data['email_data']->user_email ) && ! empty( $data['email_data']->user_email ) ? $data['email_data']->user_email : '';
+		}
+
+		if ( empty( $email ) ) {
+			return $status;
+		}
+		$user = get_user_by( 'email', $email );
+		if ( is_object( $user ) && isset( $user->ID ) ) {
+			$accept_wployalty_membership = get_user_meta( $user->ID, 'accept_wployalty_membership' );
+			if ( $accept_wployalty_membership == 0 ) {
+				return false;
+			}
+		}
+
+		return $status;
 
 	}
 
