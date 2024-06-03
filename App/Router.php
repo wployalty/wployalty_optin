@@ -42,9 +42,12 @@ class Router {
 		add_action( 'woocommerce_after_checkout_billing_form', 'Wlopt\App\Controller\Site\Main::addCheckoutCheckbox' );
 		add_action( 'woocommerce_after_checkout_validation', 'Wlopt\App\Controller\Site\Main::validateCheckoutForm', 10, 2 );
 		add_action( 'woocommerce_checkout_create_order', 'Wlopt\App\Controller\Site\Main::saveCheckoutFormData', 10, 2 );
+		//before earn via order
+		add_filter( 'wlr_not_eligible_to_earn_via_order', 'Wlopt\App\Controller\Site\Main::notEligibleToEarn', 10, 3 );
 
 		//sending email check
 		add_filter( 'wlr_before_send_email', 'Wlopt\App\Controller\Site\Main::beforeSendEmail', 10, 2 );
+
 	}
 
 }

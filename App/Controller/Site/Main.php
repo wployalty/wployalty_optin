@@ -42,7 +42,7 @@ class Main extends Base {
 			return;
 		}
 //        //order status
-//		add_filter( 'wlr_not_eligible_to_earn_via_order', '__return_true');
+
 
 		//earn point prevent
 		add_filter( 'wlr_before_earn_point_calculation', function ( $status, $data ) {
@@ -111,6 +111,11 @@ class Main extends Base {
 
 	}
 
+	/**
+	 * Site assets.
+	 *
+	 * @return void
+	 */
 	static function siteAssets() {
 		$suffix = '.min';
 		if ( defined( 'SCRIPT_DEBUG' ) ) {
@@ -356,12 +361,17 @@ class Main extends Base {
 			$errors->add( 'accept_wployalty_membership',
 				__( 'Must be valid', 'wp-loyalty-optin' ) );
 		}
+
+		return $errors;
 	}
 
-	static function saveCheckoutFormData() {
+	static function saveCheckoutFormData( $order, $data ) {
 		$input_helper                = new Input();
 		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
-		$user_email                  = $input_helper->post_get( 'email', '' );
+
+		$user_email = isset( $data['billing_email'] )
+		              && ! empty( $data['billing_email'] )
+			? $data['billing_email'] : "";
 
 		if ( empty( $user_email ) ) {
 			return;
@@ -373,6 +383,21 @@ class Main extends Base {
 			update_user_meta( $user_data->ID, 'decline_wployalty_membership', sanitize_text_field( $update_status ) );
 		}
 
+	}
+
+	static function notEligibleToEarn( $status, $order_email, $order ) {
+		if ( empty( $order_email ) ) {
+			return $status;
+		}
+		$user = get_user_by( 'email', $order_email );
+		if ( is_object( $user ) && isset( $user->ID ) ) {
+			$accept_wployalty_membership = get_user_meta( $user->ID, 'accept_wployalty_membership' );
+			if ( $accept_wployalty_membership == 0 ) {
+				return false;
+			}
+		}
+
+		return $status;
 	}
 
 }
