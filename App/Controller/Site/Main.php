@@ -15,10 +15,12 @@ defined( "ABSPATH" ) or die();
 
 class Main extends Base {
 
+	static $email;
+
 	public static function checkStatus() {
 		$user_email = self::getEmail();
 		if ( empty( $user_email ) ) {
-			return apply_filters( 'wlopt_work_on_guest_user', true );
+			return apply_filters( 'wlopt_work_on_guest_user', false );
 		}
 		$user_data = get_user_by( 'email', $user_email );
 		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
@@ -35,9 +37,13 @@ class Main extends Base {
 	}
 
 	public static function preventWPLoyaltyMembership() {
+//		var_dump( self::checkStatus() );
 		if ( ! self::checkStatus() ) {
 			return;
 		}
+//        //order status
+//		add_filter( 'wlr_not_eligible_to_earn_via_order', '__return_true');
+
 		//earn point prevent
 		add_filter( 'wlr_before_earn_point_calculation', function ( $status, $data ) {
 			return false;
@@ -59,6 +65,13 @@ class Main extends Base {
 		add_filter( 'wlr_before_adding_menu_endpoint', '__return_false' );
 		//birthday fields
 		add_filter( 'wlr_before_adding_birthday_fields', '__return_false' );
+		//prevent sent mail
+		add_filter( 'wlr_before_send_email', function ( $status, $data ) {
+			if ( $data['data']['user_email'] ) {
+				$email = get_user_by_email( $data['data']['user_email'] );
+
+			}
+		} );
 
 	}
 
@@ -98,10 +111,14 @@ class Main extends Base {
 
 	}
 
+
 	static function getEmail() {
+		if ( ! empty( self::$email ) ) {
+			return self::$email;
+		}
 		$woo_helper = Woocommerce::getInstance();
 
-		return $woo_helper->get_login_user_email();
+		return self::$email = $woo_helper->get_login_user_email();
 	}
 
 	public static function acceptMembership() {
@@ -189,33 +206,136 @@ class Main extends Base {
 		wp_send_json( $json );
 	}
 
-	function addRegistrationCheckbox() {
-		woocommerce_form_field( 'wlr_not_become_a_member', array(
+	static function addRegistrationCheckbox() {
+		$user_email = self::getEmail();
+		if ( ! empty( $user_email ) ) {
+			return;
+		}
+
+		woocommerce_form_field( 'accept_wployalty_membership', array(
 			'type'     => 'checkbox',
-			'id'       => 'wlr_not_become_a_member',
-			'class'    => array( 'form-row-wide wlr_not_become_a_member' ),
-			'label'    => __( 'Check this to conform don\'t want to became a member of a WPLoyalty program.', 'woocommerce' ),
+			'id'       => 'accept_wployalty_membership',
+			'class'    => array( 'form-row-wide accept_wployalty_membership' ),
+			'label'    => __( 'Check this to became a member of a WPLoyalty program.', 'woocommerce' ),
+			'required' => false,
+		) );
+	}
+
+	static function validateInRegisterForm( $username, $user_email, $errors ) {
+		$input_helper                = new Input();
+		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
+
+		if ( ! in_array( $accept_wployalty_membership, array( 0, 1 ) ) ) {
+			$errors->add( 'accept_wployalty_membership',
+				__( 'Must be valid', 'wp-loyalty-optin' ) );
+		}
+
+		return $errors;
+	}
+
+	/**
+	 * user register.
+	 *
+	 * @param $customer_id
+	 * @param $new_customer_data
+	 * @param $password_generated
+	 *
+	 * @return void
+	 */
+	static function saveRegisterCheckbox( $customer_id, $new_customer_data, $password_generated ) {
+		if ( empty( $customer_id ) ) {
+			return;
+		}
+		$input_helper                = new Input();
+		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
+		$user_email                  = $input_helper->post_get( 'email', '' );
+
+		if ( empty( $user_email ) ) {
+			return;
+		}
+		$user_data = get_user_by( 'email', $user_email );
+		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
+			update_user_meta( $user_data->ID, 'accept_wployalty_membership', sanitize_text_field( $accept_wployalty_membership ) );
+			$update_status = $accept_wployalty_membership == 0 ? 1 : 0;
+			update_user_meta( $user_data->ID, 'decline_wployalty_membership', sanitize_text_field( $update_status ) );
+		}
+	}
+
+	static function addUserRegistration( $user_id ) {
+		if ( empty( $user_id ) ) {
+			return;
+		}
+		$user                        = get_user_by( 'id', $user_id );
+		$input_helper                = new Input();
+		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
+
+		if ( is_object( $user ) && isset( $user->ID ) ) {
+			update_user_meta( $user->ID, 'accept_wployalty_membership', sanitize_text_field( $accept_wployalty_membership ) );
+			$update_status = $accept_wployalty_membership == 0 ? 1 : 0;
+			update_user_meta( $user->ID, 'decline_wployalty_membership', sanitize_text_field( $update_status ) );
+		}
+
+	}
+
+
+	static function getStatusForRegisterUser( $status, $user_id ) {
+
+		if ( empty( $user_id ) ) {
+			return $status;
+		}
+		$user = get_user_by( 'id', $user_id );
+		if ( is_object( $user ) && isset( $user->ID ) ) {
+			$accept_wployalty_membership = get_user_meta( $user->ID, 'accept_wployalty_membership' );
+			if ( $accept_wployalty_membership == 0 ) {
+				return false;
+			}
+		}
+
+		return $status;
+	}
+
+
+	static function addCheckoutCheckbox() {
+
+		$user_email = self::getEmail();
+		if ( ! empty( $user_email ) ) {
+			return;
+		}
+
+		woocommerce_form_field( 'accept_wployalty_membership', array(
+			'type'     => 'checkbox',
+			'id'       => 'accept_wployalty_membership',
+			'class'    => array( 'form-row-wide accept_wployalty_membership' ),
+			'label'    => __( 'Check this to became a member of a WPLoyalty program.', 'woocommerce' ),
 			'required' => false,
 		) );
 
 	}
 
-	function validateInRegisterForm( $username, $user_email, $errors ) {
-		if ( empty( $username ) || empty( $user_email ) ) {
-			return $errors;
+	static function validateCheckoutForm( $fields, $errors ) {
+		$input_helper                = new Input();
+		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
+
+		if ( ! in_array( $accept_wployalty_membership, array( 0, 1 ) ) ) {
+			$errors->add( 'accept_wployalty_membership',
+				__( 'Must be valid', 'wp-loyalty-optin' ) );
 		}
-		$input_helper        = new \Wlr\App\Helpers\Input();
-		$not_become_a_member = $input_helper->post_get( 'wlr_not_become_a_member', '' );
 	}
 
-	function saveRegisterCheckbox( $customer_id, $new_customer_data, $password_generated ) {
-		if ( empty( $customer_id ) ) {
+	static function saveCheckoutFormData() {
+		$input_helper                = new Input();
+		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
+		$user_email                  = $input_helper->post_get( 'email', '' );
+
+		if ( empty( $user_email ) ) {
 			return;
 		}
-		$input_helper            = new \Wlr\App\Helpers\Input();
-		$wlr_not_become_a_member = $input_helper->post_get( 'wlr_not_become_a_member', 0 );
-
-		update_user_meta( $customer_id, 'wlr_not_become_a_member', sanitize_text_field( $wlr_not_become_a_member ) );
+		$user_data = get_user_by( 'email', $user_email );
+		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
+			update_user_meta( $user_data->ID, 'accept_wployalty_membership', sanitize_text_field( $accept_wployalty_membership ) );
+			$update_status = $accept_wployalty_membership == 0 ? 1 : 0;
+			update_user_meta( $user_data->ID, 'decline_wployalty_membership', sanitize_text_field( $update_status ) );
+		}
 
 	}
 

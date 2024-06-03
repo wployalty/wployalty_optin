@@ -1,6 +1,6 @@
 {
   "name": "wployalty/wployalty_optin",
-  "description": "description",
+  "description": "Accept/Decline the WPLoyalty option to user.",
   "minimum-stability": "stable",
   "license": "proprietary",
   "authors": [

@@ -20,8 +20,9 @@ class Main extends Base {
 	 * @return void
 	 */
 	function activatePlugin() {
-
-
+		if ( ! \Wlopt\App\Helper\Compatibility::check() ) {
+			return;
+		}
 	}
 
 	/**
@@ -50,8 +51,6 @@ class Main extends Base {
 			'',
 			WLOPT_PLUGIN_PATH . 'App/Views/Admin/'
 		);
-
-
 	}
 
 	/**
@@ -68,10 +67,13 @@ class Main extends Base {
 		remove_all_actions( "admin_notices" );
 		wp_enqueue_style( WLOPT_PLUGIN_SLUG . "-main-style", WLOPT_PLUGIN_URL . "Assets/Admin/Css/style.css",
 			array(), WLOPT_PLUGIN_VERSION . "&t=" . time() );
-
-
 	}
 
+	/**
+	 * Hide menu.
+	 *
+	 * @return void
+	 */
 	static function menuHide() {
 		?>
         <style>
