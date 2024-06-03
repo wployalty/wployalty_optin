@@ -9,6 +9,7 @@ namespace Wlopt\App\Controller\Admin;
 
 use Wlopt\App\Controller\Base;
 use Wlr\App\Helpers\Input;
+use Wlr\App\Helpers\Woocommerce;
 
 defined( "ABSPATH" ) or die();
 
@@ -20,6 +21,7 @@ class Main extends Base {
 	 */
 	function activatePlugin() {
 
+
 	}
 
 	/**
@@ -27,8 +29,8 @@ class Main extends Base {
 	 *
 	 * @return void
 	 */
-	static function adminMenu() {
-		if ( current_user_can( 'manage_woocommerce' ) ) {
+	public static function adminMenu() {
+		if ( Woocommerce::hasAdminPrivilege() ) {
 			add_menu_page( __( "WPLoyalty: Optin", "wp-loyalty-optin" ),
 				__( "WPLoyalty: Optin", "wp-loyalty-optin" ), "manage_woocommerce", WLOPT_PLUGIN_SLUG,
 				"Wlopt\App\Controller\Admin\Main::addMenuPage", 'dashicons-megaphone', 59 );
@@ -40,8 +42,16 @@ class Main extends Base {
 	 *
 	 * @return void
 	 */
-	static function addMenuPage() {
-		echo "hey dude!";
+	public static function addMenuPage() {
+		$params = array();
+		echo wc_get_template_html(
+			'main.php',
+			$params,
+			'',
+			WLOPT_PLUGIN_PATH . 'App/Views/Admin/'
+		);
+
+
 	}
 
 	/**
@@ -50,7 +60,25 @@ class Main extends Base {
 	 * @return void
 	 */
 	static function adminAssets() {
+		$input_helper = new \Wlr\App\Helpers\Input();
+		if ( $input_helper->get( "page" ) != WLOPT_PLUGIN_SLUG ) {
+			return;
+		}
+
+		remove_all_actions( "admin_notices" );
+		wp_enqueue_style( WLOPT_PLUGIN_SLUG . "-main-style", WLOPT_PLUGIN_URL . "Assets/Admin/Css/style.css",
+			array(), WLOPT_PLUGIN_VERSION . "&t=" . time() );
+
 
 	}
 
+	static function menuHide() {
+		?>
+        <style>
+            #toplevel_page_wp-loyalty-optin {
+                display: none !important;
+            }
+        </style>
+		<?php
+	}
 }

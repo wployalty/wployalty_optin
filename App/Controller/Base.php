@@ -13,11 +13,9 @@ use Wlr\App\Helpers\Woocommerce;
 defined( 'ABSPATH' ) or die();
 
 class Base {
-	public static $input, $woocommerce;
 
 	public function __construct() {
-		self::$input       = empty( self::$input ) ? new Input() : self::$input;
-		self::$woocommerce = empty( self::$woocommerce ) ? Woocommerce::getInstance() : self::$woocommerce;
+
 	}
 
 }

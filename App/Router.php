@@ -19,6 +19,7 @@ class Router {
 		if ( is_admin() ) {
 //            register_activation_hook( WLOPT_PLUGIN_FILE, array( self::$admin, "activatePlugin" ) );
 			add_action( 'admin_menu', 'Wlopt\App\Controller\Admin\Main::adminMenu' );
+			add_action( 'admin_footer', 'Wlopt\App\Controller\Admin\Main::menuHide' );
 			add_action( 'admin_enqueue_scripts', 'Wlopt\App\Controller\Admin\Main::adminAssets' );
 		} else {
 			add_action( 'wp_enqueue_scripts', 'Wlopt\App\Controller\Site\Main::siteAssets' );

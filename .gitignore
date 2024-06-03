@@ -2,3 +2,4 @@ vendor
 .idea
 composer.lock
 development.txt
+Assets/Admin/Css/style.css.map
