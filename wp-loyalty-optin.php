@@ -51,6 +51,7 @@ defined( 'WLOPT_PLUGIN_VERSION' ) or define( 'WLOPT_PLUGIN_VERSION', '1.0.0' );
 defined( 'WLOPT_MINIMUM_PHP_VERSION' ) or define( 'WLOPT_MINIMUM_PHP_VERSION', '5.6.0' );
 defined( 'WLOPT_MINIMUM_WP_VERSION' ) or define( 'WLOPT_MINIMUM_WP_VERSION', '4.9' );
 defined( 'WLOPT_MINIMUM_WC_VERSION' ) or define( 'WLOPT_MINIMUM_WC_VERSION', '6.0' );
+defined( 'WLOPT_MINIMUM_WLR_VERSION' ) or define( 'WLOPT_MINIMUM_WLR_VERSION', '1.2.9' );
 defined( 'WLOPT_PLUGIN_SLUG' ) or define( 'WLOPT_PLUGIN_SLUG', 'wp-loyalty-optin' );
 defined( 'WLOPT_PLUGIN_FILE' ) or define( 'WLOPT_PLUGIN_FILE', __FILE__ );
 defined( 'WLOPT_PLUGIN_PATH' ) or define( 'WLOPT_PLUGIN_PATH', __DIR__ . '/' );

@@ -7,13 +7,12 @@
 
 namespace Wlopt\App\Controller\Admin;
 
-use Wlopt\App\Controller\Base;
 use Wlr\App\Helpers\Input;
 use Wlr\App\Helpers\Woocommerce;
 
 defined( "ABSPATH" ) or die();
 
-class Main extends Base {
+class Main {
 	/**
 	 * Plugin activation.
 	 *

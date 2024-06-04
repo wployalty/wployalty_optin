@@ -9,6 +9,14 @@ namespace Wlopt\App\Helper;
 defined( "ABSPATH" ) or die();
 
 class Compatibility {
+
+	/**
+	 * Check plugin compatibility.
+	 *
+	 * @param $allow_exit
+	 *
+	 * @return bool|void
+	 */
 	public static function check( $allow_exit = false ) {
 
 		if ( ! self::isPHPCompatible() ) {
@@ -26,6 +34,12 @@ class Compatibility {
 
 		if ( ! self::isWooCompatible() ) {
 			$message = sprintf( __( '%s requires minimum Woocommerce version %s', 'wp-loyalty-optin' ), WLOPT_PLUGIN_NAME, WLOPT_MINIMUM_WC_VERSION );
+			$allow_exit ? exit( $message ) : self::adminNotice( esc_html( $message ), 'error' );
+
+			return false;
+		}
+		if ( ! self::isWPLoyaltyCompatible() ) {
+			$message = sprintf( __( '%s requires minimum WPLoyalty version %s', 'wp-loyalty-optin' ), WLOPT_PLUGIN_NAME, WLOPT_MINIMUM_WLR_VERSION );
 			$allow_exit ? exit( $message ) : self::adminNotice( esc_html( $message ), 'error' );
 
 			return false;
@@ -82,6 +96,18 @@ class Compatibility {
 	}
 
 	/**
+	 * Check woocommerce is compatible.
+	 *
+	 * @return bool
+	 */
+	protected static function isWPLoyaltyCompatible() {
+		$wlr_version = self::getWLRVersion();
+
+		return (int) version_compare( $wlr_version, WLOPT_MINIMUM_WLR_VERSION, '>=' ) > 0;
+	}
+
+
+	/**
 	 * Get Woocommerce version.
 	 *
 	 * @return string
@@ -96,6 +122,23 @@ class Compatibility {
 		$plugin_folder = get_plugins( '/woocommerce' );
 
 		return isset( $plugin_folder['woocommerce.php']['Version'] ) ? $plugin_folder['woocommerce.php']['Version'] : '1.0.0';
+	}
+
+	/**
+	 * Get WPLoyalty version.
+	 *
+	 * @return string
+	 */
+	protected static function getWLRVersion() {
+		if ( defined( 'WLR_PLUGIN_VERSION' ) ) {
+			return WLR_PLUGIN_VERSION;
+		}
+		if ( ! function_exists( 'get_plugins' ) ) {
+			require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		}
+		$plugin_folder = get_plugins( '/wp-loyalty-rules' );
+
+		return isset( $plugin_folder['wp-loyalty-rules.php']['Version'] ) ? $plugin_folder['wp-loyalty-rules.php']['Version'] : '1.0.0';
 	}
 
 }

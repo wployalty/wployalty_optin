@@ -7,16 +7,24 @@
 
 namespace Wlopt\App\Controller\Site;
 
-use Wlopt\App\Controller\Base;
 use Wlr\App\Helpers\Woocommerce;
 use Wlr\App\Helpers\Input;
 
 defined( "ABSPATH" ) or die();
 
-class Main extends Base {
+class Main {
+	/**
+	 * Customer email variable.
+	 *
+	 * @var
+	 */
+	public static $email;
 
-	static $email;
-
+	/**
+	 * Check status of earning.
+	 *
+	 * @return bool|mixed|null
+	 */
 	public static function checkStatus() {
 		$user_email = self::getEmail();
 		if ( empty( $user_email ) ) {
@@ -30,20 +38,21 @@ class Main extends Base {
 			}
 			$decline_wployalty_membership = get_user_meta( $user_data->ID, 'decline_wployalty_membership', true );
 
-			return $decline_wployalty_membership > 0;
+			return ( $decline_wployalty_membership > 0 );
 		}
 
 		return false;
 	}
 
+	/**
+	 * Checks status and prevent earning.
+	 *
+	 * @return void
+	 */
 	public static function preventWPLoyaltyMembership() {
-//		var_dump( self::checkStatus() );
 		if ( ! self::checkStatus() ) {
 			return;
 		}
-//        //order status
-
-
 		//earn point prevent
 		add_filter( 'wlr_before_earn_point_calculation', function ( $status, $data ) {
 			return false;
@@ -134,6 +143,11 @@ class Main extends Base {
 
 	}
 
+	/**
+	 * Shortcode for field for decline.
+	 *
+	 * @return void
+	 */
 	static function declineMembership() {
 		$user_email = self::getEmail();
 		if ( empty( $user_email ) ) {
@@ -152,7 +166,11 @@ class Main extends Base {
 
 	}
 
-
+	/**
+	 * Get logged user email.
+	 *
+	 * @return mixed
+	 */
 	static function getEmail() {
 		if ( ! empty( self::$email ) ) {
 			return self::$email;
@@ -162,6 +180,11 @@ class Main extends Base {
 		return self::$email = $woo_helper->get_login_user_email();
 	}
 
+	/**
+	 * Shortcode for field for acceptance.
+	 *
+	 * @return string|void
+	 */
 	public static function acceptMembership() {
 		$user_email = self::getEmail();
 		if ( empty( $user_email ) ) {
@@ -180,7 +203,7 @@ class Main extends Base {
 	}
 
 	/**
-	 *
+	 * Update status of decline.
 	 *
 	 * @return void
 	 */
@@ -216,6 +239,11 @@ class Main extends Base {
 
 	}
 
+	/**
+	 * Update data fo accept membership.
+	 *
+	 * @return void
+	 */
 	static function updateAcceptance() {
 		$input_helper = new Input();
 		$wlr_nonce    = (string) $input_helper->post_get( 'wlopt_nonce', '' );
@@ -247,6 +275,11 @@ class Main extends Base {
 		wp_send_json( $json );
 	}
 
+	/**
+	 * Add field in register page.
+	 *
+	 * @return void
+	 */
 	static function addRegistrationCheckbox() {
 		$user_email = self::getEmail();
 		if ( ! empty( $user_email ) ) {
@@ -262,6 +295,15 @@ class Main extends Base {
 		) );
 	}
 
+	/**
+	 * Validate registration page.
+	 *
+	 * @param $username
+	 * @param $user_email
+	 * @param $errors
+	 *
+	 * @return mixed
+	 */
 	static function validateInRegisterForm( $username, $user_email, $errors ) {
 		$input_helper                = new Input();
 		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
@@ -302,6 +344,13 @@ class Main extends Base {
 		}
 	}
 
+	/**
+	 * Update data after user registration.
+	 *
+	 * @param $user_id
+	 *
+	 * @return void
+	 */
 	static function addUserRegistration( $user_id ) {
 		if ( empty( $user_id ) ) {
 			return;
@@ -318,7 +367,14 @@ class Main extends Base {
 
 	}
 
-
+	/**
+	 * Check status in registration page.
+	 *
+	 * @param bool $status Status to earn.
+	 * @param int $user_id User id.
+	 *
+	 * @return false
+	 */
 	static function getStatusForRegisterUser( $status, $user_id ) {
 
 		if ( empty( $user_id ) ) {
@@ -335,7 +391,11 @@ class Main extends Base {
 		return $status;
 	}
 
-
+	/**
+	 * Add field in checkout form.
+	 *
+	 * @return void
+	 */
 	static function addCheckoutCheckbox() {
 
 		$user_email = self::getEmail();
@@ -353,6 +413,14 @@ class Main extends Base {
 
 	}
 
+	/**
+	 * Validation for checkout fields.
+	 *
+	 * @param $fields
+	 * @param $errors
+	 *
+	 * @return mixed
+	 */
 	static function validateCheckoutForm( $fields, $errors ) {
 		$input_helper                = new Input();
 		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
@@ -365,6 +433,14 @@ class Main extends Base {
 		return $errors;
 	}
 
+	/**
+	 * Save checkout field data.
+	 *
+	 * @param $order
+	 * @param array $data Checkout fields data.
+	 *
+	 * @return void
+	 */
 	static function saveCheckoutFormData( $order, $data ) {
 		$input_helper                = new Input();
 		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
@@ -385,6 +461,15 @@ class Main extends Base {
 
 	}
 
+	/**
+	 * Check status for earn point/reward.
+	 *
+	 * @param bool $status Status to earn.
+	 * @param string $order_email Order email.
+	 * @param $order
+	 *
+	 * @return false
+	 */
 	static function notEligibleToEarn( $status, $order_email, $order ) {
 		if ( empty( $order_email ) ) {
 			return $status;
