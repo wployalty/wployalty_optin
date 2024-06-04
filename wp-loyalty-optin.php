@@ -74,5 +74,11 @@ $router = new \Wlopt\App\Router();
 if ( ! method_exists( \Wlopt\App\Router::class, 'init' ) ) {
 	return;
 }
+$myUpdateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
+	'https://github.com/wployalty/wployalty_optin',
+	__FILE__,
+	'wp-loyalty-optin'
+);
+$myUpdateChecker->getVcsApi()->enableReleaseAssets();
 
 \Wlopt\App\Router::init();
