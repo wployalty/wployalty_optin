@@ -18,7 +18,7 @@ class Main {
 	 *
 	 * @return void
 	 */
-	function activatePlugin() {
+	public static function activatePlugin() {
 		if ( ! \Wlopt\App\Helper\Compatibility::check() ) {
 			return;
 		}

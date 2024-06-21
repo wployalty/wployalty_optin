@@ -353,7 +353,9 @@ class Main {
 		$user                        = get_user_by( 'id', $user_id );
 		$input_helper                = new Input();
 		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
-
+		if ( $accept_wployalty_membership == 0 ) {
+			add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10 );
+		}
 		if ( is_object( $user ) && isset( $user->ID ) ) {
 			update_user_meta( $user->ID, 'accept_wployalty_membership', sanitize_text_field( $accept_wployalty_membership ) );
 			$update_status = $accept_wployalty_membership == 0 ? 1 : 0;
