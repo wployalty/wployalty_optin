@@ -459,6 +459,24 @@ class Main {
 	}
 
 	/**
+	 * Update order meta.
+	 *
+	 * @param $order_id
+	 * @param $data
+	 *
+	 * @return void
+	 */
+	static function orderCheckForOptin( $order_id, $data ) {
+		$input_helper                = new Input();
+		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
+		if ( isset( $order_id ) ) {
+			update_post_meta( $order_id, 'accept_wployalty_membership', sanitize_text_field( $accept_wployalty_membership ) );
+			$update_status = $accept_wployalty_membership == 0 ? 1 : 0;
+			update_post_meta( $order_id, 'decline_wployalty_membership', sanitize_text_field( $update_status ) );
+		}
+	}
+
+	/**
 	 * Check status for earn point/reward.
 	 *
 	 * @param bool $status Status to earn.
@@ -471,15 +489,39 @@ class Main {
 		if ( empty( $order_email ) ) {
 			return $status;
 		}
+		$eligible = false;
+		if ( is_object( $order ) ) {
+			$accept_wployalty_membership = (int) get_post_meta( $order->get_id(), 'accept_wployalty_membership', true );
+			if ( $accept_wployalty_membership == 0 ) {
+				$eligible = true;
+//				add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10 );
+			}
+		}
 		$user = get_user_by( 'email', $order_email );
 		if ( is_object( $user ) && isset( $user->ID ) ) {
-			$accept_wployalty_membership = get_user_meta( $user->ID, 'accept_wployalty_membership' );
+			$accept_wployalty_membership = (int) get_user_meta( $user->ID, 'accept_wployalty_membership', true );
 			if ( $accept_wployalty_membership == 0 ) {
-				return false;
+				$eligible = true;
 			}
 		}
 
-		return $status;
+		return $eligible ? false : $status;
+	}
+
+	/**
+	 * Before earn point check.
+	 *
+	 * @param $status
+	 * @param $data
+	 *
+	 * @return false|mixed
+	 */
+	static function beforeEarnPoint( $status, $data ) {
+		if ( ! self::checkStatus() ) {
+			return $status;
+		}
+
+		return false;
 	}
 
 }
