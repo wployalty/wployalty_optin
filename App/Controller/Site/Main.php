@@ -155,7 +155,7 @@ class Main {
         <div class="wlopt-decline-membership">
             <input type="checkbox" name="decline_wployalty_membership" id="decline_wployalty_membership">
             <label for="decline_wployalty_membership" class="wlr-text-color"
-            ><?php _e( 'Check this to conform don\'t want to became a member of a WPLoyalty program.', 'wlr-loyalty-optin' ) ?></label>
+            ><?php _e( 'Check this to confirm don\'t want to became a member of a WPLoyalty program.', 'wlr-loyalty-optin' ) ?></label>
         </div>
 		<?php
 
