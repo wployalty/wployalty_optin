@@ -1,11 +1,12 @@
 <?php
 /**
- * @author      Wployalty (Ilaiyaraja)
+ * @author      Wployalty (Ilaiyaraja, Sabhari)
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
  * @link        https://www.wployalty.net
  * */
 
 namespace Wlopt\App\Helper;
+
 defined( "ABSPATH" ) or die();
 
 class Compatibility {
@@ -20,26 +21,30 @@ class Compatibility {
 	public static function check( $allow_exit = false ) {
 
 		if ( ! self::isPHPCompatible() ) {
-			$message = sprintf( __( '%s requires minimum PHP version %s', 'wp-loyalty-optin' ), WLOPT_PLUGIN_NAME, WLOPT_MINIMUM_PHP_VERSION );
+			$message = sprintf( __( '%s requires minimum PHP version %s', 'wp-loyalty-optin' ), WLOPT_PLUGIN_NAME,
+				WLOPT_MINIMUM_PHP_VERSION );
 			$allow_exit ? die( esc_html( $message ) ) : self::adminNotice( esc_html( $message ), 'error' );
 
 			return false;
 		}
 		if ( ! self::isWordPressCompatible() ) {
-			$message = sprintf( __( '%s requires minimum WordPress version %s', 'wp-loyalty-optin' ), WLOPT_PLUGIN_NAME, WLOPT_MINIMUM_WP_VERSION );
+			$message = sprintf( __( '%s requires minimum WordPress version %s', 'wp-loyalty-optin' ), WLOPT_PLUGIN_NAME,
+				WLOPT_MINIMUM_WP_VERSION );
 			$allow_exit ? exit( $message ) : self::adminNotice( esc_html( $message ), 'error' );
 
 			return false;
 		}
 
 		if ( ! self::isWooCompatible() ) {
-			$message = sprintf( __( '%s requires minimum Woocommerce version %s', 'wp-loyalty-optin' ), WLOPT_PLUGIN_NAME, WLOPT_MINIMUM_WC_VERSION );
+			$message = sprintf( __( '%s requires minimum Woocommerce version %s', 'wp-loyalty-optin' ),
+				WLOPT_PLUGIN_NAME, WLOPT_MINIMUM_WC_VERSION );
 			$allow_exit ? exit( $message ) : self::adminNotice( esc_html( $message ), 'error' );
 
 			return false;
 		}
 		if ( ! self::isWPLoyaltyCompatible() ) {
-			$message = sprintf( __( '%s requires minimum WPLoyalty version %s', 'wp-loyalty-optin' ), WLOPT_PLUGIN_NAME, WLOPT_MINIMUM_WLR_VERSION );
+			$message = sprintf( __( '%s requires minimum WPLoyalty version %s', 'wp-loyalty-optin' ), WLOPT_PLUGIN_NAME,
+				WLOPT_MINIMUM_WLR_VERSION );
 			$allow_exit ? exit( $message ) : self::adminNotice( esc_html( $message ), 'error' );
 
 			return false;
@@ -51,8 +56,8 @@ class Compatibility {
 	/**
 	 * Add admin notice.
 	 *
-	 * @param string $message Message.
-	 * @param string $status Status.
+	 * @param   string  $message  Message.
+	 * @param   string  $status   Status.
 	 *
 	 * @return void
 	 */

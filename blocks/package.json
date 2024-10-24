@@ -1,0 +1,23 @@
+{
+  "name": "wlr-optin-blocks",
+  "version": "1.0.0",
+  "description": "",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "wp-scripts build",
+    "format": "wp-scripts format",
+    "lint:css": "wp-scripts lint-style",
+    "lint:js": "wp-scripts lint-js",
+    "packages-update": "wp-scripts packages-update",
+    "plugin-zip": "wp-scripts plugin-zip",
+    "start": "wp-scripts start",
+    "env": "wp-env"
+  },
+  "author": "Alagesan",
+  "license": "GPL-2.0-or-later",
+  "devDependencies": {
+    "@wordpress/scripts": "^27.7.0",
+    "@wordpress/blocks": "^12.33.0",
+    "@woocommerce/dependency-extraction-webpack-plugin": "^3.0.0"
+  }
+}

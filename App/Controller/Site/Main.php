@@ -1,14 +1,16 @@
 <?php
 /**
- * @author      Wployalty (Ilaiyaraja)
+ * @author      Wployalty (Ilaiyaraja, Sabhari)
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
  * @link        https://www.wployalty.net
  * */
 
 namespace Wlopt\App\Controller\Site;
 
+use Automattic\WooCommerce\StoreApi\Schemas\V1\CheckoutSchema;
+use Wlopt\App\Controller\Site\Blocks\Integration\Message;
+use Wlopt\App\Helper\Input;
 use Wlr\App\Helpers\Woocommerce;
-use Wlr\App\Helpers\Input;
 
 defined( "ABSPATH" ) or die();
 
@@ -23,7 +25,7 @@ class Main {
 	/**
 	 * Check status of earning.
 	 *
-	 * @return bool|mixed|null
+	 * @return bool Return true if opted, false if not opted.
 	 */
 	public static function checkStatus() {
 		$user_email = self::getEmail();
@@ -33,12 +35,11 @@ class Main {
 		$user_data = get_user_by( 'email', $user_email );
 		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
 			$accept_wployalty_membership = get_user_meta( $user_data->ID, 'accept_wployalty_membership', true );
-			if ( $accept_wployalty_membership > 0 ) {
+			if ( $accept_wployalty_membership == "yes" ) {
+				return true;
+			} else {
 				return false;
 			}
-			$decline_wployalty_membership = get_user_meta( $user_data->ID, 'decline_wployalty_membership', true );
-
-			return ( $decline_wployalty_membership > 0 );
 		}
 
 		return false;
@@ -50,13 +51,9 @@ class Main {
 	 * @return void
 	 */
 	public static function preventWPLoyaltyMembership() {
-		if ( ! self::checkStatus() ) {
+		if ( self::checkStatus() ) {
 			return;
 		}
-		//earn point prevent
-		add_filter( 'wlr_before_earn_point_calculation', function ( $status, $data ) {
-			return false;
-		}, 10, 2 );
 		//display message
 		add_filter( 'wlr_before_display_messages', '__return_false' );
 		//Loyalty assets
@@ -74,45 +71,6 @@ class Main {
 		add_filter( 'wlr_before_adding_menu_endpoint', '__return_false' );
 		//birthday fields
 		add_filter( 'wlr_before_adding_birthday_fields', '__return_false' );
-	}
-
-	/**
-	 * Check before sending email.
-	 *
-	 * @param $status
-	 * @param $data
-	 *
-	 * @return false
-	 */
-	static function beforeSendEmail( $status, $data ) {
-		$email = '';
-		if ( in_array( $data['email_type'], array(
-			'wlr_birthday_email',
-			'wlr_earn_point_email',
-			'wlr_earn_reward_email'
-		) ) ) {
-			$email = isset( $data['data']['user_email'] ) && ! empty( $data['data']['user_email'] ) ? $data['data']['user_email'] : '';
-		} elseif ( in_array( $data['email_type'], array( 'wlr_expire_email' ) ) ) {
-			$email = isset( $data['user_reward']->email ) && ! empty( $data['user_reward']->email ) ? $data['user_reward']->email : '';
-		} elseif ( in_array( $data['email_type'], array( 'wlr_new_level_email' ) ) ) {
-			$email = isset( $data['user_fields']['user_email'] ) && ! empty( $data['user_fields']['user_email'] ) ? $data['user_fields']['user_email'] : '';
-		} elseif ( in_array( $data['email_type'], array( 'wlr_point_expire_email' ) ) ) {
-			$email = isset( $data['email_data']->user_email ) && ! empty( $data['email_data']->user_email ) ? $data['email_data']->user_email : '';
-		}
-
-		if ( empty( $email ) ) {
-			return $status;
-		}
-		$user = get_user_by( 'email', $email );
-		if ( is_object( $user ) && isset( $user->ID ) ) {
-			$accept_wployalty_membership = get_user_meta( $user->ID, 'accept_wployalty_membership' );
-			if ( $accept_wployalty_membership == 0 ) {
-				return false;
-			}
-		}
-
-		return $status;
-
 	}
 
 	/**
@@ -148,14 +106,15 @@ class Main {
 		if ( empty( $user_email ) ) {
 			return;
 		}
-		if ( self::checkStatus() ) {
+		if ( ! self::checkStatus() ) {
 			return;
 		}
 		?>
         <div class="wlopt-decline-membership">
             <input type="checkbox" name="decline_wployalty_membership" id="decline_wployalty_membership">
             <label for="decline_wployalty_membership" class="wlr-text-color"
-            ><?php echo __( 'Check this to confirm don\'t want to became a member of a WPLoyalty program.', 'wp-loyalty-optin' ) ?></label>
+            ><?php echo __( 'Check this to confirm don\'t want to became a member of a WPLoyalty program.',
+					'wp-loyalty-optin' ) ?></label>
         </div>
 		<?php
 
@@ -185,7 +144,7 @@ class Main {
 		if ( empty( $user_email ) ) {
 			return '';
 		}
-		if ( ! self::checkStatus() ) {
+		if ( self::checkStatus() ) {
 			return '';
 		}
 		?>
@@ -204,9 +163,8 @@ class Main {
 	 */
 	public static function updateOptIn() {
 
-		$input_helper = new \Wlr\App\Helpers\Input();
-		$wlr_nonce    = (string) $input_helper->post_get( 'wlopt_nonce', '' );
-		$json         = array(
+		$wlr_nonce = (string) Input::get( 'wlopt_nonce', '' );
+		$json      = array(
 			'success' => false,
 			'data'    => array(
 				'message' => __( 'Update data failed',
@@ -217,15 +175,16 @@ class Main {
 			$json['message'] = __( 'Invalid nonce', 'wp-loyalty-optin' );
 			wp_send_json( $json );
 		}
-		$decline_wployalty_membership = (int) $input_helper->post_get( 'decline_wployalty_membership', 0 );
+		$decline_wployalty_membership = Input::get( 'decline_wployalty_membership' ) ? "yes" : "no";
 		$user_email                   = self::getEmail();
 		if ( empty( $user_email ) ) {
 			wp_send_json( $json );
 		}
 		$user_data = get_user_by( 'email', $user_email );
 		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
-			update_user_meta( $user_data->ID, 'decline_wployalty_membership', sanitize_text_field( $decline_wployalty_membership ) );
-			$update_status = $decline_wployalty_membership == 0 ? 1 : 0;
+			update_user_meta( $user_data->ID, 'decline_wployalty_membership',
+				sanitize_text_field( $decline_wployalty_membership ) );
+			$update_status = $decline_wployalty_membership == "no" ? "yes" : "no";
 			update_user_meta( $user_data->ID, 'accept_wployalty_membership', sanitize_text_field( $update_status ) );
 			$json['success']         = true;
 			$json['data']['message'] = __( 'Updated successfully', 'wp-loyalty-optin' );
@@ -240,9 +199,8 @@ class Main {
 	 * @return void
 	 */
 	static function updateAcceptance() {
-		$input_helper = new Input();
-		$wlr_nonce    = (string) $input_helper->post_get( 'wlopt_nonce', '' );
-		$json         = array(
+		$wlr_nonce = (string) Input::get( 'wlopt_nonce', '' );
+		$json      = array(
 			'success' => false,
 			'data'    => array(
 				'message' => __( 'Update data failed',
@@ -253,7 +211,7 @@ class Main {
 			$json['message'] = __( 'Invalid nonce', 'wp-loyalty-optin' );
 			wp_send_json( $json );
 		}
-		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
+		$accept_wployalty_membership = Input::get( 'accept_wployalty_membership' ) ? "yes" : "no";
 
 		$user_email = self::getEmail();
 		if ( empty( $user_email ) ) {
@@ -261,8 +219,9 @@ class Main {
 		}
 		$user_data = get_user_by( 'email', $user_email );
 		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
-			update_user_meta( $user_data->ID, 'accept_wployalty_membership', sanitize_text_field( $accept_wployalty_membership ) );
-			$update_status = $accept_wployalty_membership == 0 ? 1 : 0;
+			update_user_meta( $user_data->ID, 'accept_wployalty_membership',
+				sanitize_text_field( $accept_wployalty_membership ) );
+			$update_status = $accept_wployalty_membership == "no" ? "yes" : "no";
 			update_user_meta( $user_data->ID, 'decline_wployalty_membership', sanitize_text_field( $update_status ) );
 			$json['success']         = true;
 			$json['data']['message'] = __( 'Updated successfully', 'wp-loyalty-optin' );
@@ -285,7 +244,7 @@ class Main {
 			'type'     => 'checkbox',
 			'id'       => 'accept_wployalty_membership',
 			'class'    => array( 'form-row-wide accept_wployalty_membership' ),
-			'label'    => __( 'Check this to became a member of a WPLoyalty program.', 'woocommerce' ),
+			'label'    => __( 'Check this to become a member of WPLoyalty program.', 'woocommerce' ),
 			'required' => false,
 		) );
 	}
@@ -300,8 +259,7 @@ class Main {
 	 * @return mixed
 	 */
 	static function validateInRegisterForm( $username, $user_email, $errors ) {
-		$input_helper                = new Input();
-		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
+		$accept_wployalty_membership = (int) Input::get( 'accept_wployalty_membership', 0 );
 
 		if ( ! in_array( $accept_wployalty_membership, array( 0, 1 ) ) ) {
 			$errors->add( 'accept_wployalty_membership',
@@ -312,34 +270,6 @@ class Main {
 	}
 
 	/**
-	 * user register.
-	 *
-	 * @param $customer_id
-	 * @param $new_customer_data
-	 * @param $password_generated
-	 *
-	 * @return void
-	 */
-	static function saveRegisterCheckbox( $customer_id, $new_customer_data, $password_generated ) {
-		if ( empty( $customer_id ) ) {
-			return;
-		}
-		$input_helper                = new Input();
-		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
-		$user_email                  = $input_helper->post_get( 'email', '' );
-
-		if ( empty( $user_email ) ) {
-			return;
-		}
-		$user_data = get_user_by( 'email', $user_email );
-		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
-			update_user_meta( $user_data->ID, 'accept_wployalty_membership', sanitize_text_field( $accept_wployalty_membership ) );
-			$update_status = $accept_wployalty_membership == 0 ? 1 : 0;
-			update_user_meta( $user_data->ID, 'decline_wployalty_membership', sanitize_text_field( $update_status ) );
-		}
-	}
-
-	/**
 	 * Update data after user registration.
 	 *
 	 * @param $user_id
@@ -347,45 +277,24 @@ class Main {
 	 * @return void
 	 */
 	static function addUserRegistration( $user_id ) {
+
 		if ( empty( $user_id ) ) {
 			return;
 		}
-		$user                        = get_user_by( 'id', $user_id );
-		$input_helper                = new Input();
-		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
-		if ( $accept_wployalty_membership == 0 ) {
-			add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10 );
+		//Updating user meta for block checkout
+		$accept_wployalty_membership = Input::get( 'accept_wployalty_membership' ) ? "yes" : "no";
+		if ( empty( $_POST ) && is_object( $user = get_user_by( 'id',
+				$user_id ) ) && ! empty( get_transient( 'wlr_opt_in_' . $user->user_email ) ) ) {
+			$accept_wployalty_membership = get_transient( 'wlr_opt_in_' . $user->user_email );
 		}
-		if ( is_object( $user ) && isset( $user->ID ) ) {
-			update_user_meta( $user->ID, 'accept_wployalty_membership', sanitize_text_field( $accept_wployalty_membership ) );
-			$update_status = $accept_wployalty_membership == 0 ? 1 : 0;
-			update_user_meta( $user->ID, 'decline_wployalty_membership', sanitize_text_field( $update_status ) );
+		if ( empty( get_transient( 'wlr_opt_in_status' ) ) || get_transient( 'wlr_opt_in_status' ) !== $accept_wployalty_membership ) {
+			self::setTransient( 'wlr_opt_in_status', $accept_wployalty_membership );
 		}
+		update_user_meta( $user_id, 'accept_wployalty_membership',
+			sanitize_text_field( $accept_wployalty_membership ) );
+		$update_status = $accept_wployalty_membership == "no" ? "yes" : "no";
+		update_user_meta( $user_id, 'decline_wployalty_membership', sanitize_text_field( $update_status ) );
 
-	}
-
-	/**
-	 * Check status in registration page.
-	 *
-	 * @param bool $status Status to earn.
-	 * @param int $user_id User id.
-	 *
-	 * @return false
-	 */
-	static function getStatusForRegisterUser( $status, $user_id ) {
-
-		if ( empty( $user_id ) ) {
-			return $status;
-		}
-		$user = get_user_by( 'id', $user_id );
-		if ( is_object( $user ) && isset( $user->ID ) ) {
-			$accept_wployalty_membership = get_user_meta( $user->ID, 'accept_wployalty_membership' );
-			if ( $accept_wployalty_membership == 0 ) {
-				return false;
-			}
-		}
-
-		return $status;
 	}
 
 	/**
@@ -395,18 +304,13 @@ class Main {
 	 */
 	static function addCheckoutCheckbox() {
 
-		$user_email = self::getEmail();
-		if ( ! empty( $user_email ) ) {
-			return;
-		}
-
 		woocommerce_form_field( 'accept_wployalty_membership', array(
 			'type'     => 'checkbox',
 			'id'       => 'accept_wployalty_membership',
 			'class'    => array( 'form-row-wide accept_wployalty_membership' ),
-			'label'    => __( 'Check this to became a member of a WPLoyalty program.', 'woocommerce' ),
+			'label'    => __( 'Check this to become a member of WPLoyalty program.', 'woocommerce' ),
 			'required' => false,
-		) );
+		), self::checkStatus() );
 
 	}
 
@@ -419,12 +323,15 @@ class Main {
 	 * @return mixed
 	 */
 	static function validateCheckoutForm( $fields, $errors ) {
-		$input_helper                = new Input();
-		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
-
+		$accept_wployalty_membership = (int) Input::get( 'accept_wployalty_membership' );
 		if ( ! in_array( $accept_wployalty_membership, array( 0, 1 ) ) ) {
 			$errors->add( 'accept_wployalty_membership',
 				__( 'Must be valid', 'wp-loyalty-optin' ) );
+		} else {
+			$accept_wployalty_membership = Input::get( 'accept_wployalty_membership' ) ? "yes" : "no";
+			if ( empty( get_transient( 'wlr_opt_in_status' ) ) || get_transient( 'wlr_opt_in_status' ) !== $accept_wployalty_membership ) {
+				self::setTransient( 'wlr_opt_in_status', $accept_wployalty_membership );
+			}
 		}
 
 		return $errors;
@@ -433,95 +340,103 @@ class Main {
 	/**
 	 * Save checkout field data.
 	 *
-	 * @param $order
-	 * @param array $data Checkout fields data.
+	 * @param          $order
+	 * @param   array  $data  Checkout fields data.
 	 *
 	 * @return void
 	 */
 	static function saveCheckoutFormData( $order, $data ) {
-		$input_helper                = new Input();
-		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
-
-		$user_email = isset( $data['billing_email'] )
-		              && ! empty( $data['billing_email'] )
+		$accept_wployalty_membership = Input::get( 'accept_wployalty_membership' ) ? "yes" : "no";
+		$user_email                  = isset( $data['billing_email'] )
+		                               && ! empty( $data['billing_email'] )
 			? $data['billing_email'] : "";
-
 		if ( empty( $user_email ) ) {
 			return;
 		}
 		$user_data = get_user_by( 'email', $user_email );
 		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
-			update_user_meta( $user_data->ID, 'accept_wployalty_membership', sanitize_text_field( $accept_wployalty_membership ) );
-			$update_status = $accept_wployalty_membership == 0 ? 1 : 0;
-			update_user_meta( $user_data->ID, 'decline_wployalty_membership', sanitize_text_field( $update_status ) );
+			update_user_meta( $user_data->ID, 'accept_wployalty_membership', $accept_wployalty_membership );
+			$update_status = $accept_wployalty_membership == "no" ? "yes" : "no";
+			update_user_meta( $user_data->ID, 'decline_wployalty_membership', $update_status );
 		}
 
 	}
 
-	/**
-	 * Update order meta.
-	 *
-	 * @param $order_id
-	 * @param $data
-	 *
-	 * @return void
-	 */
-	static function orderCheckForOptin( $order_id, $data ) {
-		$input_helper                = new Input();
-		$accept_wployalty_membership = (int) $input_helper->post_get( 'accept_wployalty_membership', 0 );
-		if ( isset( $order_id ) ) {
-			update_post_meta( $order_id, 'accept_wployalty_membership', sanitize_text_field( $accept_wployalty_membership ) );
-			$update_status = $accept_wployalty_membership == 0 ? 1 : 0;
-			update_post_meta( $order_id, 'decline_wployalty_membership', sanitize_text_field( $update_status ) );
+	static function checkBlockCheckoutEarning( \WC_Customer $customer, \WP_REST_Request $request ) {
+		if ( ! isset( $request['extensions'] )
+		     || ! isset( $request['extensions']['wlopt_checkout_block'] )
+		     || ! isset( $request['extensions']['wlopt_checkout_block']['wpl_optin'] )
+		) {
+			return;
 		}
+		if ( ! is_object( $customer ) ) {
+			return;
+		}
+		$billing_email = $customer->get_billing_email();
+
+		if ( empty( $billing_email ) || ! is_email( $billing_email ) ) {
+			return;
+		}
+		$accept_wployalty_membership = $request['extensions']['wlopt_checkout_block']['wpl_optin'] ? "yes" : "no";
+		if ( empty( get_transient( 'wlr_opt_in_status' ) ) || get_transient( 'wlr_opt_in_status' ) !== $accept_wployalty_membership ) {
+			self::setTransient( 'wlr_opt_in_status', $accept_wployalty_membership );
+		}
+		$params = $request->get_params();
+		if ( is_array( $params ) && ! empty( $params ) && $params['create_account'] ) {
+			set_transient( 'wlr_opt_in_' . $billing_email, $accept_wployalty_membership, 60 * 60 );
+		}
+		$log = wc_get_logger();
+		$log->add( 'otest', 'Request params : ' . json_encode( $params ) );
+		$log->add( 'otest', 'Saved transient : ' . get_transient( 'wlr_opt_in_' . $billing_email ) );
 	}
 
-	/**
-	 * Check status for earn point/reward.
-	 *
-	 * @param bool $status Status to earn.
-	 * @param string $order_email Order email.
-	 * @param $order
-	 *
-	 * @return false
-	 */
-	static function notEligibleToEarn( $status, $order_email, $order ) {
-		if ( empty( $order_email ) ) {
-			return $status;
+	static function preventEarning( $status, $user_id, $user_email ) {
+		if ( ! empty( get_transient( 'wlr_opt_in_status' ) ) && get_transient( 'wlr_opt_in_status' ) === "no" ) {
+
+			return false;
 		}
-		$eligible = false;
-		if ( is_object( $order ) ) {
-			$accept_wployalty_membership = (int) get_post_meta( $order->get_id(), 'accept_wployalty_membership', true );
-			if ( $accept_wployalty_membership == 0 ) {
-				$eligible = true;
-//				add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10 );
+
+		return $status;
+	}
+
+	static function initBlocks() {
+		if ( function_exists( 'WC' ) && WC()->is_rest_api_request() ) {
+			$message = new Message();
+			woocommerce_store_api_register_endpoint_data(
+				[
+					'endpoint'        => CheckoutSchema::IDENTIFIER,
+					'namespace'       => 'wlopt_checkout_block',
+					'schema_callback' => [ $message, 'getOptinSchema' ],
+					'schema_type'     => ARRAY_A,
+				]
+			);
+		}
+		add_action(
+
+			'woocommerce_blocks_checkout_block_registration',
+			function ( $integration_registry ) {
+				$integration_registry->register( new Message() );
 			}
-		}
-		$user = get_user_by( 'email', $order_email );
-		if ( is_object( $user ) && isset( $user->ID ) ) {
-			$accept_wployalty_membership = (int) get_user_meta( $user->ID, 'accept_wployalty_membership', true );
-			if ( $accept_wployalty_membership == 0 ) {
-				$eligible = true;
-			}
-		}
-
-		return $eligible ? false : $status;
+		);
 	}
 
-	/**
-	 * Before earn point check.
-	 *
-	 * @param $status
-	 * @param $data
-	 *
-	 * @return false|mixed
-	 */
-	static function beforeEarnPoint( $status, $data ) {
-		if ( ! self::checkStatus() ) {
-			return $status;
+	static function setTransient( $transient_name, $transient_value, $expiration = 7200 ) {
+		if ( empty( $transient_name ) || ! is_string( $transient_name ) ) {
+			return;
 		}
-
-		return false;
+		if ( empty( $transient_name ) || ! is_string( $transient_name ) || ! in_array( $transient_value,
+				[ "yes", "no" ] ) ) {
+			return;
+		}
+		if ( ! is_int( $expiration ) ) {
+			return;
+		}
+		set_transient( $transient_name, $transient_value, $expiration );
 	}
 
+	static function clearTransient() {
+		if ( get_transient( 'wlr_opt_in_status' ) ) {
+			delete_transient( 'wlr_opt_in_status' );
+		}
+	}
 }
