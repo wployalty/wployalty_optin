@@ -1,54 +1,65 @@
-echo "Auto Compress pack"
-current_dir="$PWD/"
-echo "Current Dir $current_dir"
-pack_folder="wp-loyalty-optin"
-plugin_pack_folder="wployalty_optin"
-folder_sperate="/"
-pack_compress_folder=$current_dir$pack_folder
-replace_text_in_files() {
-    if [ ! -z "$2" ]; then
-        find . -type f -exec sed -i -e 's|'"$1"'|'"$2"'|g' {} +
-    fi
-}
-composer_run(){
+echo "WPLoyalty Optin Pack"
+current_dir="$PWD"
+
+react_block_folder_path=$current_dir"/blocks"
+react_block_node_modules_path=$current_dir"/blocks/node_modules"
+react_block_build_path="/blocks/build"
+
+composer_run() {
   # shellcheck disable=SC2164
-  cd "$plugin_pack_folder"
+  cd "$current_dir"
   composer install --no-dev
   composer update --no-dev
+  echo "Compress Done"
+  echo  "WPLoyalty Optin Block NPM"
+  cd "blocks";
+  rm -r "$react_block_node_modules_path"
+  rm -r "$react_block_build_path"
+  # shellcheck disable=SC2164
+  source ~/.nvm/nvm.sh
+  nvm use 20
+  npm i -q
+  npm run build -q
+  echo "WPLoyalty Optin Block Done"
+  # shellcheck disable=SC2164
   cd $current_dir
 }
 
-copy_folder(){
-  echo "Compress Dir $pack_compress_folder"
-  from_folder="wployalty_optin"
-  from_folder_dir=$current_dir$from_folder
-  move_dir=("App" "i18n" "vendor" "Assets" "readme.txt" "wp-loyalty-optin.php")
-  if [ -d "$pack_compress_folder" ]
-  then
-      rm -r "$pack_folder"
-      mkdir "$pack_folder"
-      # shellcheck disable=SC2068
-      for dir in ${move_dir[@]}
-      do
-        cp -r "$from_folder_dir/$dir" "$pack_compress_folder/$dir"
-      done
-  else
-      mkdir "$pack_folder"
-      # shellcheck disable=SC2068
-      for dir in ${move_dir[@]}
-      do
-        cp -r "$from_folder_dir/$dir" "$pack_compress_folder/$dir"
-      done
+copy_folder() {
+  cd $current_dir
+  cd ..
+  pack_folder=$PWD"/compressed_pack"
+  compress_plugin_folder=$pack_folder"/wp-loyalty-optin"
+  if [ -d "$pack_folder" ]; then
+    rm -r "$pack_folder"
   fi
+  mkdir "$pack_folder"
+  mkdir "$compress_plugin_folder"
+  mkdir "$compress_plugin_folder/blocks"
+  move_dir=("App" "Assets" "i18n" "blocks/build" "vendor" "wp-loyalty-optin.php")
+  # shellcheck disable=SC2068
+  for dir in ${move_dir[@]}; do
+    cp -r "$current_dir/$dir" "$compress_plugin_folder/$dir"
+  done
+  cd "$current_dir"
 }
-zip_folder(){
-  rm "$pack_folder".zip
-  zip -r "$pack_folder".zip $pack_folder -q
-  zip -d "$pack_folder".zip __MACOSX/\* -q
-  zip -d "$pack_folder".zip \*/.DS_Store -q
-}
-composer_run
-copy_folder
-zip_folder
 
+zip_folder() {
+  cd "$current_dir"
+  cd ..
+  pack_compress_folder=$PWD"/compressed_pack"
+  cd "$pack_compress_folder"
+  pack_name="wp-loyalty-optin"
+  zip_name="wp-loyalty-optin"
+  rm "$zip_name".zip
+  zip -r "$zip_name".zip $pack_name -q
+  zip -d "$zip_name".zip __MACOSX/\*
+  zip -d "$zip_name".zip \*/.DS_Store
+}
+echo "Composer Run:"
+composer_run
+echo "Copy Folder:"
+copy_folder
+echo "Zip Folder:"
+zip_folder
 echo "End"
