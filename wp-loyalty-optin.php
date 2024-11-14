@@ -70,7 +70,12 @@ if ( ! class_exists( \Wlopt\App\Router::class ) || ! class_exists( \Wlopt\App\He
 if ( ! \Wlopt\App\Helper\Compatibility::check() ) {
 	return;
 }
-
+//HPOS Support
+add_action( 'before_woocommerce_init', function () {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	}
+} );
 $router = new \Wlopt\App\Router();
 if ( ! method_exists( \Wlopt\App\Router::class, 'init' ) ) {
 	return;
