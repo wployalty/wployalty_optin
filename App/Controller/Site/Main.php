@@ -99,7 +99,7 @@ class Main {
 	/**
 	 * Shortcode for field for decline.
 	 *
-	 * @return void
+	 * @return string|void
 	 */
 	static function declineMembership() {
 		$user_email = self::getEmail();
@@ -109,6 +109,7 @@ class Main {
 		if ( ! self::checkStatus() ) {
 			return;
 		}
+		ob_start();
 		?>
         <div class="wlopt-decline-membership">
             <input type="checkbox" name="decline_wployalty_membership" id="decline_wployalty_membership">
@@ -117,7 +118,7 @@ class Main {
 					'wp-loyalty-optin' ) ?></label>
         </div>
 		<?php
-
+		return ob_get_clean();
 	}
 
 	/**
@@ -147,6 +148,7 @@ class Main {
 		if ( self::checkStatus() ) {
 			return '';
 		}
+		ob_start();
 		?>
         <div class="wlopt-accept-membership">
             <input type="checkbox" name="accept_wployalty_membership" id="accept_wployalty_membership">
@@ -154,6 +156,7 @@ class Main {
             ><?php echo __( 'Check this to became a member of a WPLoyalty program.', 'wp-loyalty-optin' ) ?></label>
         </div>
 		<?php
+		return ob_get_clean();
 	}
 
 	/**
