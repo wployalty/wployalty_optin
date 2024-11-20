@@ -73,6 +73,8 @@ class Main {
 		add_filter( 'wlr_before_adding_birthday_fields', '__return_false' );
 		//hide signup message
 		add_filter( 'wlr_show_signup_message_for_guest_user', '__return_false' );
+		//hide birthday input
+		add_filter( 'wlr_show_birthday_input_for_guest_user', '__return_false' );
 	}
 
 	/**
