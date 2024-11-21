@@ -75,6 +75,15 @@ class Main {
 		add_filter( 'wlr_show_signup_message_for_guest_user', '__return_false' );
 		//hide birthday input
 		add_filter( 'wlr_show_birthday_input_for_guest_user', '__return_false' );
+		//hide earn message in block cart & checkout
+		add_filter( 'wlr_points_rewards_earn_points_message', function ( $message, $short_code_list ) {
+			return '';
+		}, 10, 2 );
+		//hide redeem message in block cart & checkout
+		add_filter( 'wlr_point_redeem_points_message', function ( $message ) {
+			return '';
+		}, 10, 1 );
+
 	}
 
 	/**
