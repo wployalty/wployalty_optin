@@ -83,7 +83,10 @@ class Main {
 		add_filter( 'wlr_point_redeem_points_message', function ( $message ) {
 			return '';
 		}, 10, 1 );
-
+		//hide reward page
+		add_filter( 'wlr_my_account_point_and_reward_page', function ( $my_account_content, $main_page_params ) {
+			return '';
+		}, 10, 2 );
 	}
 
 	/**
