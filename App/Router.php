@@ -26,13 +26,11 @@ class Router {
 		} else {
 			add_action( 'wp_enqueue_scripts', 'Wlopt\App\Controller\Site\Main::siteAssets' );
 			add_action( 'woocommerce_init', 'Wlopt\App\Controller\Site\Main::preventWPLoyaltyMembership' );
-			add_shortcode( 'wlopt_decline_loyalty_membership', 'Wlopt\App\Controller\Site\Main::declineMembership' );
-			add_shortcode( 'wlopt_accept_loyalty_membership', 'Wlopt\App\Controller\Site\Main::acceptMembership' );
+			add_shortcode( 'wlopt_update_loyalty_membership', 'Wlopt\App\Controller\Site\Main::updateMembership' );
 		}
-		//ajax action for shortcode decline
-		add_action( 'wp_ajax_decline_wployalty_membership', 'Wlopt\App\Controller\Site\Main::updateOptIn' );
-		//ajax action for shortcode accept
-		add_action( 'wp_ajax_accept_wployalty_membership', 'Wlopt\App\Controller\Site\Main::updateAcceptance' );
+		//ajax action for shortcode update
+		add_action( 'wp_ajax_update_wployalty_membership',
+			'Wlopt\App\Controller\Site\Main::updateMembershipPreference' );
 		//register page
 		add_action( 'woocommerce_register_form', 'Wlopt\App\Controller\Site\Main::addRegistrationCheckbox' );
 		add_action( 'woocommerce_register_post', 'Wlopt\App\Controller\Site\Main::validateInRegisterForm', 10, 3 );

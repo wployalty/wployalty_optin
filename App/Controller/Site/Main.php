@@ -103,38 +103,12 @@ class Main {
 			WLOPT_PLUGIN_URL . 'Assets/Site/Js/main' . $suffix . '.js',
 			array( 'jquery' ), WLOPT_PLUGIN_VERSION . '&t=' . time() );
 		$localize = array(
-			'ajax_url'                     => admin_url( 'admin-ajax.php' ),
-			'decline_wployalty_membership' => wp_create_nonce( 'decline_wployalty_membership_nonce' ),
-			'accept_wployalty_membership'  => wp_create_nonce( 'accept_wployalty_membership_nonce' ),
+			'ajax_url'                    => admin_url( 'admin-ajax.php' ),
+			'update_wployalty_membership' => wp_create_nonce( 'update_wployalty_membership_nonce' )
 		);
 		wp_localize_script( WLOPT_PLUGIN_SLUG . '-main', 'wlopt_localize_data',
 			$localize );
 
-	}
-
-	/**
-	 * Shortcode for field for decline.
-	 *
-	 * @return string|void
-	 */
-	static function declineMembership() {
-		$user_email = self::getEmail();
-		if ( empty( $user_email ) ) {
-			return;
-		}
-		if ( ! self::checkStatus() ) {
-			return;
-		}
-		ob_start();
-		?>
-        <div class="wlopt-decline-membership">
-            <input type="checkbox" name="decline_wployalty_membership" id="decline_wployalty_membership">
-            <label for="decline_wployalty_membership" class="wlr-text-color"
-            ><?php echo __( 'Check this to confirm don\'t want to became a member of a WPLoyalty program.',
-					'wp-loyalty-optin' ) ?></label>
-        </div>
-		<?php
-		return ob_get_clean();
 	}
 
 	/**
@@ -152,87 +126,46 @@ class Main {
 	}
 
 	/**
-	 * Shortcode for field for acceptance.
+	 * Shortcode for field to update membership preference.
 	 *
-	 * @return string|void
+	 * @return false|string
 	 */
-	public static function acceptMembership() {
+	public static function updateMembership() {
 		$user_email = self::getEmail();
 		if ( empty( $user_email ) ) {
 			return '';
 		}
+		$checked = '';
 		if ( self::checkStatus() ) {
-			return '';
+			$checked = 'checked';
 		}
 		ob_start();
 		?>
-        <div class="wlopt-accept-membership">
-            <input type="checkbox" name="accept_wployalty_membership" id="accept_wployalty_membership">
-            <label for="accept_wployalty_membership" class="wlr-text-color"
-            ><?php echo __( 'Check this to became a member of a WPLoyalty program.', 'wp-loyalty-optin' ) ?></label>
+        <div class="wlopt-update-membership">
+            <input type="checkbox" name="update_wployalty_membership"
+                   id="update_wployalty_membership"<?php echo $checked ?>>
+            <label for="update_wployalty_membership"
+                   class="wlr-text-color"><?php echo __( 'Check this to become a member of WPLoyalty program.',
+					'wp-loyalty-optin' ) ?></label>
         </div>
 		<?php
 		return ob_get_clean();
 	}
 
-	/**
-	 * Update status of decline.
-	 *
-	 * @return void
-	 */
-	public static function updateOptIn() {
-
+	public static function updateMembershipPreference() {
 		$wlr_nonce = (string) Input::get( 'wlopt_nonce', '' );
-		$json      = array(
+		$json      = [
 			'success' => false,
-			'data'    => array(
-				'message' => __( 'Update data failed',
-					'wp-loyalty-optin' ),
-			)
-		);
-		if ( ! Woocommerce::verify_nonce( $wlr_nonce, 'decline_wployalty_membership_nonce' ) ) {
-			$json['message'] = __( 'Invalid nonce', 'wp-loyalty-optin' );
-			wp_send_json( $json );
-		}
-		$decline_wployalty_membership = Input::get( 'decline_wployalty_membership' ) ? "yes" : "no";
-		$user_email                   = self::getEmail();
-		if ( empty( $user_email ) ) {
-			wp_send_json( $json );
-		}
-		$user_data = get_user_by( 'email', $user_email );
-		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
-			update_user_meta( $user_data->ID, 'decline_wployalty_membership',
-				sanitize_text_field( $decline_wployalty_membership ) );
-			$update_status = $decline_wployalty_membership == "no" ? "yes" : "no";
-			update_user_meta( $user_data->ID, 'accept_wployalty_membership', sanitize_text_field( $update_status ) );
-			$json['success']         = true;
-			$json['data']['message'] = __( 'Updated successfully', 'wp-loyalty-optin' );
-		}
-		wp_send_json( $json );
-
-	}
-
-	/**
-	 * Update data fo accept membership.
-	 *
-	 * @return void
-	 */
-	static function updateAcceptance() {
-		$wlr_nonce = (string) Input::get( 'wlopt_nonce', '' );
-		$json      = array(
-			'success' => false,
-			'data'    => array(
-				'message' => __( 'Update data failed',
-					'wp-loyalty-optin' ),
-			)
-		);
-		if ( ! Woocommerce::verify_nonce( $wlr_nonce, 'accept_wployalty_membership_nonce' ) ) {
+			'data'    => [
+				'message' => __( 'Update data failed', 'wp-loyalty-optin' )
+			]
+		];
+		if ( ! Woocommerce::verify_nonce( $wlr_nonce, 'update_wployalty_membership_nonce' ) ) {
 			$json['message'] = __( 'Invalid nonce', 'wp-loyalty-optin' );
 			wp_send_json( $json );
 		}
 		$accept_wployalty_membership = Input::get( 'accept_wployalty_membership' ) ? "yes" : "no";
-
-		$user_email = self::getEmail();
+		$user_email                  = self::getEmail();
 		if ( empty( $user_email ) ) {
 			wp_send_json( $json );
 		}
@@ -431,7 +364,6 @@ class Main {
 			);
 		}
 		add_action(
-
 			'woocommerce_blocks_checkout_block_registration',
 			function ( $integration_registry ) {
 				$integration_registry->register( new Message() );

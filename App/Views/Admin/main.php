@@ -27,8 +27,8 @@ defined( "ABSPATH" ) or die();
 
                 <div class="wlopt-body-active-content active-content">
                     <div>
-                        <p><?php _e( 'Use this shortcode for decline message: [wlopt_decline_loyalty_membership]', 'wp-loyalty-optin' ); ?></p>
-                        <p><?php _e( 'Use this shortcode for accept message: [wlopt_accept_loyalty_membership]', 'wp-loyalty-optin' ); ?></p>
+                        <p><?php _e( 'Use this shortcode to let user update preference to wployalty membership: [wlopt_update_loyalty_membership]',
+								'wp-loyalty-optin' ); ?></p>
                     </div>
                 </div>
             </div>
