@@ -3,15 +3,15 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: WPLoyalty - Optin 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wployalty_optin\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-loyalty-optin\n"
+"Last-Translator: WPloyalty\n"
+"Language-Team: WPLoyalty\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-06-28T05:18:22+00:00\n"
+"POT-Creation-Date: 2024-11-26T00:14:44+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.10.0\n"
+"X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: wp-loyalty-optin\n"
 
 #. Plugin Name of the plugin
@@ -44,47 +44,48 @@ msgstr ""
 msgid "WPLoyalty: Optin"
 msgstr ""
 
-#: App/Controller/Site/Main.php:158
-msgid "Check this to confirm don't want to became a member of a WPLoyalty program."
+#: App/Controller/Site/Blocks/Integration/Message.php:70
+msgid "Please enter a valid opt-in value (true or false)."
 msgstr ""
 
-#: App/Controller/Site/Main.php:195
-msgid "Check this to became a member of a WPLoyalty program."
+#: App/Controller/Site/Blocks/Integration/Message.php:82
+msgid "Checkout opt-in checkbox"
 msgstr ""
 
-#: App/Controller/Site/Main.php:212
-#: App/Controller/Site/Main.php:248
+#: App/Controller/Site/Main.php:148
+msgid "Check this to become a member of WPLoyalty program."
+msgstr ""
+
+#: App/Controller/Site/Main.php:160
 msgid "Update data failed"
 msgstr ""
 
-#: App/Controller/Site/Main.php:217
-#: App/Controller/Site/Main.php:253
+#: App/Controller/Site/Main.php:164
 msgid "Invalid nonce"
 msgstr ""
 
-#: App/Controller/Site/Main.php:231
-#: App/Controller/Site/Main.php:268
+#: App/Controller/Site/Main.php:179
 msgid "Updated successfully"
 msgstr ""
 
-#: App/Controller/Site/Main.php:308
-#: App/Controller/Site/Main.php:427
+#: App/Controller/Site/Main.php:218
+#: App/Controller/Site/Main.php:281
 msgid "Must be valid"
 msgstr ""
 
-#: App/Helper/Compatibility.php:23
+#: App/Helper/Compatibility.php:24
 msgid "%s requires minimum PHP version %s"
 msgstr ""
 
-#: App/Helper/Compatibility.php:29
+#: App/Helper/Compatibility.php:31
 msgid "%s requires minimum WordPress version %s"
 msgstr ""
 
-#: App/Helper/Compatibility.php:36
+#: App/Helper/Compatibility.php:39
 msgid "%s requires minimum Woocommerce version %s"
 msgstr ""
 
-#: App/Helper/Compatibility.php:42
+#: App/Helper/Compatibility.php:46
 msgid "%s requires minimum WPLoyalty version %s"
 msgstr ""
 
@@ -93,9 +94,10 @@ msgid "Settings"
 msgstr ""
 
 #: App/Views/Admin/main.php:30
-msgid "Use this shortcode for decline message: [wlopt_decline_loyalty_membership]"
+msgid "Use this shortcode to let user update preference to wployalty membership: [wlopt_update_loyalty_membership]"
 msgstr ""
 
-#: App/Views/Admin/main.php:31
-msgid "Use this shortcode for accept message: [wlopt_accept_loyalty_membership]"
+#: blocks/build/index.js:1
+#: blocks/src/index.jsx:42
+msgid "Check this to become member of WPLoyalty"
 msgstr ""

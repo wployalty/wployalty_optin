@@ -24,7 +24,12 @@ composer_run() {
   # shellcheck disable=SC2164
   cd $current_dir
 }
-
+update_ini_file(){
+  cd $current_dir
+  wp i18n make-pot . "i18n/languages/wp-loyalty-optin.pot" --slug="wp-loyalty-optin" --domain="wp-loyalty-optin" --include="wp-loyalty-optin.php",/App/,/blocks/ --headers='{"Last-Translator":"WPloyalty","Language-Team":"WPLoyalty"}' --allow-root
+  cd $current_dir
+  echo "Update ini done"
+}
 copy_folder() {
   cd $current_dir
   cd ..
@@ -58,6 +63,8 @@ zip_folder() {
 }
 echo "Composer Run:"
 composer_run
+echo "Update ini"
+update_ini_file
 echo "Copy Folder:"
 copy_folder
 echo "Zip Folder:"
