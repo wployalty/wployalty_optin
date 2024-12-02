@@ -35,6 +35,7 @@ class Router {
 		add_action( 'woocommerce_register_form', 'Wlopt\App\Controller\Site\Main::addRegistrationCheckbox' );
 		add_action( 'woocommerce_register_post', 'Wlopt\App\Controller\Site\Main::validateInRegisterForm', 10, 3 );
 		add_action( 'user_register', 'Wlopt\App\Controller\Site\Main::addUserRegistration', 10, 1 );
+		add_action( 'wp_login', 'Wlopt\App\Controller\Site\Main::preventAddCustomerToLoyalty', 9, 2 );
 		//Classic Checkout
 		add_action( 'woocommerce_after_checkout_billing_form', 'Wlopt\App\Controller\Site\Main::addCheckoutCheckbox' );
 		add_action( 'woocommerce_after_checkout_validation', 'Wlopt\App\Controller\Site\Main::validateCheckoutForm', 10,

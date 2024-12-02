@@ -250,6 +250,18 @@ class Main {
 	}
 
 	/**
+	 * Method to prevent adding customer to loyalty on sign in by default.
+	 *
+	 * @param $user_name
+	 * @param $user
+	 *
+	 * @return void
+	 */
+	static function preventAddCustomerToLoyalty( $user_name, $user ) {
+		add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
+	}
+
+	/**
 	 * Add field in checkout form.
 	 *
 	 * @return void
