@@ -115,7 +115,7 @@ class Message implements IntegrationInterface {
 		return [
 			'user_optin'            => Main::checkStatus(),
 			'is_enable_optin_field' => apply_filters( 'wlopt_enable_optin_field', true ),
-			'optin_parent_block'    => [ 'woocommerce/checkout-billing-address-block' ]
+			'optin_parent_block'    => [ 'woocommerce/checkout-contact-information-block' ]
 		];
 	}
 }
