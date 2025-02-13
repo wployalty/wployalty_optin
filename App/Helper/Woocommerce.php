@@ -7,10 +7,13 @@
 
 namespace Wlopt\App\Helper;
 
+use Wlr\App\Models\Users;
+
 defined( 'ABSPATH' ) or die();
 
 class Woocommerce {
 	public static $instance = null;
+	protected static $banned_user = array();
 
 	public static function verify_nonce( $nonce, $action = - 1 ) {
 		if ( wp_verify_nonce( $nonce, $action ) ) {
@@ -28,7 +31,7 @@ class Woocommerce {
 		return self::$instance;
 	}
 
-	function get_login_user_email() {
+	static function get_login_user_email() {
 		$user       = get_user_by( 'id', get_current_user_id() );
 		$user_email = '';
 		if ( ! empty( $user ) ) {
@@ -36,5 +39,28 @@ class Woocommerce {
 		}
 
 		return $user_email;
+	}
+	public static function isBannedUser( $user_email = "" ) {
+		if ( empty( $user_email ) ) {
+			$user_email = self::get_login_user_email();
+			if ( empty( $user_email ) ) {
+				return false;
+			}
+		}
+		/*$user    = get_user_by( 'email', $user_email );
+		$user_id = isset( $user->ID ) && ! empty( $user->ID ) ? $user->ID : 0;
+		if ( ! apply_filters( 'wlr_before_add_to_loyalty_customer', true,
+			$user_id, $user_email ) ) {
+			return true;
+		}*/
+		if ( isset( static::$banned_user[ $user_email ] ) ) {
+			return static::$banned_user[ $user_email ];
+		}
+		$user_modal = new Users();
+		global $wpdb;
+		$where = $wpdb->prepare( "user_email = %s AND is_banned_user = %d ", array( $user_email, 1 ) );
+		$user  = $user_modal->getWhere( $where, "*", true );
+
+		return static::$banned_user[ $user_email ] = ( ! empty( $user ) && is_object( $user ) && isset( $user->is_banned_user ) );
 	}
 }

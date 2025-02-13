@@ -10,7 +10,7 @@ namespace Wlopt\App\Controller\Site;
 use Automattic\WooCommerce\StoreApi\Schemas\V1\CheckoutSchema;
 use Wlopt\App\Controller\Site\Blocks\Integration\Message;
 use Wlopt\App\Helper\Input;
-use Wlr\App\Helpers\Woocommerce;
+use Wlopt\App\Helper\Woocommerce;
 
 defined( "ABSPATH" ) or die();
 
@@ -132,7 +132,7 @@ class Main {
 	 */
 	public static function updateMembership() {
 		$user_email = self::getEmail();
-		if ( empty( $user_email ) ) {
+		if ( empty( $user_email ) || Woocommerce::isBannedUser( $user_email ) ) {
 			return '';
 		}
 		$checked = '';
