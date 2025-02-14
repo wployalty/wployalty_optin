@@ -55,7 +55,12 @@ class Main {
 			return;
 		}
 		//display message
-		add_filter( 'wlr_before_display_messages', '__return_false' );
+		add_filter( 'wlr_before_display_messages', function(){
+			if ( function_exists( 'is_order_received_page' ) && is_order_received_page() ) {
+				return true;
+			}
+            return false;
+        } );
 		//Loyalty assets
 		add_filter( 'wlr_before_loyalty_assets', '__return_false' );
 		//Launcher assets
