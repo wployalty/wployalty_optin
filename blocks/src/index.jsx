@@ -51,7 +51,7 @@ if (is_enable_optin_field) {
         "version": "1.0.0",
         "title": "Opt-in Checkbox",
         "category": "woocommerce",
-        "parent": ["woocommerce/checkout-billing-address-block"],
+        "parent": ["woocommerce/checkout-contact-information-block"],
         "attributes": {
             "lock": {
                 "type": "object",
@@ -62,7 +62,7 @@ if (is_enable_optin_field) {
             }
         }
     };
-    optin_metadata.parent = getSetting('optin_parent_block', ["woocommerce/checkout-billing-address-block"]);
+    optin_metadata.parent = getSetting('optin_parent_block', ["woocommerce/checkout-contact-information-block"]);
 
     const options = {
         metadata: optin_metadata,

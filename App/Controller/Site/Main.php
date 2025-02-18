@@ -23,29 +23,6 @@ class Main {
 	public static $email;
 
 	/**
-	 * Check status of earning.
-	 *
-	 * @return bool Return true if opted, false if not opted.
-	 */
-	public static function checkStatus() {
-		$user_email = self::getEmail();
-		if ( empty( $user_email ) ) {
-			return apply_filters( 'wlopt_work_on_guest_user', false );
-		}
-		$user_data = get_user_by( 'email', $user_email );
-		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
-			$accept_wployalty_membership = get_user_meta( $user_data->ID, 'accept_wployalty_membership', true );
-			if ( $accept_wployalty_membership == "yes" ) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-
-		return false;
-	}
-
-	/**
 	 * Checks status and prevent earning.
 	 *
 	 * @return void
@@ -55,12 +32,7 @@ class Main {
 			return;
 		}
 		//display message
-		add_filter( 'wlr_before_display_messages', function(){
-			if ( function_exists( 'is_order_received_page' ) && is_order_received_page() ) {
-				return true;
-			}
-            return false;
-        } );
+		add_filter( 'wlr_before_display_messages', '__return_false' );
 		//Loyalty assets
 		add_filter( 'wlr_before_loyalty_assets', '__return_false' );
 		//Launcher assets
@@ -95,6 +67,43 @@ class Main {
 	}
 
 	/**
+	 * Check status of earning.
+	 *
+	 * @return bool Return true if opted, false if not opted.
+	 */
+	public static function checkStatus() {
+		$user_email = self::getEmail();
+		if ( empty( $user_email ) ) {
+			return apply_filters( 'wlopt_work_on_guest_user', false );
+		}
+		$user_data = get_user_by( 'email', $user_email );
+		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
+			$accept_wployalty_membership = get_user_meta( $user_data->ID, 'accept_wployalty_membership', true );
+			if ( $accept_wployalty_membership == "yes" ) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get logged user email.
+	 *
+	 * @return mixed
+	 */
+	static function getEmail() {
+		if ( ! empty( self::$email ) ) {
+			return self::$email;
+		}
+		$woo_helper = Woocommerce::getInstance();
+
+		return self::$email = $woo_helper->get_login_user_email();
+	}
+
+	/**
 	 * Site assets.
 	 *
 	 * @return void
@@ -113,21 +122,6 @@ class Main {
 		);
 		wp_localize_script( WLOPT_PLUGIN_SLUG . '-main', 'wlopt_localize_data',
 			$localize );
-
-	}
-
-	/**
-	 * Get logged user email.
-	 *
-	 * @return mixed
-	 */
-	static function getEmail() {
-		if ( ! empty( self::$email ) ) {
-			return self::$email;
-		}
-		$woo_helper = Woocommerce::getInstance();
-
-		return self::$email = $woo_helper->get_login_user_email();
 	}
 
 	/**
@@ -254,6 +248,20 @@ class Main {
 
 	}
 
+	static function setTransient( $transient_name, $transient_value, $expiration = 7200 ) {
+		if ( empty( $transient_name ) || ! is_string( $transient_name ) ) {
+			return;
+		}
+		if ( empty( $transient_name ) || ! is_string( $transient_name ) || ! in_array( $transient_value,
+				[ "yes", "no" ] ) ) {
+			return;
+		}
+		if ( ! is_int( $expiration ) ) {
+			return;
+		}
+		set_transient( $transient_name, $transient_value, $expiration );
+	}
+
 	/**
 	 * Method to prevent adding customer to loyalty on sign in by default.
 	 *
@@ -310,7 +318,7 @@ class Main {
 	 * Save checkout field data.
 	 *
 	 * @param          $order
-	 * @param   array  $data  Checkout fields data.
+	 * @param array $data Checkout fields data.
 	 *
 	 * @return void
 	 */
@@ -357,6 +365,7 @@ class Main {
 		$log = wc_get_logger();
 		$log->add( 'otest', 'Request params : ' . json_encode( $params ) );
 		$log->add( 'otest', 'Saved transient : ' . get_transient( 'wlr_opt_in_' . $billing_email ) );
+		$log->add( 'otest', 'Saved transient : ' . get_transient( 'wlr_opt_in_status' ) );
 	}
 
 	static function preventEarning( $status, $user_id, $user_email ) {
@@ -386,20 +395,6 @@ class Main {
 				$integration_registry->register( new Message() );
 			}
 		);
-	}
-
-	static function setTransient( $transient_name, $transient_value, $expiration = 7200 ) {
-		if ( empty( $transient_name ) || ! is_string( $transient_name ) ) {
-			return;
-		}
-		if ( empty( $transient_name ) || ! is_string( $transient_name ) || ! in_array( $transient_value,
-				[ "yes", "no" ] ) ) {
-			return;
-		}
-		if ( ! is_int( $expiration ) ) {
-			return;
-		}
-		set_transient( $transient_name, $transient_value, $expiration );
 	}
 
 	static function clearTransient() {
