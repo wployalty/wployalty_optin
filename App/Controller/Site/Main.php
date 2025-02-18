@@ -271,7 +271,12 @@ class Main {
 	 * @return void
 	 */
 	static function preventAddCustomerToLoyalty( $user_name, $user ) {
-		add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
+		if ( ! empty( $user ) ) {
+			$accept_wployalty_membership = get_user_meta( $user->ID, 'accept_wployalty_membership', true );
+			if ( $accept_wployalty_membership == "no" ) {
+				add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
+			}
+		}
 	}
 
 	/**
