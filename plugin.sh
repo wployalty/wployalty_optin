@@ -1,11 +1,14 @@
 echo "WPLoyalty Optin Pack"
 current_dir="$PWD"
-
+composer_lock_path=$current_dir"/composer.lock"
+vendor_path=$current_dir"/vendor"
 react_block_folder_path=$current_dir"/blocks"
 react_block_node_modules_path=$current_dir"/blocks/node_modules"
 react_block_build_path="/blocks/build"
 
 composer_run() {
+  rm $composer_lock_path
+  rm -r $vendor_path
   # shellcheck disable=SC2164
   cd "$current_dir"
   composer install --no-dev
