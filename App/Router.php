@@ -23,6 +23,7 @@ class Router {
 			add_action( 'admin_menu', 'Wlopt\App\Controller\Admin\Main::adminMenu' );
 			add_action( 'admin_footer', 'Wlopt\App\Controller\Admin\Main::menuHide' );
 			add_action( 'admin_enqueue_scripts', 'Wlopt\App\Controller\Admin\Main::adminAssets' );
+			add_action( 'wlr_after_admin_add_new_customer', 'Wlopt\App\Controller\Site\Main::handleAdminAddNewCustomer', 10, 2 );
 		} else {
 			add_action( 'wp_enqueue_scripts', 'Wlopt\App\Controller\Site\Main::siteAssets' );
 			add_action( 'woocommerce_init', 'Wlopt\App\Controller\Site\Main::preventWPLoyaltyMembership' );

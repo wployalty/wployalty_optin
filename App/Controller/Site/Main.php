@@ -407,4 +407,33 @@ class Main {
 			delete_transient( 'wlr_opt_in_status' );
 		}
 	}
+
+	/**
+	 * Handle the addition of a new customer by an admin.
+	 *
+	 * This function is triggered by the 'wlr_handle_admin_add_new_customer' action.
+	 * If the user is an existing WordPress user and is added by admin,
+	 * then the user's preference for loyalty program is updated to 'yes'.
+	 *
+	 * @param string $user_email The email of the user being added.
+	 * @param array $action_data An array containing action data, including the action type.
+	 *
+	 * @return void
+	 */
+	public static function handleAdminAddNewCustomer( $user_email, $action_data ) {
+		if ( empty( $user_email ) ) {
+			return;
+		}
+		if ( ! is_array( $action_data ) || empty( $action_data ) || ! isset( $action_data['action_type'] ) || $action_data['action_type'] !== 'new_user_add' ) {
+			return;
+		}
+		$user_data = get_user_by( 'email', $user_email );
+		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
+			$accept_wployalty_membership = get_user_meta( $user_data->ID, 'accept_wployalty_membership', true );
+			if ( empty( $accept_wployalty_membership ) ) {
+				update_user_meta( $user_data->ID, 'accept_wployalty_membership', 'yes' );
+				update_user_meta( $user_data->ID, 'decline_wployalty_membership', 'no' );
+			}
+		}
+	}
 }
