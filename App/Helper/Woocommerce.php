@@ -31,15 +31,6 @@ class Woocommerce {
 		return self::$instance;
 	}
 
-	static function get_login_user_email() {
-		$user       = get_user_by( 'id', get_current_user_id() );
-		$user_email = '';
-		if ( ! empty( $user ) ) {
-			$user_email = $user->user_email;
-		}
-
-		return $user_email;
-	}
 	public static function isBannedUser( $user_email = "" ) {
 		if ( empty( $user_email ) ) {
 			$user_email = self::get_login_user_email();
@@ -62,5 +53,47 @@ class Woocommerce {
 		$user  = $user_modal->getWhere( $where, "*", true );
 
 		return static::$banned_user[ $user_email ] = ( ! empty( $user ) && is_object( $user ) && isset( $user->is_banned_user ) );
+	}
+
+	static function get_login_user_email() {
+		$user       = get_user_by( 'id', get_current_user_id() );
+		$user_email = '';
+		if ( ! empty( $user ) ) {
+			$user_email = $user->user_email;
+		}
+
+		return $user_email;
+	}
+
+	public static function hasAdminPrivilege() {
+		if ( current_user_can( 'manage_woocommerce' ) ) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * render template.
+	 *
+	 * @param string $file File path.
+	 * @param array $data Template data.
+	 * @param bool $display Display or not.
+	 *
+	 * @return string|void
+	 */
+	public static function renderTemplate( string $file, array $data = [], bool $display = true ) {
+		$content = '';
+		if ( file_exists( $file ) ) {
+			ob_start();
+			extract( $data );
+			include $file;
+			$content = ob_get_clean();
+		}
+		if ( $display ) {
+			echo $content;
+		} else {
+			return $content;
+		}
 	}
 }

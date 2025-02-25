@@ -7,22 +7,12 @@
 
 namespace Wlopt\App\Controller\Admin;
 
-use Wlr\App\Helpers\Input;
-use Wlr\App\Helpers\Woocommerce;
+use Wlopt\App\Helper\Input;
+use Wlopt\App\Helper\Woocommerce;
 
 defined( "ABSPATH" ) or die();
 
 class Main {
-	/**
-	 * Plugin activation.
-	 *
-	 * @return void
-	 */
-	public static function activatePlugin() {
-		if ( ! \Wlopt\App\Helper\Compatibility::check() ) {
-			return;
-		}
-	}
 
 	/**
 	 * Adding menu.
@@ -31,9 +21,14 @@ class Main {
 	 */
 	public static function adminMenu() {
 		if ( Woocommerce::hasAdminPrivilege() ) {
-			add_menu_page( __( "WPLoyalty: Optin", "wp-loyalty-optin" ),
-				__( "WPLoyalty: Optin", "wp-loyalty-optin" ), "manage_woocommerce", WLOPT_PLUGIN_SLUG,
-				"Wlopt\App\Controller\Admin\Main::addMenuPage", 'dashicons-megaphone', 59 );
+			add_menu_page(
+				__( 'WPLoyalty: Optin', 'wp-loyalty-optin' ),
+				__( 'WPLoyalty: Optin', 'wp-loyalty-optin' ),
+				"manage_woocommerce",
+				WLOPT_PLUGIN_SLUG,
+				[ self::class, 'addMenuPage' ],
+				'dashicons-megaphone',
+				59 );
 		}
 	}
 
@@ -43,13 +38,15 @@ class Main {
 	 * @return void
 	 */
 	public static function addMenuPage() {
-		$params = array();
-		echo wc_get_template_html(
-			'main.php',
-			$params,
-			'',
-			WLOPT_PLUGIN_PATH . 'App/Views/Admin/'
-		);
+		if ( ! Woocommerce::hasAdminPrivilege() ) {
+			return;
+		}
+		$params    = [];
+		$file_path = get_theme_file_path( 'wp-loyalty-optin/Admin/main.php' );
+		if ( ! file_exists( $file_path ) ) {
+			$file_path = WLOPT_VIEW_PATH . '/Admin/main.php';
+		}
+		Woocommerce::renderTemplate( $file_path, $params );
 	}
 
 	/**
@@ -58,14 +55,16 @@ class Main {
 	 * @return void
 	 */
 	static function adminAssets() {
-		$input_helper = new \Wlr\App\Helpers\Input();
-		if ( $input_helper->get( "page" ) != WLOPT_PLUGIN_SLUG ) {
+		if ( Input::get( 'page' ) != WLOPT_PLUGIN_SLUG ) {
 			return;
 		}
-
 		remove_all_actions( "admin_notices" );
-		wp_enqueue_style( WLOPT_PLUGIN_SLUG . "-main-style", WLOPT_PLUGIN_URL . "Assets/Admin/Css/style.css",
-			array(), WLOPT_PLUGIN_VERSION . "&t=" . time() );
+		wp_enqueue_style(
+			WLOPT_PLUGIN_SLUG . "-main-style",
+			WLOPT_PLUGIN_URL . "Assets/Admin/Css/style.css",
+			[],
+			WLOPT_PLUGIN_VERSION . "&t=" . time()
+		);
 	}
 
 	/**

@@ -11,7 +11,7 @@
  * Requires Plugins: woocommerce,wp-loyalty-rules
  * Requires at least: 4.9.0
  * WC requires at least: 6.5
- * WC tested up to: 8.0
+ * WC tested up to: 9.4
  * Contributors: Ilaiyaraja, Sabhari
  * Author URI: https://wployalty.net/
  * License: GPLv2 or later
@@ -21,29 +21,39 @@
  */
 
 defined( 'ABSPATH' ) or die;
-if ( ! function_exists( 'isWoocommerceAndWployaltyActiveOrNot' ) ) {
-	function isWoocommerceAndWployaltyActiveOrNot() {
-		$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins', array() ) );
+
+//HPOS Support
+add_action( 'before_woocommerce_init', function () {
+	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
+		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
+	}
+} );
+
+if ( ! function_exists( 'isWLROPGWooCommerceActive' ) ) {
+	function isWLROPGWooCommerceActive() {
+		$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins', [] ) );
 		if ( is_multisite() ) {
-			$active_plugins = array_merge( $active_plugins, get_site_option( 'active_sitewide_plugins', array() ) );
+			$active_plugins = array_merge( $active_plugins, get_site_option( 'active_sitewide_plugins', [] ) );
 		}
 
-		return ( ( in_array( 'wp-loyalty-rules/wp-loyalty-rules.php',
-				$active_plugins ) || ( in_array( 'wployalty/wp-loyalty-rules-lite.php', $active_plugins ) ) &&
-		                             ( in_array( 'woocommerce/woocommerce.php', $active_plugins ) ) ) );
+		return in_array( 'woocommerce/woocommerce.php', $active_plugins ) || array_key_exists( 'woocommerce/woocommerce.php', $active_plugins );
 	}
 }
-if ( ! isWoocommerceAndWployaltyActiveOrNot() ) {
-	return;
-}
-if ( ! class_exists( '\Wlr\App\Helpers\Input' ) ) {
-	if ( file_exists( WP_PLUGIN_DIR . '/wp-loyalty-rules/vendor/autoload.php' ) ) {
-		require_once WP_PLUGIN_DIR . '/wp-loyalty-rules/vendor/autoload.php';
-	} elseif ( file_exists( WP_PLUGIN_DIR . '/wployalty/vendor/autoload.php' ) ) {
-		require_once WP_PLUGIN_DIR . '/wployalty/vendor/autoload.php';
+
+if ( ! function_exists( 'isWLROPLoyaltyActive' ) ) {
+	function isWLROPLoyaltyActive() {
+		$active_plugins = apply_filters( 'active_plugins', get_option( 'active_plugins', [] ) );
+		if ( is_multisite() ) {
+			$active_plugins = array_merge( $active_plugins, get_site_option( 'active_sitewide_plugins', [] ) );
+		}
+
+		return in_array( 'wp-loyalty-rules/wp-loyalty-rules-lite.php', $active_plugins ) || array_key_exists( 'wp-loyalty-rules/wp-loyalty-rules-lite.php', $active_plugins )
+		       || in_array( 'wp-loyalty-rules/wp-loyalty-rules.php', $active_plugins ) || array_key_exists( 'wp-loyalty-rules/wp-loyalty-rules.php', $active_plugins )
+		       || in_array( 'wployalty/wp-loyalty-rules-lite.php', $active_plugins ) || array_key_exists( 'wployalty/wp-loyalty-rules-lite.php', $active_plugins );
 	}
 }
-if ( ! class_exists( '\Wlr\App\Helpers\Input' ) ) {
+
+if ( ! isWLROPGWooCommerceActive() || ! isWLROPLoyaltyActive() ) {
 	return;
 }
 //Define the plugin version
@@ -58,34 +68,32 @@ defined( 'WLOPT_TEXT_DOMAIN' ) or define( 'WLOPT_TEXT_DOMAIN', 'wp-loyalty-optin
 defined( 'WLOPT_PLUGIN_FILE' ) or define( 'WLOPT_PLUGIN_FILE', __FILE__ );
 defined( 'WLOPT_PLUGIN_PATH' ) or define( 'WLOPT_PLUGIN_PATH', __DIR__ . '/' );
 defined( 'WLOPT_PLUGIN_URL' ) or define( 'WLOPT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+defined( 'WLOPT_VIEW_PATH' ) or define( 'WLOPT_VIEW_PATH', str_replace( "\\", '/', __DIR__ ) . '/App/Views' );
 
 if ( ! file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
 	return;
 }
 require __DIR__ . '/vendor/autoload.php';
 
-if ( ! class_exists( \Wlopt\App\Router::class ) || ! class_exists( \Wlopt\App\Helper\Compatibility::class ) ) {
-	return;
-}
 
-if ( ! \Wlopt\App\Helper\Compatibility::check() ) {
-	return;
-}
-//HPOS Support
-add_action( 'before_woocommerce_init', function () {
-	if ( class_exists( \Automattic\WooCommerce\Utilities\FeaturesUtil::class ) ) {
-		\Automattic\WooCommerce\Utilities\FeaturesUtil::declare_compatibility( 'custom_order_tables', __FILE__, true );
-	}
-} );
-$router = new \Wlopt\App\Router();
-if ( ! method_exists( \Wlopt\App\Router::class, 'init' ) ) {
-	return;
-}
 $myUpdateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateChecker(
 	'https://github.com/wployalty/wployalty_optin',
 	__FILE__,
 	'wp-loyalty-optin'
 );
 $myUpdateChecker->getVcsApi()->enableReleaseAssets();
+add_filter( 'plugins_loaded', function () {
+	if ( ! class_exists( '\Wlr\App\Helpers\Input' ) ) {
+		return;
+	}
+	if ( ! class_exists( '\Wlopt\App\Router' ) ) {
+		return;
+	}
+	if ( \Wlopt\App\Helper\Plugin::checkDependencies() ) {
+		\Wlopt\App\Router::init();
+	}
+} );
 
-\Wlopt\App\Router::init();
+if ( class_exists( \Wlopt\App\Helper\Plugin::class ) ) {
+	\Wlopt\App\Setup::init();
+}

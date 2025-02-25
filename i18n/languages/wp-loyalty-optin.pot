@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-18T10:13:00+05:30\n"
+"POT-Creation-Date: 2025-02-25T10:09:38+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: wp-loyalty-optin\n"
@@ -39,8 +39,8 @@ msgstr ""
 msgid "https://wployalty.net/"
 msgstr ""
 
-#: App/Controller/Admin/Main.php:34
-#: App/Controller/Admin/Main.php:35
+#: App/Controller/Admin/Main.php:25
+#: App/Controller/Admin/Main.php:26
 msgid "WPLoyalty: Optin"
 msgstr ""
 
@@ -52,41 +52,58 @@ msgstr ""
 msgid "Checkout opt-in checkbox"
 msgstr ""
 
-#: App/Controller/Site/Main.php:147
+#: App/Controller/Site/Main.php:153
 msgid "Check this to become a member of WPLoyalty program."
 msgstr ""
 
-#: App/Controller/Site/Main.php:159
+#: App/Controller/Site/Main.php:165
 msgid "Update data failed"
 msgstr ""
 
-#: App/Controller/Site/Main.php:163
+#: App/Controller/Site/Main.php:169
 msgid "Invalid nonce"
 msgstr ""
 
-#: App/Controller/Site/Main.php:178
+#: App/Controller/Site/Main.php:184
 msgid "Updated successfully"
 msgstr ""
 
-#: App/Controller/Site/Main.php:217
-#: App/Controller/Site/Main.php:311
+#: App/Controller/Site/Main.php:222
 msgid "Must be valid"
 msgstr ""
 
-#: App/Helper/Compatibility.php:24
-msgid "%s requires minimum PHP version %s"
+#. translators: First %s will replace plugin name, Second %s replace minimum PHP version
+#: App/Helper/Plugin.php:18
+msgid "%1$s requires minimum PHP version %2$s"
 msgstr ""
 
-#: App/Helper/Compatibility.php:31
-msgid "%s requires minimum WordPress version %s"
+#. translators: First %s will replace plugin name, Second %s replace a minimum WordPress version
+#: App/Helper/Plugin.php:26
+msgid "%1$s requires minimum WordPress version %2$s"
 msgstr ""
 
-#: App/Helper/Compatibility.php:39
-msgid "%s requires minimum Woocommerce version %s"
+#. translators: 1. %s will replace plugin name
+#: App/Helper/Plugin.php:34
+msgid "%1$s requires WooCommerce to be installed and activated in order to be used."
 msgstr ""
 
-#: App/Helper/Compatibility.php:46
-msgid "%s requires minimum WPLoyalty version %s"
+#. translators: 1. %s will replace plugin name, 2. %s replace WooCommerce version
+#: App/Helper/Plugin.php:42
+msgid "%1$s requires minimum Woocommerce version %2$s"
+msgstr ""
+
+#. translators: 1. %s will replace plugin name
+#: App/Helper/Plugin.php:49
+msgid "%1$s requires WPLoyalty to be installed and activated in order to be used."
+msgstr ""
+
+#. translators: 1. %s will replace plugin name, 2. %s replace WooCommerce version
+#: App/Helper/Plugin.php:57
+msgid "%1$s requires minimum WPLoyalty version %2$s"
+msgstr ""
+
+#: App/Setup.php:49
+msgid "Support"
 msgstr ""
 
 #: App/Views/Admin/main.php:22
