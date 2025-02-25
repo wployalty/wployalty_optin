@@ -169,7 +169,7 @@ class Main {
 			$json['message'] = __( 'Invalid nonce', 'wp-loyalty-optin' );
 			wp_send_json( $json );
 		}
-		$accept_wployalty_membership = Input::get( 'accept_wployalty_membership' ) ? "yes" : "no";
+		$accept_wployalty_membership = Input::get( 'accept_wployalty_membership', 0 ) ? "yes" : "no";
 		$user_email                  = self::getEmail();
 		if ( empty( $user_email ) ) {
 			wp_send_json( $json );
@@ -236,7 +236,7 @@ class Main {
 		if ( empty( $user_id ) ) {
 			return;
 		}
-		$accept_wployalty_membership = Input::get( 'accept_wployalty_membership' ) ? 'yes' : 'no';
+		$accept_wployalty_membership = Input::get( 'accept_wployalty_membership', 0 ) ? 'yes' : 'no';
 
 		if ( $accept_wployalty_membership == 'no' ) {
 			add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
