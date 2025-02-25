@@ -246,10 +246,15 @@ class Main {
 	}
 
 	/**
-	 * Method to prevent adding customer to loyalty on sign in by default.
+	 * Handle user login to prevent adding customer to loyalty by default.
 	 *
-	 * @param $user_name
-	 * @param $user
+	 * This method checks the user's loyalty membership status upon login.
+	 * If the user has not accepted the loyalty membership, it updates the user meta
+	 * to reflect the non-acceptance and prevents adding the user to the loyalty program.
+	 * For existing users, it updates the user meta to reflect the non-acceptance.
+	 *
+	 * @param string $user_name The username of the user logging in.
+	 * @param \WP_User $user The WP_User object of the user logging in.
 	 *
 	 * @return void
 	 */
@@ -258,7 +263,13 @@ class Main {
 			return;
 		}
 		$accept_wployalty_membership = get_user_meta( $user->ID, 'accept_wployalty_membership', true );
-		if ( $accept_wployalty_membership == "no" || empty( $accept_wployalty_membership ) ) {
+		// If the user has not accepted the loyalty membership
+		if ( $accept_wployalty_membership !== 'yes' ) {
+			// If the membership status is not set, update it to 'no'
+			if ( empty( $accept_wployalty_membership ) && isset( $user->ID ) ) {
+				update_user_meta( $user->ID, 'accept_wployalty_membership', 'no' );
+				update_user_meta( $user->ID, 'decline_wployalty_membership', 'yes' );
+			}
 			add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
 		}
 	}
