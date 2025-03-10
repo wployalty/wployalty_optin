@@ -21,7 +21,6 @@ class Router {
 			add_action( 'admin_menu', 'Wlopt\App\Controller\Admin\Main::adminMenu' );
 			add_action( 'admin_footer', 'Wlopt\App\Controller\Admin\Main::menuHide' );
 			add_action( 'admin_enqueue_scripts', 'Wlopt\App\Controller\Admin\Main::adminAssets' );
-			add_shortcode( 'wlopt_update_loyalty_membership', 'Wlopt\App\Controller\Site\Main::updateMembership' );
 			if ( wp_doing_ajax() ) {
 				add_action( 'wp_ajax_wlopt_save_settings', 'Wlopt\App\Controller\Admin\Main::saveSettings' );
 			}
@@ -34,6 +33,8 @@ class Router {
 		if ( wp_doing_ajax() ) {
 			add_action( 'wp_ajax_update_wployalty_membership', 'Wlopt\App\Controller\Site\Main::updateMembershipPreference' );
 		}
+		add_shortcode( 'wlopt_update_loyalty_membership', 'Wlopt\App\Controller\Site\Main::updateMembership' );
+		add_action( 'template_redirect', 'Wlopt\App\Controller\Site\Main::handleExistingUserPreference' );
 		add_action( 'wp_enqueue_scripts', 'Wlopt\App\Controller\Site\Main::siteAssets' );
 		add_action( 'woocommerce_init', 'Wlopt\App\Controller\Site\Main::preventWPLoyaltyMembership' );
 		//register & login case

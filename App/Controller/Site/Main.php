@@ -275,4 +275,21 @@ class Main {
 		}
 	}
 
+	public static function handleExistingUserPreference() {
+		if ( is_user_logged_in() ) {
+			$user_id = get_current_user_id();
+			if ( $user_id == 0 ) {
+				return;
+			}
+			$accept_wployalty_membership = get_user_meta( $user_id, 'accept_wployalty_membership', true );
+			if ( empty( $accept_wployalty_membership ) ) {
+				$options                = get_option( 'wlopt_settings', [] );
+				$store_admin_preference = $options['existing_user_wlr_preference'] ?? 'no';
+				update_user_meta( $user_id, 'accept_wployalty_membership', $store_admin_preference );
+				$decline_preference = ( $store_admin_preference === 'yes' ) ? 'no' : 'yes';
+				update_user_meta( $user_id, 'decline_wployalty_membership', $decline_preference );
+			}
+		}
+	}
+
 }
