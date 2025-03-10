@@ -16,7 +16,10 @@ class Setup {
 	 * Method to run plugin activation scripts.
 	 */
 	public static function activate() {
-		// silence is golden
+		update_option( 'wlopt_settings', [
+			'enable_optin'           => 'no',
+			'is_onboarding_complete' => 'no',
+		] );
 	}
 
 	/**

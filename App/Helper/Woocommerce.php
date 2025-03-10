@@ -15,6 +15,10 @@ class Woocommerce {
 	public static $instance = null;
 	protected static $banned_user = array();
 
+	public static function create_nonce( $action = - 1 ) {
+		return wp_create_nonce( $action );
+	}
+
 	public static function verify_nonce( $nonce, $action = - 1 ) {
 		if ( wp_verify_nonce( $nonce, $action ) ) {
 			return true;

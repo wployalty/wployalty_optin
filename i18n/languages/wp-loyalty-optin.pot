@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-02-25T10:09:38+00:00\n"
+"POT-Creation-Date: 2025-03-10T03:08:58+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: wp-loyalty-optin\n"
@@ -42,6 +42,33 @@ msgstr ""
 #: App/Controller/Admin/Main.php:25
 #: App/Controller/Admin/Main.php:26
 msgid "WPLoyalty: Optin"
+msgstr ""
+
+#: App/Controller/Admin/Main.php:136
+msgid "Saving..."
+msgstr ""
+
+#: App/Controller/Admin/Main.php:137
+#: App/Views/Admin/settings.php:21
+msgid "Save Changes"
+msgstr ""
+
+#: App/Controller/Admin/Main.php:161
+#: App/Controller/Admin/Main.php:202
+msgid "Security verification failed"
+msgstr ""
+
+#: App/Controller/Admin/Main.php:166
+#: App/Controller/Admin/Main.php:208
+msgid "Invalid value"
+msgstr ""
+
+#: App/Controller/Admin/Main.php:174
+msgid "Settings saved successfully"
+msgstr ""
+
+#: App/Controller/Admin/Main.php:219
+msgid "Onboarding process completed successfully"
 msgstr ""
 
 #: App/Controller/Site/Blocks/Integration/Message.php:70
@@ -102,16 +129,52 @@ msgstr ""
 msgid "%1$s requires minimum WPLoyalty version %2$s"
 msgstr ""
 
-#: App/Setup.php:49
+#: App/Setup.php:52
 msgid "Support"
 msgstr ""
 
-#: App/Views/Admin/main.php:22
+#: App/Views/Admin/main.php:21
+msgid "Customers"
+msgstr ""
+
+#: App/Views/Admin/main.php:27
 msgid "Settings"
 msgstr ""
 
-#: App/Views/Admin/main.php:30
-msgid "Use this shortcode to let user update preference to wployalty membership: [wlopt_update_loyalty_membership]"
+#: App/Views/Admin/onboarding.php:6
+msgid "Update Preference"
+msgstr ""
+
+#: App/Views/Admin/onboarding.php:11
+msgid "Loyalty acceptance preference for existing users"
+msgstr ""
+
+#: App/Views/Admin/onboarding.php:15
+msgid "Opt in"
+msgstr ""
+
+#: App/Views/Admin/onboarding.php:16
+msgid "Opt out"
+msgstr ""
+
+#: App/Views/Admin/settings.php:9
+msgid "SETTINGS"
+msgstr ""
+
+#: App/Views/Admin/settings.php:15
+msgid "Back"
+msgstr ""
+
+#: App/Views/Admin/settings.php:16
+msgid "Back to WPLoyalty"
+msgstr ""
+
+#: App/Views/Admin/settings.php:37
+msgid "Enable Opt-in feature ?"
+msgstr ""
+
+#: App/Views/Admin/settings.php:43
+msgid "Use this shortcode to let user update preference to wployalty membership:"
 msgstr ""
 
 #: blocks/build/index.js:1

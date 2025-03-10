@@ -9,30 +9,26 @@ defined( "ABSPATH" ) or die();
 <div id="wlopt-main-page">
     <div>
         <div class="wlopt-main-header">
-            <h1><?php echo WLOPT_PLUGIN_NAME; ?> </h1>
-            <div><b><?php echo "v" . WLOPT_PLUGIN_VERSION; ?></b></div>
+            <h1><?php echo esc_html( WLOPT_PLUGIN_NAME ); ?> </h1>
+            <div><b><?php echo esc_html( "v" . WLOPT_PLUGIN_VERSION ); ?></b></div>
         </div>
-        <div class="wlopt-admin-main">
-            <div class="wlopt-admin-nav">
-                <a class="active-nav"
-                   href="<?php echo admin_url( "admin.php?" . http_build_query( array(
-						   "page" => WLOPT_PLUGIN_SLUG,
-						   "view" => 'settings'
-					   ) ) ) ?>"
-                ><?php _e( "Settings", "wp-loyalty-optin" ); ?></a>
-            </div>
+        <div class="wlopt-tabs">
+            <a class="<?php echo ( isset( $current_view ) && $current_view == "optin_users" ) ? 'nav-tab-active' : ''; ?>"
+               href="<?php echo esc_url( admin_url( 'admin.php?' . http_build_query( array(
+					   'page' => WLOPT_PLUGIN_SLUG,
+					   'view' => 'optin_users'
+				   ) ) ) ); ?>"
+            ><i class="wlr wlrop-customers"></i><?php esc_html_e( 'Customers', 'wp-loyalty-optin' ) ?></a>
+            <a class="<?php echo ( isset( $current_view ) && $current_view == "settings" ) ? 'nav-tab-active' : ''; ?>"
+               href="<?php echo esc_url( admin_url( 'admin.php?' . http_build_query( array(
+					   'page' => WLOPT_PLUGIN_SLUG,
+					   'view' => 'settings'
+				   ) ) ) ) ?>"
+            ><i class="wlr wlrop-settings"></i><?php esc_html_e( 'Settings', 'wp-loyalty-optin' ) ?></a>
         </div>
-        <div class="wlopt-parent">
-            <div class="wlopt-body-content">
-
-                <div class="wlopt-body-active-content active-content">
-                    <div>
-                        <p><?php _e( 'Use this shortcode to let user update preference to wployalty membership: [wlopt_update_loyalty_membership]',
-								'wp-loyalty-optin' ); ?></p>
-                    </div>
-                </div>
-            </div>
+        <div>
+			<?php echo apply_filters( 'wlopt_extra_content', ( isset( $extra ) ? $extra : null ) ); ?>
+			<?php echo isset( $tab_content ) ? $tab_content : null ?>
         </div>
     </div>
-
 </div>

@@ -251,7 +251,7 @@ class Main {
 	 * This method checks the user's loyalty membership status upon login.
 	 * If the user has not accepted the loyalty membership, it updates the user meta
 	 * to reflect the non-acceptance and prevents adding the user to the loyalty program.
-	 * For existing users, it updates the user meta to reflect the non-acceptance.
+	 * For existing users, it updates the user meta to as per store owner choince in onboarding.
 	 *
 	 * @param string $user_name The username of the user logging in.
 	 * @param \WP_User $user The WP_User object of the user logging in.
@@ -263,13 +263,14 @@ class Main {
 			return;
 		}
 		$accept_wployalty_membership = get_user_meta( $user->ID, 'accept_wployalty_membership', true );
-		// If the user has not accepted the loyalty membership
-		if ( $accept_wployalty_membership !== 'yes' ) {
-			// If the membership status is not set, update it to 'no'
-			if ( empty( $accept_wployalty_membership ) && isset( $user->ID ) ) {
-				update_user_meta( $user->ID, 'accept_wployalty_membership', 'no' );
-				update_user_meta( $user->ID, 'decline_wployalty_membership', 'yes' );
-			}
+		if ( empty( $accept_wployalty_membership ) && isset( $user->ID ) ) {
+			$options                = get_option( 'wlopt_settings', [] );
+			$store_admin_preference = $options['existing_user_wlr_preference'] ?? 'no';
+			update_user_meta( $user->ID, 'accept_wployalty_membership', $store_admin_preference );
+			$decline_preference = ( $store_admin_preference === 'yes' ) ? 'no' : 'yes';
+			update_user_meta( $user->ID, 'decline_wployalty_membership', $decline_preference );
+		}
+		if ( get_user_meta( $user->ID, 'accept_wployalty_membership', true ) !== 'yes' ) {
 			add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
 		}
 	}

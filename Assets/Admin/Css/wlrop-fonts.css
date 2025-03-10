@@ -1,0 +1,631 @@
+@font-face {
+  font-family: 'loyalty-optin';
+  src:  url('fonts/loyalty-optin.eot?k3e44a');
+  src:  url('fonts/loyalty-optin.eot?k3e44a#iefix') format('embedded-opentype'),
+    url('fonts/loyalty-optin.ttf?k3e44a') format('truetype'),
+    url('fonts/loyalty-optin.woff?k3e44a') format('woff'),
+    url('fonts/loyalty-optin.svg?k3e44a#loyalty-optin') format('svg');
+  font-weight: normal;
+  font-style: normal;
+  font-display: block;
+}
+
+[class^="wlrop-"], [class*=" wlrop-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'loyalty-optin' !important;
+  speak: never;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.wlrop-facebook_share:before {
+  content: "\e96d";
+}
+.wlrop-empty-addon:before {
+  content: "\e96c";
+  color: #4f47eb;
+}
+.wlrop-recommendation:before {
+  content: "\e962";
+}
+.wlrop-reward-empty-hand:before {
+  content: "\e93b";
+}
+.wlrop-used-expired-coupons:before {
+  content: "\e954";
+}
+.wlrop-coupon-empty:before {
+  content: "\e9a0";
+}
+.wlrop-progress-donut:before {
+  content: "\e93a";
+}
+.wlrop-used-rewards:before {
+  content: "\e938";
+}
+.wlrop-clock:before {
+  content: "\e936";
+}
+.wlrop-arrow-up:before {
+  content: "\e937";
+}
+.wlrop-default-level:before {
+  content: "\e905";
+}
+.wlrop-redeem:before {
+  content: "\e963";
+}
+.wlrop-data-not-found:before {
+  content: "\e972";
+  color: #7a818f;
+}
+.wlrop-empty .path1:before {
+  content: "\e96e";
+  color: rgb(122, 129, 143);
+  opacity: 0.2;
+}
+.wlrop-empty .path2:before {
+  content: "\e970";
+  margin-left: -1em;
+  color: rgb(122, 129, 143);
+}
+.wlrop-empty .path3:before {
+  content: "\e971";
+  margin-left: -1em;
+  color: rgb(122, 129, 143);
+}
+.wlrop-start-points:before {
+  content: "\e932";
+}
+.wlrop-calendar-date:before {
+  content: "\e933";
+}
+.wlrop-reward-show:before {
+  content: "\e934";
+}
+.wlrop-followup:before {
+  content: "\e935";
+}
+.wlrop-wployalty_logo:before {
+  content: "\e973";
+  color: #9594a8;
+}
+.wlrop-document_text:before {
+  content: "\e9cb";
+  color: #535863;
+}
+.wlrop-rocket:before {
+  content: "\e9cc";
+  color: #535863;
+}
+.wlrop-grammerly:before {
+  content: "\e9cd";
+  color: #535863;
+}
+.wlrop-coin:before {
+  content: "\e9ce";
+  color: #535863;
+}
+.wlrop-close2:before {
+  content: "\e9cf";
+  color: #535863;
+}
+.wlrop-redeem-points:before {
+  content: "\e904";
+}
+.wlrop-achievement:before {
+  content: "\e906";
+}
+.wlrop-lock:before {
+  content: "\e907";
+}
+.wlrop-available-points:before {
+  content: "\e903";
+}
+.wlrop-points_conversion:before {
+  content: "\e9b6";
+}
+.wlrop-percent:before {
+  content: "\e9b7";
+}
+.wlrop-free_shipping:before {
+  content: "\e9b8";
+}
+.wlrop-free_product:before {
+  content: "\e9b9";
+}
+.wlrop-fixed_cart:before {
+  content: "\e9ba";
+}
+.wlrop-product_review:before {
+  content: "\e9bb";
+}
+.wlrop-whatsapp_share:before {
+  content: "\e9bc";
+}
+.wlrop-twitter_share:before {
+  content: "\e9bd";
+}
+.wlrop-signup:before {
+  content: "\e9be";
+}
+.wlrop-subtotal:before {
+  content: "\e9bf";
+}
+.wlrop-referral:before {
+  content: "\e9c0";
+}
+.wlrop-point_for_purchase:before {
+  content: "\e9c1";
+}
+.wlrop-purchase_histories:before {
+  content: "\e9c2";
+}
+.wlrop-followup_share:before {
+  content: "\e9c3";
+}
+.wlrop-email_share:before {
+  content: "\e9c5";
+}
+.wlrop-birthday:before {
+  content: "\e9c6";
+}
+.wlrop-Point-for-Purchase:before {
+  content: "\e9b4";
+}
+.wlrop-fixed-discount:before {
+  content: "\e96f";
+}
+.wlrop-birthday2:before {
+  content: "\e98a";
+}
+.wlrop-signup2:before {
+  content: "\e98b";
+}
+.wlrop-spending-based-reward:before {
+  content: "\e98c";
+}
+.wlrop-follow-ups:before {
+  content: "\e98d";
+}
+.wlrop-referral2:before {
+  content: "\e98e";
+}
+.wlrop-whatsapp:before {
+  content: "\e961";
+}
+.wlrop-twitter:before {
+  content: "\e964";
+}
+.wlrop-spending_based_reward .path1:before {
+  content: "\e965";
+  color: rgb(22, 31, 49);
+}
+.wlrop-spending_based_reward .path2:before {
+  content: "\e966";
+  margin-left: -1em;
+  color: rgb(111, 56, 197);
+}
+.wlrop-spending_based_reward .path3:before {
+  content: "\e967";
+  margin-left: -1em;
+  color: rgb(22, 31, 49);
+}
+.wlrop-signup1 .path1:before {
+  content: "\e968";
+  color: rgb(22, 31, 49);
+}
+.wlrop-signup1 .path2:before {
+  content: "\e969";
+  margin-left: -1em;
+  color: rgb(22, 31, 49);
+}
+.wlrop-signup1 .path3:before {
+  content: "\e96a";
+  margin-left: -1em;
+  color: rgb(111, 56, 197);
+}
+.wlrop-review:before {
+  content: "\e96b";
+}
+.wlrop-point-for-purchase:before {
+  content: "\e974";
+}
+.wlrop-point-conversion:before {
+  content: "\e976";
+}
+.wlrop-percentage-discount:before {
+  content: "\e97c";
+}
+.wlrop-order-goals:before {
+  content: "\e980";
+}
+.wlrop-instagram:before {
+  content: "\e982";
+}
+.wlrop-free-shipping:before {
+  content: "\e984";
+}
+.wlrop-free-product:before {
+  content: "\e986";
+}
+.wlrop-email:before {
+  content: "\e993";
+}
+.wlrop-earn:before {
+  content: "\e995";
+}
+.wlrop-close1:before {
+  content: "\e9b2";
+  color: #fff;
+}
+.wlrop-birthday1 .path1:before {
+  content: "\e999";
+  color: rgb(22, 31, 49);
+}
+.wlrop-birthday1 .path2:before {
+  content: "\e99a";
+  margin-left: -1em;
+  color: rgb(111, 56, 197);
+}
+.wlrop-birthday1 .path3:before {
+  content: "\e99b";
+  margin-left: -1em;
+  color: rgb(111, 56, 197);
+}
+.wlrop-birthday1 .path4:before {
+  content: "\e99c";
+  margin-left: -1em;
+  color: rgb(111, 56, 197);
+}
+.wlrop-birthday1 .path5:before {
+  content: "\e99d";
+  margin-left: -1em;
+  color: rgb(111, 56, 197);
+}
+.wlrop-info_circle:before {
+  content: "\e99f";
+}
+.wlrop-trophy:before {
+  content: "\e9a4";
+}
+.wlrop-star:before {
+  content: "\e9a5";
+}
+.wlrop-loyalty:before {
+  content: "\e9a6";
+}
+.wlrop-gift:before {
+  content: "\e9a7";
+}
+.wlrop-crown:before {
+  content: "\e9a8";
+}
+.wlrop-badge:before {
+  content: "\e9a9";
+}
+.wlrop-tick_circle:before {
+  content: "\e9aa";
+}
+.wlrop-tick_circle_2:before {
+  content: "\e9ab";
+}
+.wlrop-refresh_2:before {
+  content: "\e9ac";
+}
+.wlrop-arrow_right:before {
+  content: "\e9ad";
+}
+.wlrop-arrow_left:before {
+  content: "\e9ae";
+}
+.wlrop-Ellipse-radio-1:before {
+  content: "\e98f";
+  color: #4f47eb;
+}
+.wlrop-video-link:before {
+  content: "\e931";
+}
+.wlrop-point:before {
+  content: "\e908";
+}
+.wlrop-placement:before {
+  content: "\e998";
+}
+.wlrop-logo:before {
+  content: "\e99e";
+}
+.wlrop-color:before {
+  content: "\e9af";
+}
+.wlrop-brand:before {
+  content: "\e9b0";
+}
+.wlrop-image-upload:before {
+  content: "\e9b1";
+  color: #7a818f;
+}
+.wlrop-referral_link:before {
+  content: "\e939";
+  color: #4f47eb;
+}
+.wlrop-points_star:before {
+  content: "\e957";
+  color: #4f47eb;
+}
+.wlrop-used_reward:before {
+  content: "\e95d";
+  color: #535863;
+}
+.wlrop-redeem_point:before {
+  content: "\e95e";
+  color: #535863;
+}
+.wlrop-available_point:before {
+  content: "\e95f";
+  color: #535863;
+}
+.wlrop-round:before {
+  content: "\e953";
+  color: #4f47eb;
+}
+.wlrop-image:before {
+  content: "\e951";
+}
+.wlrop-points_round:before {
+  content: "\e959";
+  color: #4f47eb;
+}
+.wlrop-support:before {
+  content: "\e958";
+  color: #4f47eb;
+}
+.wlrop-referrals_round:before {
+  content: "\e960";
+  color: #4f47eb;
+}
+.wlrop-help-docs:before {
+  content: "\e952";
+  color: #4f47eb;
+}
+.wlrop-document-download:before {
+  content: "\e94e";
+}
+.wlrop-arrow-down:before {
+  content: "\e950";
+}
+.wlrop-customer-empty:before {
+  content: "\e949";
+  color: #4f47eb;
+}
+.wlrop-level-empty:before {
+  content: "\e94a";
+  color: #4f47eb;
+}
+.wlrop-reward-empty:before {
+  content: "\e94b";
+  color: #4f47eb;
+}
+.wlrop-dashboard-empty:before {
+  content: "\e94c";
+  color: #4f47eb;
+}
+.wlrop-campaign-empty:before {
+  content: "\e94d";
+  color: #4f47eb;
+}
+.wlrop-file:before {
+  content: "\e94f";
+  color: #535863;
+}
+.wlrop-deactivate:before {
+  content: "\e955";
+  color: #535863;
+}
+.wlrop-activate:before {
+  content: "\e956";
+  color: #4f47eb;
+}
+.wlrop-updown:before {
+  content: "\e91f";
+  color: #535863;
+}
+.wlrop-toggle-off-circle:before {
+  content: "\e914";
+  color: #535863;
+}
+.wlrop-radio-on:before {
+  content: "\e946";
+  color: #4f47eb;
+}
+.wlrop-radio-off:before {
+  content: "\e947";
+  color: #535863;
+}
+.wlrop-toggle-on-circle:before {
+  content: "\e948";
+  color: #4f47eb;
+}
+.wlrop-refresh:before {
+  content: "\e928";
+}
+.wlrop-verify:before {
+  content: "\e929";
+}
+.wlrop-add-level:before {
+  content: "\e93f";
+}
+.wlrop-add-app:before {
+  content: "\e941";
+}
+.wlrop-rewards-used:before {
+  content: "\e942";
+}
+.wlrop-rewards-earned:before {
+  content: "\e943";
+}
+.wlrop-revenue:before {
+  content: "\e944";
+}
+.wlrop-points-earned:before {
+  content: "\e945";
+}
+.wlrop-settings:before {
+  content: "\e909";
+}
+.wlrop-rewards:before {
+  content: "\e90b";
+}
+.wlrop-dashboard:before {
+  content: "\e920";
+}
+.wlrop-customers:before {
+  content: "\e92d";
+}
+.wlrop-campaigns:before {
+  content: "\e92e";
+}
+.wlrop-apps:before {
+  content: "\e92f";
+}
+.wlrop-levels:before {
+  content: "\e930";
+}
+.wlrop-add:before {
+  content: "\e902";
+}
+.wlrop-add-circle:before {
+  content: "\e90a";
+}
+.wlrop-back:before {
+  content: "\e90c";
+}
+.wlrop-calendar:before {
+  content: "\e90d";
+}
+.wlrop-campaign-create:before {
+  content: "\e90e";
+}
+.wlrop-close:before {
+  content: "\e90f";
+}
+.wlrop-close-circle:before {
+  content: "\e910";
+}
+.wlrop-copy:before {
+  content: "\e911";
+}
+.wlrop-currency:before {
+  content: "\e912";
+}
+.wlrop-customer:before {
+  content: "\e913";
+}
+.wlrop-delete:before {
+  content: "\e915";
+}
+.wlrop-down:before {
+  content: "\e917";
+}
+.wlrop-edit:before {
+  content: "\e918";
+}
+.wlrop-edit-3:before {
+  content: "\e919";
+}
+.wlrop-error:before {
+  content: "\e91a";
+}
+.wlrop-export:before {
+  content: "\e91b";
+}
+.wlrop-filter:before {
+  content: "\e91c";
+}
+.wlrop-import:before {
+  content: "\e91d";
+}
+.wlrop-link-external:before {
+  content: "\e91e";
+}
+.wlrop-reset:before {
+  content: "\e921";
+}
+.wlrop-save:before {
+  content: "\e922";
+}
+.wlrop-save-close:before {
+  content: "\e923";
+}
+.wlrop-search:before {
+  content: "\e924";
+}
+.wlrop-tick:before {
+  content: "\e925";
+}
+.wlrop-view:before {
+  content: "\e927";
+}
+.wlrop-reward:before {
+  content: "\e900";
+  color: #4f47eb;
+}
+.wlrop-campaign:before {
+  content: "\e901";
+  color: #4f47eb;
+}
+.wlrop-not-checked:before {
+  content: "\e916";
+  color: #535863;
+}
+.wlrop-checked:before {
+  content: "\e926";
+  color: #535863;
+}
+.wlrop-points:before {
+  content: "\e92a";
+  color: #4f47eb;
+}
+.wlrop-order-value:before {
+  content: "\e92b";
+  color: #4f47eb;
+}
+.wlrop-orders:before {
+  content: "\e92c";
+  color: #4f47eb;
+}
+.wlrop-redeemed:before {
+  content: "\e93c";
+  color: #4f47eb;
+}
+.wlrop-point-old:before {
+  content: "\e93d";
+  color: #4f47eb;
+}
+.wlrop-success:before {
+  content: "\e93e";
+  color: #535863;
+}
+.wlrop-coupon:before {
+  content: "\e940";
+  color: #4f47eb;
+}
+.wlrop-spinner:before {
+  content: "\e97b";
+}
+.wlrop-sort-asc:before {
+  content: "\e95a";
+}
+.wlrop-sort-desc:before {
+  content: "\e95b";
+}
+.wlrop-sort:before {
+  content: "\e95c";
+}
