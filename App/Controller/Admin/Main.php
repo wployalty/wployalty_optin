@@ -50,6 +50,16 @@ class Main {
 			$main_page_params = apply_filters( 'wlopt_manage_pages_data', $main_page_params );
 			switch ( $view ) {
 				case 'optin_users':
+                    $customers = get_users(array(
+                        'meta_query' => array(
+                            array(
+                                'key'   => 'accept_wployalty_membership',
+                                'value' => 'yes',
+                                'compare' => '='
+                            )
+                        )
+                    ));
+                    $main_page_params['tab_content'] = Woocommerce::renderTemplate( WLOPT_VIEW_PATH . '/Admin/customers.php', ['customers' => $customers], false );
 					break;
 				case 'settings':
 					$options = get_option( 'wlopt_settings', [] );
@@ -172,51 +182,6 @@ class Main {
 			$options['enable_optin'] = $value;
 			update_option( 'wlopt_settings', $options );
 			wp_send_json_success( [ 'message' => __( 'Settings saved successfully', 'wp-loyalty-optin' ) ] );
-		} catch ( \Exception $e ) {
-			wp_send_json_error( [ 'message' => $e->getMessage() ] );
-		}
-	}
-
-	public static function renderOnboarding() {
-		if ( Input::get( 'page' ) != WLOPT_PLUGIN_SLUG ) {
-			return;
-		}
-		$options = get_option( 'wlopt_settings', [] );
-		if ( isset( $options['is_onboarding_complete'] ) && $options['is_onboarding_complete'] === 'yes' ) {
-			return;
-		}
-		$file_path = get_theme_file_path( 'wp-loyalty-optin/Admin/onboarding.php' );
-		if ( ! file_exists( $file_path ) ) {
-			$file_path = WLOPT_VIEW_PATH . '/Admin/onboarding.php';
-		}
-		Woocommerce::renderTemplate(
-			$file_path,
-			[],
-			true
-		);
-	}
-
-	public static function processOnboarding() {
-		$wlopt_nonce = Input::get( 'wlopt_nonce' );
-		if ( ! Woocommerce::verify_nonce( $wlopt_nonce, 'wlopt_onboarding_save_nonce' ) ) {
-			wp_send_json_error( [ 'message' => __( 'Security verification failed', 'wp-loyalty-optin' ) ] );
-		}
-
-		try {
-			$update_preference = sanitize_text_field( Input::get( 'update_preference' ) );
-			if ( ! in_array( $update_preference, [ 'yes', 'no' ] ) ) {
-				wp_send_json_error( [ 'message' => __( 'Invalid value', 'wp-loyalty-optin' ) ] );
-			}
-
-			$options = get_option( 'wlopt_settings', [] );
-			if ( ! is_array( $options ) ) {
-				$options = [];
-			}
-			$options['is_onboarding_complete']       = 'yes';
-			$options['existing_user_wlr_preference'] = $update_preference;
-			update_option( 'wlopt_settings', $options );
-
-			wp_send_json_success( [ 'message' => __( 'Onboarding process completed successfully', 'wp-loyalty-optin' ) ] );
 		} catch ( \Exception $e ) {
 			wp_send_json_error( [ 'message' => $e->getMessage() ] );
 		}

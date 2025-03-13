@@ -59,6 +59,23 @@ class Woocommerce {
 		return static::$banned_user[ $user_email ] = ( ! empty( $user ) && is_object( $user ) && isset( $user->is_banned_user ) );
 	}
 
+    /**
+     * Is WPLoyalty user.
+     *
+     * @param $user_email
+     * @return bool
+     */
+    public static function isLoyaltyUser( $user_email ) {
+        if (empty($user_email)) {
+            return false;
+        }
+        global $wpdb;
+        $user_modal = new Users();
+        $where = $wpdb->prepare( "user_email = %s AND is_banned_user = %d ", array( $user_email, 0 ) );
+        $result = $user_modal->getWhere( $where, "*", true );
+        return !empty($result);
+    }
+
 	static function get_login_user_email() {
 		$user       = get_user_by( 'id', get_current_user_id() );
 		$user_email = '';

@@ -24,8 +24,6 @@ class Router {
 			if ( wp_doing_ajax() ) {
 				add_action( 'wp_ajax_wlopt_save_settings', 'Wlopt\App\Controller\Admin\Main::saveSettings' );
 			}
-			add_action( 'admin_init', 'Wlopt\App\Controller\Admin\Main::renderOnboarding' );
-			add_action( 'wp_ajax_wlopt_process_onboarding', 'Wlopt\App\Controller\Admin\Main::processOnboarding' );
 		}
 		if ( ! self::isOptinEnabled() ) {
 			return;

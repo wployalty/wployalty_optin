@@ -160,6 +160,7 @@
   display: flex;
   align-items: center;
   margin-bottom: 15px;
+  justify-content: center;
   /*.wlopt-copy-button:hover {
     background-color: #f1f1f1;
   }*/

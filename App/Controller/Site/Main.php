@@ -81,8 +81,9 @@ class Main {
 			$accept_wployalty_membership = get_user_meta( $user_data->ID, 'accept_wployalty_membership', true );
 			if ( $accept_wployalty_membership == "yes" ) {
 				return true;
-			} else {
-				return false;
+			} else if (Woocommerce::isLoyaltyUser( $user_email )) {
+                update_user_meta( $user_data->ID, 'accept_wployalty_membership', 'yes');
+                return true;
 			}
 		}
 
@@ -178,8 +179,6 @@ class Main {
 		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
 			update_user_meta( $user_data->ID, 'accept_wployalty_membership',
 				sanitize_text_field( $accept_wployalty_membership ) );
-			$update_status = $accept_wployalty_membership == "no" ? "yes" : "no";
-			update_user_meta( $user_data->ID, 'decline_wployalty_membership', sanitize_text_field( $update_status ) );
 			$json['success']         = true;
 			$json['data']['message'] = __( 'Updated successfully', 'wp-loyalty-optin' );
 		}
@@ -242,7 +241,6 @@ class Main {
 			add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
 		}
 		update_user_meta( $user_id, 'accept_wployalty_membership', sanitize_text_field( $accept_wployalty_membership ) );
-		update_user_meta( $user_id, 'decline_wployalty_membership', $accept_wployalty_membership == "no" ? "yes" : "no" );
 	}
 
 	/**
@@ -267,8 +265,6 @@ class Main {
 			$options                = get_option( 'wlopt_settings', [] );
 			$store_admin_preference = $options['existing_user_wlr_preference'] ?? 'no';
 			update_user_meta( $user->ID, 'accept_wployalty_membership', $store_admin_preference );
-			$decline_preference = ( $store_admin_preference === 'yes' ) ? 'no' : 'yes';
-			update_user_meta( $user->ID, 'decline_wployalty_membership', $decline_preference );
 		}
 		if ( get_user_meta( $user->ID, 'accept_wployalty_membership', true ) !== 'yes' ) {
 			add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
@@ -283,11 +279,9 @@ class Main {
 			}
 			$accept_wployalty_membership = get_user_meta( $user_id, 'accept_wployalty_membership', true );
 			if ( empty( $accept_wployalty_membership ) ) {
-				$options                = get_option( 'wlopt_settings', [] );
-				$store_admin_preference = $options['existing_user_wlr_preference'] ?? 'no';
-				update_user_meta( $user_id, 'accept_wployalty_membership', $store_admin_preference );
-				$decline_preference = ( $store_admin_preference === 'yes' ) ? 'no' : 'yes';
-				update_user_meta( $user_id, 'decline_wployalty_membership', $decline_preference );
+                $user_email = get_user_by( 'email', $user_id );
+                $status = Woocommerce::isLoyaltyUser( $user_email ) ? 'yes' : 'no';
+				update_user_meta( $user_id, 'accept_wployalty_membership', $status );
 			}
 		}
 	}

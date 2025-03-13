@@ -65,43 +65,4 @@ wlopt = window.wlopt || {};
         alertify.set('notifier', 'position', 'top-right');
         (success) ? alertify.success('Copied to clipboard') : alertify.error('Could not copy text.');
     };
-
-    $(document).on('click', '#wlopt-onboard-submit', function (event) {
-        event.preventDefault();
-
-        let formData = {
-            action: 'wlopt_process_onboarding',
-            wlopt_nonce: wlopt_localize_data.onboarding_save_nonce,
-            update_preference: $('#update-preference').val()
-        };
-
-        $(this).prop('disabled', true);
-        $.ajax({
-            url: wlopt_localize_data.ajax_url,
-            type: 'POST',
-            dataType: 'JSON',
-            data: formData,
-            success: function (response) {
-                alertify.set('notifier', 'position', 'top-right');
-                if (response.success) {
-                    alertify.success(response.data.message);
-                    setTimeout(function () {
-                        $('#wlopt-popup').remove();
-                        $('#wlopt-overlay-section').removeClass('active');
-                        window.location.reload();
-                    }, 1500);
-                } else {
-                    alertify.error(response.data.message);
-                }
-            },
-            complete: function () {
-                $('#wlopt-onboard-submit').prop('disabled', false);
-            },
-            error: function (xhr, status, error) {
-                alertify.set('notifier', 'position', 'top-right');
-                alertify.error(error);
-                $('#wlopt-onboard-submit').prop('disabled', false);
-            }
-        });
-    });
 })(wlopt_jquery);
