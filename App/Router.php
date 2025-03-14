@@ -41,7 +41,13 @@ class Router {
 		add_action( 'user_register', 'Wlopt\App\Controller\Site\Main::registerUserHandler', 9, 1 );
 		add_action( 'wp_login', 'Wlopt\App\Controller\Site\Main::loginUserHandler', 9, 2 );
 
+        //Classic Checkout
         add_action( 'woocommerce_after_checkout_billing_form', 'Wlopt\App\Controller\Site\Main::addCheckoutCheckbox' );
+        add_action( 'woocommerce_after_checkout_validation', 'Wlopt\App\Controller\Site\Main::validateCheckoutForm', 10,
+            2 );
+        add_action( 'woocommerce_checkout_create_order', 'Wlopt\App\Controller\Site\Main::saveCheckoutFormData',
+            PHP_INT_MAX,
+            2 );
 
 	}
 

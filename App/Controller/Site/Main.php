@@ -224,22 +224,6 @@ class Main {
 		return $errors;
 	}
 
-    /**
-     * Add field in checkout form.
-     *
-     * @return void
-     */
-    static function addCheckoutCheckbox() {
-        woocommerce_form_field( 'accept_wployalty_membership', array(
-            'type'     => 'checkbox',
-            'id'       => 'accept_wployalty_membership',
-            'class'    => array( 'form-row-wide accept_wployalty_membership' ),
-            'label'    => __( 'Check this to become a member of WPLoyalty program.', 'woocommerce' ),
-            'required' => false,
-        ), self::checkStatus() );
-
-    }
-
 	/**
 	 * Update data after user registration.
 	 *
@@ -286,6 +270,71 @@ class Main {
 			add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
 		}
 	}
+
+
+    /**
+     * Add field in checkout form.
+     *
+     * @return void
+     */
+    static function addCheckoutCheckbox() {
+        woocommerce_form_field( 'accept_wployalty_membership', array(
+            'type'     => 'checkbox',
+            'id'       => 'accept_wployalty_membership',
+            'class'    => array( 'form-row-wide accept_wployalty_membership' ),
+            'label'    => __( 'Check this to become a member of WPLoyalty program.', 'woocommerce' ),
+            'required' => false,
+        ), self::checkStatus() );
+
+    }
+
+    /**
+     * Validation for checkout fields.
+     *
+     * @param $fields
+     * @param $errors
+     *
+     * @return mixed
+     */
+    static function validateCheckoutForm( $fields, $errors ) {
+        $accept_wployalty_membership = (int) Input::get( 'accept_wployalty_membership' );
+        if ( ! in_array( $accept_wployalty_membership, array( 0, 1 ) ) ) {
+            $errors->add( 'accept_wployalty_membership',
+                __( 'Must be valid', 'wp-loyalty-optin' ) );
+        } else {
+            $accept_wployalty_membership = Input::get( 'accept_wployalty_membership' ) ? "yes" : "no";
+            if ( empty( get_transient( 'wlr_opt_in_status' ) ) || get_transient( 'wlr_opt_in_status' ) !== $accept_wployalty_membership ) {
+                self::setTransient( 'wlr_opt_in_status', $accept_wployalty_membership );
+            }
+        }
+
+        return $errors;
+    }
+
+    /**
+     * Save checkout field data.
+     *
+     * @param          $order
+     * @param array $data Checkout fields data.
+     *
+     * @return void
+     */
+    static function saveCheckoutFormData( $order, $data ) {
+        $accept_wployalty_membership = Input::get( 'accept_wployalty_membership' ) ? "yes" : "no";
+        $user_email                  = isset( $data['billing_email'] )
+        && ! empty( $data['billing_email'] )
+            ? $data['billing_email'] : "";
+        if ( empty( $user_email ) ) {
+            return;
+        }
+        $user_data = get_user_by( 'email', $user_email );
+        if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
+            update_user_meta( $user_data->ID, 'accept_wployalty_membership', $accept_wployalty_membership );
+            $update_status = $accept_wployalty_membership == "no" ? "yes" : "no";
+            update_user_meta( $user_data->ID, 'decline_wployalty_membership', $update_status );
+        }
+
+    }
 
 	public static function handleExistingUserPreference() {
 		if ( is_user_logged_in() ) {
