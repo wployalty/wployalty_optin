@@ -49,6 +49,15 @@ class Router {
             PHP_INT_MAX,
             2 );
 
+        /* Block checkout */
+        add_action( 'plugins_loaded', 'Wlopt\App\Controller\Site\Main::initBlocks' );
+        add_action( 'woocommerce_store_api_checkout_update_customer_from_request',
+            'Wlopt\App\Controller\Site\Main::checkBlockCheckoutEarning', 7, 2 );
+        add_filter( 'wlr_before_add_to_loyalty_customer', 'Wlopt\App\Controller\Site\Main::preventEarning', 10, 3 );
+
+        /* Clear transient */
+        add_action( 'wp_logout', 'Wlopt\App\Controller\Site\Main::clearTransient', 10 );
+        add_action( 'register_deactivation_hook', 'Wlopt\App\Controller\Site\Main::clearTransient', 10 );
 	}
 
 	private static function isOptinEnabled() {

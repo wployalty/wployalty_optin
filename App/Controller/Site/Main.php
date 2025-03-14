@@ -95,7 +95,7 @@ class Main {
 	 *
 	 * @return mixed
 	 */
-	static function getEmail() {
+	public static function getEmail() {
 		if ( ! empty( self::$email ) ) {
 			return self::$email;
 		}
@@ -109,7 +109,7 @@ class Main {
 	 *
 	 * @return void
 	 */
-	static function siteAssets() {
+	public static function siteAssets() {
 		$suffix = '.min';
 		if ( defined( 'SCRIPT_DEBUG' ) ) {
 			$suffix = SCRIPT_DEBUG ? '' : '.min';
@@ -190,7 +190,7 @@ class Main {
 	 *
 	 * @return void
 	 */
-	static function addRegistrationCheckbox() {
+	public static function addRegistrationCheckbox() {
 		$user_email = self::getEmail();
 		if ( ! empty( $user_email ) ) {
 			return;
@@ -214,7 +214,7 @@ class Main {
 	 *
 	 * @return mixed
 	 */
-	static function validateInRegisterForm( $username, $user_email, $errors ) {
+	public static function validateInRegisterForm( $username, $user_email, $errors ) {
 		$accept_wployalty_membership = (int) Input::get( 'accept_wployalty_membership', 0 );
 
 		if ( ! in_array( $accept_wployalty_membership, [ 0, 1 ] ) ) {
@@ -231,7 +231,7 @@ class Main {
 	 *
 	 * @return void
 	 */
-	static function registerUserHandler( $user_id ) {
+	public static function registerUserHandler( $user_id ) {
 		if ( empty( $user_id ) ) {
 			return;
 		}
@@ -256,7 +256,7 @@ class Main {
 	 *
 	 * @return void
 	 */
-	static function loginUserHandler( $user_name, $user ) {
+	public static function loginUserHandler( $user_name, $user ) {
 		if ( empty( $user ) || ! is_object( $user ) ) {
 			return;
 		}
@@ -277,7 +277,7 @@ class Main {
      *
      * @return void
      */
-    static function addCheckoutCheckbox() {
+    public static function addCheckoutCheckbox() {
         woocommerce_form_field( 'accept_wployalty_membership', array(
             'type'     => 'checkbox',
             'id'       => 'accept_wployalty_membership',
@@ -296,7 +296,7 @@ class Main {
      *
      * @return mixed
      */
-    static function validateCheckoutForm( $fields, $errors ) {
+    public static function validateCheckoutForm( $fields, $errors ) {
         $accept_wployalty_membership = (int) Input::get( 'accept_wployalty_membership' );
         if ( ! in_array( $accept_wployalty_membership, array( 0, 1 ) ) ) {
             $errors->add( 'accept_wployalty_membership',
@@ -319,7 +319,7 @@ class Main {
      *
      * @return void
      */
-    static function saveCheckoutFormData( $order, $data ) {
+    public static function saveCheckoutFormData( $order, $data ) {
         $accept_wployalty_membership = Input::get( 'accept_wployalty_membership' ) ? "yes" : "no";
         $user_email                  = isset( $data['billing_email'] )
         && ! empty( $data['billing_email'] )
@@ -351,4 +351,69 @@ class Main {
 		}
 	}
 
+    public static function initBlocks() {
+        if ( function_exists( 'WC' ) && WC()->is_rest_api_request() ) {
+            $message = new Message();
+            woocommerce_store_api_register_endpoint_data(
+                [
+                    'endpoint'        => CheckoutSchema::IDENTIFIER,
+                    'namespace'       => 'wlopt_checkout_block',
+                    'schema_callback' => [ $message, 'getOptinSchema' ],
+                    'schema_type'     => ARRAY_A,
+                ]
+            );
+        }
+        add_action(
+            'woocommerce_blocks_checkout_block_registration',
+            function ( $integration_registry ) {
+                $integration_registry->register( new Message() );
+            }
+        );
+    }
+
+    public static function checkBlockCheckoutEarning( \WC_Customer $customer, \WP_REST_Request $request ) {
+        if ( ! isset( $request['extensions'] )
+            || ! isset( $request['extensions']['wlopt_checkout_block'] )
+            || ! isset( $request['extensions']['wlopt_checkout_block']['wpl_optin'] )
+        ) {
+            return;
+        }
+        if ( ! is_object( $customer ) ) {
+            return;
+        }
+        $billing_email = $customer->get_billing_email();
+
+        if ( empty( $billing_email ) || ! is_email( $billing_email ) ) {
+            return;
+        }
+        $accept_wployalty_membership = $request['extensions']['wlopt_checkout_block']['wpl_optin'] ? "yes" : "no";
+        if ( empty( get_transient( 'wlr_opt_in_status' ) ) || get_transient( 'wlr_opt_in_status' ) !== $accept_wployalty_membership ) {
+            self::setTransient( 'wlr_opt_in_status', $accept_wployalty_membership );
+        }
+        $params = $request->get_params();
+        if ( is_array( $params ) && ! empty( $params ) && $params['create_account'] ) {
+            set_transient( 'wlr_opt_in_' . $billing_email, $accept_wployalty_membership, 60 * 60 );
+        }
+        $log = wc_get_logger();
+        $log->add( 'otest', 'Request params : ' . json_encode( $params ) );
+        $log->add( 'otest', 'Saved transient : ' . get_transient( 'wlr_opt_in_' . $billing_email ) );
+        $log->add( 'otest', 'Saved transient : ' . get_transient( 'wlr_opt_in_status' ) );
+    }
+
+    public static function preventEarning( $status, $user_id, $user_email ) {
+        if ( ! empty( get_transient( 'wlr_opt_in_status' ) ) && get_transient( 'wlr_opt_in_status' ) === "no" ) {
+
+            return false;
+        }
+
+        return $status;
+    }
+
+    public static function clearTransient()
+    {
+        if (get_transient('wlr_opt_in_status')) {
+            delete_transient('wlr_opt_in_status');
+
+        }
+    }
 }
