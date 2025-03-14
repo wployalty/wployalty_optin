@@ -41,6 +41,8 @@ class Router {
 		add_action( 'user_register', 'Wlopt\App\Controller\Site\Main::registerUserHandler', 9, 1 );
 		add_action( 'wp_login', 'Wlopt\App\Controller\Site\Main::loginUserHandler', 9, 2 );
 
+        add_action( 'woocommerce_after_checkout_billing_form', 'Wlopt\App\Controller\Site\Main::addCheckoutCheckbox' );
+
 	}
 
 	private static function isOptinEnabled() {

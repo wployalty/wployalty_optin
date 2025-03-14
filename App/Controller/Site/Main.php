@@ -224,6 +224,22 @@ class Main {
 		return $errors;
 	}
 
+    /**
+     * Add field in checkout form.
+     *
+     * @return void
+     */
+    static function addCheckoutCheckbox() {
+        woocommerce_form_field( 'accept_wployalty_membership', array(
+            'type'     => 'checkbox',
+            'id'       => 'accept_wployalty_membership',
+            'class'    => array( 'form-row-wide accept_wployalty_membership' ),
+            'label'    => __( 'Check this to become a member of WPLoyalty program.', 'woocommerce' ),
+            'required' => false,
+        ), self::checkStatus() );
+
+    }
+
 	/**
 	 * Update data after user registration.
 	 *
