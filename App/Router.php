@@ -10,7 +10,6 @@ namespace Wlopt\App;
 defined( "ABSPATH" ) or die();
 
 class Router {
-
 	/**
 	 * Hooks for all actions related.
 	 *
@@ -57,6 +56,11 @@ class Router {
         add_action( 'register_deactivation_hook', 'Wlopt\App\Controller\Site\Main::clearTransient', 10 );
 	}
 
+    /**
+     * Check opt-in is enabled.
+     *
+     * @return bool
+     */
 	private static function isOptinEnabled() {
 		$options = get_option( 'wlopt_settings', [] );
 

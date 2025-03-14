@@ -27,7 +27,7 @@ class Message implements IntegrationInterface {
 	/**
 	 * When invoked returns handler name.
 	 *
-	 * @param   string  $handler  handler name.
+	 * @param string $handler handler name.
 	 *
 	 * @return string
 	 */

@@ -158,6 +158,11 @@ class Main {
 		return ob_get_clean();
 	}
 
+    /**
+     * Update membership preference in user meta.
+     *
+     * @return void
+     */
 	public static function updateMembershipPreference() {
 		$wlr_nonce = (string) Input::get( 'wlopt_nonce', '' );
 		$json      = [
@@ -249,7 +254,7 @@ class Main {
 	 * This method checks the user's loyalty membership status upon login.
 	 * If the user has not accepted the loyalty membership, it updates the user meta
 	 * to reflect the non-acceptance and prevents adding the user to the loyalty program.
-	 * For existing users, it updates the user meta to as per store owner choince in onboarding.
+	 * For existing users, it updates the user meta to as per store owner choice in onboarding.
 	 *
 	 * @param string $user_name The username of the user logging in.
 	 * @param \WP_User $user The WP_User object of the user logging in.
