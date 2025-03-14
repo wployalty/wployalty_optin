@@ -13,7 +13,6 @@ use Wlopt\App\Helper\Woocommerce;
 defined( "ABSPATH" ) or die();
 
 class Main {
-
 	/**
 	 * Adding menu.
 	 *
@@ -22,13 +21,14 @@ class Main {
 	public static function adminMenu() {
 		if ( Woocommerce::hasAdminPrivilege() ) {
 			add_menu_page(
-				__( 'WPLoyalty: Optin', 'wp-loyalty-optin' ),
+                __( 'WPLoyalty: Optin', 'wp-loyalty-optin' ),
 				__( 'WPLoyalty: Optin', 'wp-loyalty-optin' ),
 				"manage_woocommerce",
 				WLOPT_PLUGIN_SLUG,
 				[ self::class, 'addMenuPage' ],
 				'dashicons-megaphone',
-				59 );
+				59
+            );
 		}
 	}
 
@@ -59,7 +59,11 @@ class Main {
                             )
                         )
                     ));
-                    $main_page_params['tab_content'] = Woocommerce::renderTemplate( WLOPT_VIEW_PATH . '/Admin/customers.php', ['customers' => $customers], false );
+                    $main_page_params['tab_content'] = Woocommerce::renderTemplate(
+                            WLOPT_VIEW_PATH . '/Admin/customers.php',
+                            ['customers' => $customers],
+                            false
+                    );
 					break;
 				case 'settings':
 					$options = get_option( 'wlopt_settings', [] );
@@ -73,7 +77,11 @@ class Main {
 						'save'                     => WLOPT_PLUGIN_URL . 'Assets/svg/save.svg',
 						'back'                     => WLOPT_PLUGIN_URL . 'Assets/svg/back.svg',
 					];
-					$main_page_params['tab_content'] = Woocommerce::renderTemplate( WLOPT_VIEW_PATH . '/Admin/settings.php', $page_details, false );
+					$main_page_params['tab_content'] = Woocommerce::renderTemplate(
+                            WLOPT_VIEW_PATH . '/Admin/settings.php',
+                            $page_details,
+                            false
+                    );
 					break;
 				default:
 					break;
@@ -98,7 +106,7 @@ class Main {
 	 *
 	 * @return void
 	 */
-	static function adminAssets() {
+	public static function adminAssets() {
 		if ( Input::get( 'page' ) != WLOPT_PLUGIN_SLUG ) {
 			return;
 		}
@@ -155,7 +163,7 @@ class Main {
 	 *
 	 * @return void
 	 */
-	static function menuHide() {
+    public static function menuHide() {
 		?>
         <style>
             #toplevel_page_wp-loyalty-optin {
@@ -165,6 +173,11 @@ class Main {
 		<?php
 	}
 
+    /**
+     * Save settings.
+     *
+     * @return void
+     */
 	public static function saveSettings() {
 		$wlrop_nonce = Input::get( 'wlopt_nonce' );
 		if ( ! Woocommerce::verify_nonce( $wlrop_nonce, 'wlopt_save_setting_nonce' ) ) {

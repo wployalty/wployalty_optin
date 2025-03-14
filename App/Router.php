@@ -43,11 +43,8 @@ class Router {
 
         //Classic Checkout
         add_action( 'woocommerce_after_checkout_billing_form', 'Wlopt\App\Controller\Site\Main::addCheckoutCheckbox' );
-        add_action( 'woocommerce_after_checkout_validation', 'Wlopt\App\Controller\Site\Main::validateCheckoutForm', 10,
-            2 );
-        add_action( 'woocommerce_checkout_create_order', 'Wlopt\App\Controller\Site\Main::saveCheckoutFormData',
-            PHP_INT_MAX,
-            2 );
+        add_action( 'woocommerce_after_checkout_validation', 'Wlopt\App\Controller\Site\Main::validateCheckoutForm', 10, 2 );
+        add_action( 'woocommerce_checkout_create_order', 'Wlopt\App\Controller\Site\Main::saveCheckoutFormData', PHP_INT_MAX, 2 );
 
         /* Block checkout */
         add_action( 'plugins_loaded', 'Wlopt\App\Controller\Site\Main::initBlocks' );
