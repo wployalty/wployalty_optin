@@ -1,6 +1,11 @@
 <?php
+/**
+ * @author      Wployalty (Ilaiyaraja, Roshan Britto)
+ * @license     http://www.gnu.org/licenses/gpl-2.0.html
+ * @link        https://www.wployalty.net
+ * */
 
-defined( 'ABSPATH' ) or die;
+defined( "ABSPATH" ) or die();
 ?>
 <div id="wlopt-settings">
     <div class="wlopt-setting-page-holder">

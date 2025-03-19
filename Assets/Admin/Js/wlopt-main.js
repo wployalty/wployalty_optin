@@ -65,4 +65,48 @@ wlopt = window.wlopt || {};
         alertify.set('notifier', 'position', 'top-right');
         (success) ? alertify.success('Copied to clipboard') : alertify.error('Could not copy text.');
     };
+    $(document).on('change', '#wlopt-customer-type', function () {
+        wlopt_jquery.getCustomerData();
+    });
+    $(document).on('change', '#wlpot-customer-list-count', function () {
+        wlopt_jquery.getCustomerData();
+    });
+    $(document).on('click', '#wlopt-prev-page', function () {
+        let page_no = $(document).find('.wlopt-page-no').html();
+        $(document).find('.wlopt-page-no').html(parseInt(page_no) - 1);
+        wlopt_jquery.getCustomerData();
+    });
+    $(document).on('click', '#wlopt-next-page', function () {
+        let page_no = $(document).find('.wlopt-page-no').html();
+        $(document).find('.wlopt-page-no').html(parseInt(page_no) + 1);
+        wlopt_jquery.getCustomerData();
+    });
+    wlopt_jquery.getCustomerData = function () {
+        let customer_type = $(document).find('#wlopt-customer-type').val();
+        let list_no = $(document).find('#wlpot-customer-list-count').val();
+        let page_no = $(document).find('.wlopt-page-no').html();
+        let data = {
+            'action' : 'wlopt_get_customer_details',
+            'customer_type' : customer_type,
+            'list_no' : list_no,
+            'page_no': page_no,
+            'wlopt_nonce' : wlopt_localize_data.get_customer_details
+        }
+
+        $.ajax({
+            url: wlopt_localize_data.ajax_url,
+            type: 'POST',
+            dataType: 'JSON',
+            data: data,
+            success: function (response) {
+                if (response.data.html) {
+                    $(document).find('#wlopt-customer-details').html(response.data.html);
+                }
+            },
+            error: function (xhr, status, error) {
+                alertify.set('notifier', 'position', 'top-right');
+                alertify.error(error);
+            }
+        });
+    }
 })(wlopt_jquery);

@@ -80,6 +80,97 @@ $border-color: #E7E7EF;
     }
   }
 
+  #wlopt-customer-page {
+    .wlopt-customer-page-holder {
+      background: $color-white;
+      border: 1px solid $border-color;
+      border-radius: 0 8px 8px 8px;
+      height: 80vh;
+      padding: 24px;
+      overflow: scroll;
+    }
+
+    #wlpot-no-customer-message {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    .wlopt-customer-type-details {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .wlopt-customer-type-label {
+      font-size: 16px;
+    }
+
+    #wlpot-customer-table {
+      border-collapse: collapse;
+      margin: 24px auto;
+      width: 80%;
+
+      tr {
+        border: 1px solid $border-color;
+      }
+
+      td, th {
+        padding: 12px;
+        text-align: center;
+      }
+    }
+
+    .wlopt-customer-footer {
+      display: flex;
+      justify-content: end;
+      width: 80%;
+      margin: 24px auto;
+    }
+
+    .wlopt-customer-list-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .wlopt-page-actions {
+      display: flex;
+      gap: 4px;
+      border: 1px solid #E5E7EB;
+      border-radius: 0.375rem;
+    }
+
+    .wlopt-page-action {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #E5E7EB;
+      color: rgb(83, 88, 99);
+      border: 1px solid #E5E7EB;
+      padding: 0.75rem 0.625rem;
+      cursor: pointer;
+      white-space: nowrap;
+      font-size: 0.75rem;
+      line-height: 1rem;
+      font-weight: 550;
+      letter-spacing: 0;
+    }
+
+    .wlopt-page-no {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      white-space: nowrap;
+      border-radius: 0.375rem;
+      font-size: 1rem;
+      line-height: 1rem;
+      font-weight: 550;
+      letter-spacing: 0;
+      width: 32px;
+    }
+  }
+
   #wlopt-settings {
 
     .wlopt-enable-optin-label, .wlopt-copy-label {

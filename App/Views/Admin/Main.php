@@ -1,9 +1,10 @@
 <?php
 /**
- * @author      Wployalty (Ilaiyaraja)
+ * @author      Wployalty (Ilaiyaraja, Roshan Britto)
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
  * @link        https://www.wployalty.net
  * */
+
 defined( "ABSPATH" ) or die();
 ?>
 <div id="wlopt-main-page">

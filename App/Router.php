@@ -1,6 +1,6 @@
 <?php
 /**
- * @author      Wployalty (Ilaiyaraja, Sabhari)
+ * @author      Wployalty (Ilaiyaraja, Sabhari, Roshan Britto)
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
  * @link        https://www.wployalty.net
  * */
@@ -22,6 +22,7 @@ class Router {
 			add_action( 'admin_enqueue_scripts', 'Wlopt\App\Controller\Admin\Main::adminAssets' );
 			if ( wp_doing_ajax() ) {
 				add_action( 'wp_ajax_wlopt_save_settings', 'Wlopt\App\Controller\Admin\Main::saveSettings' );
+                add_action( 'wp_ajax_wlopt_get_customer_details', 'Wlopt\App\Controller\Admin\Main::showCustomerDetails' );
 			}
 		}
 		if ( ! self::isOptinEnabled() ) {

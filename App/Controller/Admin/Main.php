@@ -1,6 +1,6 @@
 <?php
 /**
- * @author      Wployalty (Ilaiyaraja, Sabhari)
+ * @author      Wployalty (Ilaiyaraja, Sabhari, Roshan Britto)
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
  * @link        https://www.wployalty.net
  * */
@@ -50,18 +50,10 @@ class Main {
 			$main_page_params = apply_filters( 'wlopt_manage_pages_data', $main_page_params );
 			switch ( $view ) {
 				case 'optin_users':
-                    $customers = get_users(array(
-                        'meta_query' => array(
-                            array(
-                                'key'   => 'accept_wployalty_membership',
-                                'value' => 'yes',
-                                'compare' => '='
-                            )
-                        )
-                    ));
+                    $customers_details = self::getCustomersDetails('yes', 5, 1);
                     $main_page_params['tab_content'] = Woocommerce::renderTemplate(
-                            WLOPT_VIEW_PATH . '/Admin/customers.php',
-                            ['customers' => $customers],
+                            WLOPT_VIEW_PATH . '/Admin/Customers.php',
+                            ['customers_details' => $customers_details],
                             false
                     );
 					break;
@@ -78,7 +70,7 @@ class Main {
 						'back'                     => WLOPT_PLUGIN_URL . 'Assets/svg/back.svg',
 					];
 					$main_page_params['tab_content'] = Woocommerce::renderTemplate(
-                            WLOPT_VIEW_PATH . '/Admin/settings.php',
+                            WLOPT_VIEW_PATH . '/Admin/Settings.php',
                             $page_details,
                             false
                     );
@@ -87,7 +79,7 @@ class Main {
 					break;
 			}
 			if ( in_array( $view, array( 'settings', 'optin_users' ) ) ) {
-				$path = WLOPT_PLUGIN_PATH . 'App/Views/Admin/main.php';
+				$path = WLOPT_PLUGIN_PATH . 'App/Views/Admin/Main.php';
 				Woocommerce::renderTemplate( $path, $main_page_params );
 			}
 		} else {
@@ -151,6 +143,7 @@ class Main {
 			'admin_url'             => admin_url(),
 			'ajax_url'              => admin_url( 'admin-ajax.php' ),
 			'save_nonce'            => wp_create_nonce( 'wlopt_save_setting_nonce' ),
+            'get_customer_details'  => wp_create_nonce( 'wlopt_customer_details_nonce' ),
 			'saving_button_label'   => __( 'Saving...', 'wp-loyalty-optin' ),
 			'saved_button_label'    => __( 'Save Changes', 'wp-loyalty-optin' ),
 			'onboarding_save_nonce' => wp_create_nonce( 'wlopt_onboarding_save_nonce' ),
@@ -199,4 +192,74 @@ class Main {
 			wp_send_json_error( [ 'message' => $e->getMessage() ] );
 		}
 	}
+
+    /**
+     * To update customer details based on customer type, page and display list.
+     *
+     * @return void
+     */
+    public static function showCustomerDetails()
+    {
+        $wlrop_nonce = Input::get( 'wlopt_nonce' );
+        if ( ! Woocommerce::verify_nonce( $wlrop_nonce, 'wlopt_customer_details_nonce' ) ) {
+            wp_send_json_error( [ 'message' => __( 'Security verification failed', 'wp-loyalty-optin' ) ] );
+        }
+        try {
+            $customer_type = Input::get( 'customer_type', '' );
+            $list_no = Input::get( 'list_no', 5 );
+            $page_no = Input::get( 'page_no', 1 );
+            $customer_type = ($customer_type == 'opt-in') ? 'yes' : 'no';
+            $customers_details = self::getCustomersDetails( $customer_type, $list_no, $page_no );
+            $html = Woocommerce::renderTemplate(
+                WLOPT_VIEW_PATH . '/Admin/Components/CustomerTable.php', [
+                    'customers_details' => $customers_details,
+                    'page_no' => 1,
+                ],
+                false
+            );
+            wp_send_json_success( [ 'html' => $html ] );
+        } catch ( \Exception $e ) {
+            wp_send_json_error( [ 'message' => $e->getMessage() ] );
+        }
+    }
+
+    /**
+     * Get customers details
+     *
+     * @param $customer_type
+     * @param $list_no
+     * @param $page_no
+     * @return array
+     */
+    public static function getCustomersDetails ($customer_type, $list_no, $page_no) {
+        $total_users = count(get_users(array(
+            'meta_query' => array(
+                array(
+                    'key'     => 'accept_wployalty_membership',
+                    'value'   => $customer_type,
+                    'compare' => '='
+                )
+            ),
+            'fields' => 'ID' // Optimize query to fetch only IDs (reduces memory usage)
+        )));
+
+        $customers = get_users(array(
+            'meta_query' => array(
+                array(
+                    'key'   => 'accept_wployalty_membership',
+                    'value' => $customer_type,
+                    'compare' => '='
+                )
+            ),
+            'number' => $list_no,
+            'paged' => $page_no,
+        ));
+
+        return array(
+            'total_users' => $total_users,
+            'customers' => $customers,
+            'list_no' => $list_no,
+            'page_no' => $page_no,
+        );
+    }
 }

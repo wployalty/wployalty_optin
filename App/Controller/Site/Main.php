@@ -1,6 +1,6 @@
 <?php
 /**
- * @author      Wployalty (Ilaiyaraja, Sabhari)
+ * @author      Wployalty (Ilaiyaraja, Sabhari, Roshan Britto)
  * @license     http://www.gnu.org/licenses/gpl-2.0.html
  * @link        https://www.wployalty.net
  * */
@@ -81,7 +81,7 @@ class Main {
 			$accept_wployalty_membership = get_user_meta( $user_data->ID, 'accept_wployalty_membership', true );
 			if ( $accept_wployalty_membership == "yes" ) {
 				return true;
-			} else if (Woocommerce::isLoyaltyUser( $user_email )) {
+			} else if (empty($accept_wployalty_membership) && Woocommerce::isLoyaltyUser( $user_email )) {
                 update_user_meta( $user_data->ID, 'accept_wployalty_membership', 'yes');
                 return true;
 			}
