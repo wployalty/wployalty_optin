@@ -16,10 +16,14 @@ class Setup {
 	 * Method to run plugin activation scripts.
 	 */
 	public static function activate() {
-		update_option( 'wlopt_settings', [
-			'enable_optin'           => 'no',
-			'is_onboarding_complete' => 'no',
-		] );
+        $wlopt_settings = get_option('wlopt_settings', []);
+
+        if (empty($wlopt_settings)) {
+            update_option( 'wlopt_settings', [
+                'enable_optin'           => 'no',
+                'is_onboarding_complete' => 'no',
+            ] );
+        }
 	}
 
 	/**
