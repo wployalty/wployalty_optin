@@ -335,7 +335,6 @@ class Main {
         $user_data = get_user_by( 'email', $user_email );
         if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
             update_user_meta( $user_data->ID, 'accept_wployalty_membership', $accept_wployalty_membership );
-            $update_status = $accept_wployalty_membership == "no" ? "yes" : "no";
         }
 
     }
