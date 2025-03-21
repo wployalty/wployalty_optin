@@ -362,7 +362,7 @@ class Main {
      */
     public static function initBlocks() {
         $user_email = self::getEmail();
-        if ( empty( $user_email ) || Woocommerce::isBannedUser( $user_email ) ) {
+        if ( !empty( $user_email ) && Woocommerce::isBannedUser( $user_email ) ) {
             return;
         }
 
