@@ -276,13 +276,17 @@ class Main {
 		}
 	}
 
-
     /**
      * Add field in checkout form.
      *
      * @return void
      */
     public static function addCheckoutCheckbox() {
+        $user_email = self::getEmail();
+        if ( !empty( $user_email ) && Woocommerce::isBannedUser( $user_email ) ) {
+            return;
+        }
+
         woocommerce_form_field( 'accept_wployalty_membership', array(
             'type'     => 'checkbox',
             'id'       => 'accept_wployalty_membership',
@@ -351,7 +355,17 @@ class Main {
 		}
 	}
 
+    /**
+     * To initialize checkout block assets.
+     *
+     * @return void
+     */
     public static function initBlocks() {
+        $user_email = self::getEmail();
+        if ( empty( $user_email ) || Woocommerce::isBannedUser( $user_email ) ) {
+            return;
+        }
+
         if ( function_exists( 'WC' ) && WC()->is_rest_api_request() ) {
             $message = new Message();
             woocommerce_store_api_register_endpoint_data(
@@ -371,6 +385,13 @@ class Main {
         );
     }
 
+    /**
+     * To register option status in checkout block data.
+     *
+     * @param \WC_Customer $customer
+     * @param \WP_REST_Request $request
+     * @return void
+     */
     public static function checkBlockCheckoutEarning( \WC_Customer $customer, \WP_REST_Request $request ) {
         if ( ! isset( $request['extensions'] )
             || ! isset( $request['extensions']['wlopt_checkout_block'] )
@@ -393,23 +414,6 @@ class Main {
         $user_data = get_user_by( 'email', $user_email );
         if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
             update_user_meta( $user_data->ID, 'accept_wployalty_membership', $accept_wployalty_membership );
-        }
-    }
-
-    public static function preventEarning( $status, $user_id, $user_email ) {
-        if ( ! empty( get_transient( 'wlr_opt_in_status' ) ) && get_transient( 'wlr_opt_in_status' ) === "no" ) {
-
-            return false;
-        }
-
-        return $status;
-    }
-
-    public static function clearTransient()
-    {
-        if (get_transient('wlr_opt_in_status')) {
-            delete_transient('wlr_opt_in_status');
-
         }
     }
 }
