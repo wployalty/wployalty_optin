@@ -302,15 +302,9 @@ class Main {
      * @return mixed
      */
     public static function validateCheckoutForm( $fields, $errors ) {
-        $accept_wployalty_membership = (int) Input::get( 'accept_wployalty_membership' );
+        $accept_wployalty_membership = (int) Input::get( 'accept_wployalty_membership','','post' );
         if ( ! in_array( $accept_wployalty_membership, array( 0, 1 ) ) ) {
-            $errors->add( 'accept_wployalty_membership',
-                __( 'Must be valid', 'wp-loyalty-optin' ) );
-        } else {
-            $accept_wployalty_membership = Input::get( 'accept_wployalty_membership' ) ? "yes" : "no";
-            if ( empty( get_transient( 'wlr_opt_in_status' ) ) || get_transient( 'wlr_opt_in_status' ) !== $accept_wployalty_membership ) {
-                self::setTransient( 'wlr_opt_in_status', $accept_wployalty_membership );
-            }
+            $errors->add( 'accept_wployalty_membership', __( 'Must be valid', 'wp-loyalty-optin' ) );
         }
 
         return $errors;
@@ -319,22 +313,25 @@ class Main {
     /**
      * Save checkout field data.
      *
-     * @param          $order
+     * @param $order
      * @param array $data Checkout fields data.
      *
      * @return void
      */
     public static function saveCheckoutFormData( $order, $data ) {
-        $accept_wployalty_membership = Input::get( 'accept_wployalty_membership' ) ? "yes" : "no";
-        $user_email                  = isset( $data['billing_email'] )
-        && ! empty( $data['billing_email'] )
-            ? $data['billing_email'] : "";
+        $accept_wployalty_membership = Input::get( 'accept_wployalty_membership' );
+        $user_email = self::getEmail();
+        if (empty($user_email)) {
+            $user_email = isset( $data['billing_email'] )
+            && ! empty( $data['billing_email'] )
+                ? $data['billing_email'] : "";
+        }
         if ( empty( $user_email ) ) {
             return;
         }
         $user_data = get_user_by( 'email', $user_email );
         if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
-            update_user_meta( $user_data->ID, 'accept_wployalty_membership', $accept_wployalty_membership );
+            update_user_meta( $user_data->ID, 'accept_wployalty_membership', !empty($accept_wployalty_membership) ? "yes" : "no" );
         }
 
     }
@@ -384,23 +381,19 @@ class Main {
         if ( ! is_object( $customer ) ) {
             return;
         }
-        $billing_email = $customer->get_billing_email();
-
-        if ( empty( $billing_email ) || ! is_email( $billing_email ) ) {
+        $user_email = self::getEmail();
+        if (empty($user_email)) {
+            $user_email = $customer->get_billing_email();
+        }
+        if ( empty( $user_email )  || ! is_email( $user_email ) ) {
             return;
         }
+
         $accept_wployalty_membership = $request['extensions']['wlopt_checkout_block']['wpl_optin'] ? "yes" : "no";
-        if ( empty( get_transient( 'wlr_opt_in_status' ) ) || get_transient( 'wlr_opt_in_status' ) !== $accept_wployalty_membership ) {
-            self::setTransient( 'wlr_opt_in_status', $accept_wployalty_membership );
+        $user_data = get_user_by( 'email', $user_email );
+        if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
+            update_user_meta( $user_data->ID, 'accept_wployalty_membership', $accept_wployalty_membership );
         }
-        $params = $request->get_params();
-        if ( is_array( $params ) && ! empty( $params ) && $params['create_account'] ) {
-            set_transient( 'wlr_opt_in_' . $billing_email, $accept_wployalty_membership, 60 * 60 );
-        }
-        $log = wc_get_logger();
-        $log->add( 'otest', 'Request params : ' . json_encode( $params ) );
-        $log->add( 'otest', 'Saved transient : ' . get_transient( 'wlr_opt_in_' . $billing_email ) );
-        $log->add( 'otest', 'Saved transient : ' . get_transient( 'wlr_opt_in_status' ) );
     }
 
     public static function preventEarning( $status, $user_id, $user_email ) {
