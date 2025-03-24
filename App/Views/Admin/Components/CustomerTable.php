@@ -18,8 +18,10 @@ if (!empty($customers_details['customers'])) { ?>
         <thead>
         <tr>
             <th><?php echo esc_html__('S NO', 'wp-loyalty-optin'); ?></th>
-            <th><?php echo esc_html__('Name', 'wp-loyalty-optin'); ?></th>
             <th><?php echo esc_html__('Email', 'wp-loyalty-optin'); ?></th>
+            <th><?php echo esc_html__('Point balance', 'wp-loyalty-optin'); ?></th>
+            <th><?php echo esc_html__('Total Earned', 'wp-loyalty-optin'); ?></th>
+            <th><?php echo esc_html__(' Redeemed', 'wp-loyalty-optin'); ?></th>
         </tr>
         </thead>
         <tbody>
@@ -27,10 +29,16 @@ if (!empty($customers_details['customers'])) { ?>
             <tr>
                 <td><?php echo esc_html($key + 1); ?></td>
                 <td>
-                    <?php echo esc_html($customer->display_name); ?>
+                    <?php echo esc_html($customer->email); ?>
                 </td>
                 <td>
-                    <?php echo esc_html($customer->user_email); ?>
+                    <?php echo esc_html($customer->points); ?>
+                </td>
+                <td>
+                    <?php echo esc_html($customer->total_points); ?>
+                </td>
+                <td>
+                    <?php echo esc_html($customer->redeemed); ?>
                 </td>
             </tr>
         <?php endforeach; ?>

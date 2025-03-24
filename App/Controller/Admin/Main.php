@@ -240,8 +240,9 @@ class Main {
                     'compare' => '='
                 )
             ),
-            'fields' => 'ID' // Optimize query to fetch only IDs (reduces memory usage)
+            'fields' => 'ID'
         )));
+        global $wpdb;
 
         $customers = get_users(array(
             'meta_query' => array(
@@ -253,11 +254,27 @@ class Main {
             ),
             'number' => $list_no,
             'paged' => $page_no,
+            'fields' => array('ID', 'user_email', 'display_name')
         ));
+
+        $emails = wp_list_pluck($customers, 'user_email');
+        $email_placeholders = implode(', ', array_fill(0, count($emails), '%s'));
+
+        $query = $wpdb->prepare(
+            "SELECT 
+                        user_email AS email, 
+                        points AS points, 
+                        earn_total_point AS total_points, 
+                        used_total_points AS redeemed 
+                    FROM wp_wlr_users 
+                    WHERE TRIM(user_email) IN ($email_placeholders)",
+            ...$emails
+        );
+        $customer_loyalty_data = $wpdb->get_results($query);
 
         return array(
             'total_users' => $total_users,
-            'customers' => $customers,
+            'customers' => $customer_loyalty_data,
             'list_no' => $list_no,
             'page_no' => $page_no,
         );
