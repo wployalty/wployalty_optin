@@ -53,11 +53,11 @@ if (!empty($customers_details['customers'])) { ?>
                 <option value="20" <?php if ($list_no == '20') echo "selected"; ?>><?php echo esc_html__('20', 'wp-loyalty-optin'); ?></option>
             </select>
             <div class="wlopt-page-actions">
-                <button id="wlopt-prev-page" class="wlopt-page-action" style="<?php if ($page_no <= 1) echo 'cursor: none; opacity: 0.5;'; ?>">
+                <button id="wlopt-prev-page" class="wlopt-page-action" style="<?php if ($page_no <= 1) echo 'cursor: not-allowed; opacity: 0.5;'; ?>" <?php if ($page_no <= 1) echo 'disabled'; ?>>
                     <?php echo esc_html__('Prev', 'wp-loyalty-optin'); ?>
                 </button>
                 <div class="wlopt-page-no"><?php echo esc_html($page_no); ?></div>
-                <button id="wlopt-next-page" class="wlopt-page-action" style="<?php if ($page_no >= $total_pages) echo 'cursor: none; opacity: 0.5;'; ?>">
+                <button id="wlopt-next-page" class="wlopt-page-action" style="<?php if ($page_no >= $total_pages) echo 'cursor: not-allowed; opacity: 0.5;'; ?>" <?php if ($page_no >= $total_pages) echo 'disabled'; ?>>
                     <?php echo esc_html__('Next', 'wp-loyalty-optin'); ?>
                 </button>
             </div>
