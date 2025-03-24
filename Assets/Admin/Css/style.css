@@ -86,6 +86,41 @@
   gap: 8px;
   align-items: center;
 }
+#wlopt-main-page #wlopt-customer-page .wlopt-customers-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 16px;
+  margin-top: 10px;
+  margin-right: 10px;
+}
+#wlopt-main-page #wlopt-customer-page .wlopt-customers-header .wlopt-customers-heading {
+  margin-left: 10px;
+}
+#wlopt-main-page #wlopt-customer-page .wlopt-customers-header .wlopt-customers-heading p {
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  letter-spacing: 0.08em;
+}
+#wlopt-main-page #wlopt-customer-page .wlopt-back-to-apps a {
+  display: flex;
+  min-width: max-content !important;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  border-radius: 0.375rem;
+  background-color: rgb(79, 71, 235);
+  padding: 0.75rem 0.625rem;
+  font-size: 0.75rem;
+  line-height: 1rem;
+  font-weight: 550;
+  letter-spacing: 0;
+  color: rgb(255, 255, 255);
+  gap: 7px;
+}
 #wlopt-main-page #wlopt-customer-page .wlopt-customer-type-label {
   font-size: 16px;
 }

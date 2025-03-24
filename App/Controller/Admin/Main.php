@@ -52,9 +52,13 @@ class Main {
 				case 'optin_users':
                     $customers_details = self::getCustomersDetails('yes', 5, 1);
                     $main_page_params['tab_content'] = Woocommerce::renderTemplate(
-                            WLOPT_VIEW_PATH . '/Admin/Customers.php',
-                            ['customers_details' => $customers_details],
-                            false
+                    WLOPT_VIEW_PATH . '/Admin/Customers.php',
+                        [
+                            'customers_details' => $customers_details,
+                            'back'              => WLOPT_PLUGIN_URL . 'Assets/svg/back.svg',
+                            'app_url'           => admin_url('admin.php?' . http_build_query(array('page' => WLR_PLUGIN_SLUG))) . '#/apps',
+                        ],
+                        false
                     );
 					break;
 				case 'settings':
@@ -62,17 +66,16 @@ class Main {
 					if ( ! is_array( $options ) ) {
 						$options = [];
 					}
-					$page_details                    = [
-						'options'                  => $options,
-						'app_url'                  => admin_url( 'admin.php?' . http_build_query( [ 'page' => WLOPT_PLUGIN_SLUG ] ) ) . '#/apps',
-						'wlopt_save_setting_nonce' => Woocommerce::create_nonce( 'wlopt_setting_nonce' ),
-						'save'                     => WLOPT_PLUGIN_URL . 'Assets/svg/save.svg',
-						'back'                     => WLOPT_PLUGIN_URL . 'Assets/svg/back.svg',
-					];
 					$main_page_params['tab_content'] = Woocommerce::renderTemplate(
-                            WLOPT_VIEW_PATH . '/Admin/Settings.php',
-                            $page_details,
-                            false
+                    WLOPT_VIEW_PATH . '/Admin/Settings.php',
+                        [
+                            'options'                  => $options,
+                            'app_url'                  => admin_url('admin.php?' . http_build_query(array('page' => WLR_PLUGIN_SLUG))) . '#/apps',
+                            'wlopt_save_setting_nonce' => Woocommerce::create_nonce( 'wlopt_setting_nonce' ),
+                            'save'                     => WLOPT_PLUGIN_URL . 'Assets/svg/save.svg',
+                            'back'                     => WLOPT_PLUGIN_URL . 'Assets/svg/back.svg',
+                        ],
+                        false
                     );
 					break;
 				default:

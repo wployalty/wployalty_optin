@@ -13,6 +13,18 @@ $customers_details = $customers_details ?? [];
 ?>
 <div id="wlopt-customer-page">
     <div class="wlopt-customer-page-holder">
+        <div class="wlopt-customers-header">
+            <div class="wlopt-customers-heading"><p><?php esc_html_e( 'CUSTOMERS', 'wp-loyalty-optin' ) ?></p></div>
+            <div class="wlopt-button-block">
+                <div class="wlopt-back-to-apps">
+                    <a class="button" target="_self"
+                       href="<?php echo isset( $app_url ) ? esc_url( $app_url ) : '#'; ?>">
+                        <img src="<?php echo ( isset( $back ) && ! empty( $back ) ) ? esc_url( $back ) : ''; ?>"
+                             alt="<?php esc_html_e( "Back", "wp-loyalty-optin" ); ?>">
+                        <?php esc_html_e( 'Back to WPLoyalty', 'wp-loyalty-optin' ); ?></a>
+                </div>
+            </div>
+        </div>
         <div class="wlopt-customer-type-details">
             <label for="wlopt-customer-type" class="wlopt-customer-type-label"><?php echo esc_html__('Customers type', 'wp-loyalty-optin'); ?></label>
             <select id="wlopt-customer-type">
