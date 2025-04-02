@@ -9,6 +9,7 @@ namespace Wlopt\App\Controller\Admin;
 
 use Wlopt\App\Helper\Input;
 use Wlopt\App\Helper\Woocommerce;
+use Wlopt\App\Model\Users;
 
 defined( "ABSPATH" ) or die();
 
@@ -50,7 +51,7 @@ class Main {
 			$main_page_params = apply_filters( 'wlopt_manage_pages_data', $main_page_params );
 			switch ( $view ) {
 				case 'optin_users':
-                    $customers_details = self::getCustomersDetails('yes', 5, 1);
+                    $customers_details = self::getCustomersDetails(1, 5, 1);
                     $main_page_params['tab_content'] = Woocommerce::renderTemplate(
                     WLOPT_VIEW_PATH . '/Admin/Customers.php',
                         [
@@ -211,7 +212,7 @@ class Main {
             $customer_type = Input::get( 'customer_type', '' );
             $list_no = Input::get( 'list_no', 5 );
             $page_no = Input::get( 'page_no', 1 );
-            $customer_type = ($customer_type == 'opt-in') ? 'yes' : 'no';
+            $customer_type = ($customer_type == 'opt-in') ? 1 : 0;
             $customers_details = self::getCustomersDetails( $customer_type, $list_no, $page_no );
             $html = Woocommerce::renderTemplate(
                 WLOPT_VIEW_PATH . '/Admin/Components/CustomerTable.php', [
@@ -234,46 +235,10 @@ class Main {
      * @param $page_no
      * @return array
      */
-    public static function getCustomersDetails ($customer_type, $list_no, $page_no) {
-        $total_users = count(get_users(array(
-            'meta_query' => array(
-                array(
-                    'key'     => 'accept_wployalty_membership',
-                    'value'   => $customer_type,
-                    'compare' => '='
-                )
-            ),
-            'fields' => 'ID'
-        )));
-        global $wpdb;
-
-        $customers = get_users(array(
-            'meta_query' => array(
-                array(
-                    'key'   => 'accept_wployalty_membership',
-                    'value' => $customer_type,
-                    'compare' => '='
-                )
-            ),
-            'number' => $list_no,
-            'paged' => $page_no,
-            'fields' => array('ID', 'user_email', 'display_name')
-        ));
-
-        $emails = wp_list_pluck($customers, 'user_email');
-        $email_placeholders = implode(', ', array_fill(0, count($emails), '%s'));
-
-        $query = $wpdb->prepare(
-            "SELECT 
-                        user_email AS email, 
-                        points AS points, 
-                        earn_total_point AS total_points, 
-                        used_total_points AS redeemed 
-                    FROM wp_wlr_users 
-                    WHERE TRIM(user_email) IN ($email_placeholders)",
-            ...$emails
-        );
-        $customer_loyalty_data = $wpdb->get_results($query);
+    public static function getCustomersDetails ($customer_type, $list_no, $page_no)
+    {
+        $total_users = Users::totalUsersCount( $customer_type );
+        $customer_loyalty_data = Users::getUsersDetails( $customer_type );
 
         return array(
             'total_users' => $total_users,

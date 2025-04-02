@@ -2,11 +2,14 @@
 
 namespace Wlopt\App;
 
+use Wlopt\App\Model\Users;
+use Exception;
+
 defined( 'ABSPATH' ) || exit();
 
 class Setup {
 	public static function init() {
-		register_activation_hook( WLOPT_PLUGIN_FILE, [ __CLASS__, 'activate' ] );
+        register_activation_hook( WLOPT_PLUGIN_FILE, [ __CLASS__, 'activate' ] );
 		register_deactivation_hook( WLOPT_PLUGIN_FILE, [ __CLASS__, 'deactivate' ] );
 		register_uninstall_hook( WLOPT_PLUGIN_FILE, [ __CLASS__, 'uninstall' ] );
 		add_filter( 'plugin_row_meta', [ __CLASS__, 'getPluginRowMeta' ], 10, 2 );
@@ -16,8 +19,9 @@ class Setup {
 	 * Method to run plugin activation scripts.
 	 */
 	public static function activate() {
-        $wlopt_settings = get_option('wlopt_settings', []);
+        self::runDataBaseMigration();
 
+        $wlopt_settings = get_option('wlopt_settings', []);
         if (empty($wlopt_settings)) {
             update_option( 'wlopt_settings', [
                 'enable_optin'           => 'no',
@@ -25,6 +29,31 @@ class Setup {
             ] );
         }
 	}
+
+    /**
+     * Run database migration.
+     *
+     * @return void
+     */
+    public static function runDataBaseMigration() {
+        if (!is_admin()) {
+            return;
+        }
+
+        $models = array (
+            new Users(),
+        );
+
+        foreach ($models as $model) {
+            try {
+                if (!$model::isTableExist()) {
+                    $model->create();
+                }
+            } catch ( Exception $e ) {
+                exit( esc_html( WLR_PLUGIN_NAME . __( 'Plugin required table creation failed.', 'wp-loyalty-rules' ) ) );
+            }
+        }
+    }
 
 	/**
 	 * Method to run plugin deactivation scripts.

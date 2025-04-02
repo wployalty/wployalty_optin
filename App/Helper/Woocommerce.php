@@ -60,19 +60,30 @@ class Woocommerce {
 	}
 
     /**
-     * Is WPLoyalty user.
+     * Get loyalty user data
      *
      * @param $user_email
-     * @return bool
+     * @param $exclude_banned_user
+     * @return array|false|object|\stdClass|\stdClass[]|null
      */
-    public static function isLoyaltyUser( $user_email ) {
+    public static function getLoyaltyUserData( $user_email, $exclude_banned_user = 0 ) {
         if (empty($user_email)) {
             return false;
         }
         global $wpdb;
         $user_modal = new Users();
         $where = $wpdb->prepare( "user_email = %s AND is_banned_user = %d ", array( $user_email, 0 ) );
-        $result = $user_modal->getWhere( $where, "*", true );
+        return $user_modal->getWhere( $where, "*", true );
+    }
+
+    /**
+     * Is WPLoyalty user.
+     *
+     * @param $user_email
+     * @return bool
+     */
+    public static function isLoyaltyUser( $user_email ) {
+        $result = self::getLoyaltyUserData( $user_email );
         return !empty($result);
     }
 

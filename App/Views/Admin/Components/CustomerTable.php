@@ -29,16 +29,16 @@ if (!empty($customers_details['customers'])) { ?>
             <tr>
                 <td><?php echo esc_html($key + 1); ?></td>
                 <td>
-                    <?php echo esc_html($customer->email); ?>
+                    <?php echo esc_html($customer['user_email']); ?>
                 </td>
                 <td>
-                    <?php echo esc_html($customer->points); ?>
+                    <?php echo esc_html($customer['points']); ?>
                 </td>
                 <td>
-                    <?php echo esc_html($customer->total_points); ?>
+                    <?php echo esc_html($customer['earn_total_point']); ?>
                 </td>
                 <td>
-                    <?php echo esc_html($customer->redeemed); ?>
+                    <?php echo esc_html($customer['used_total_points']); ?>
                 </td>
             </tr>
         <?php endforeach; ?>
