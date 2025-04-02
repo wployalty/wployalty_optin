@@ -82,12 +82,11 @@ class Main {
         if ( $optin_status === 'no_data') {
             $user_data = get_user_by( 'email', $user_email );
             $loyalty_user_data = Woocommerce::getLoyaltyUserData( $user_email );
-
             $data = array(
                 'user_email' => $user_email,
                 'wp_user_id' => $user_data->ID,
                 'wlr_user_id' => $loyalty_user_data->id ?? null,
-                'optin_status' => Woocommerce::isLoyaltyUser( $user_email ) ? 1 : 0,
+                'optin_status' => !empty( $loyalty_user_data ) ? 1 : 0,
             );
             Users::save($data);
         }
@@ -416,7 +415,7 @@ class Main {
         }
 
         $accept_wployalty_membership = $request['extensions']['wlopt_checkout_block']['wpl_optin'] ? 1 : 0;
-        self::updateUserOptInStatus($user_email, $user_data, $accept_wployalty_membership);
+        self::updateUserOptInStatus($user_email, $accept_wployalty_membership);
     }
 
     /**

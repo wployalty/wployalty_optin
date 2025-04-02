@@ -37,10 +37,10 @@ class Users extends Model
     }
 
     /**
-     * Get opt-in data
+     * Get opt-in data.
      *
      * @param $user_email
-     * @return array|false|string|void
+     * @return array|false
      */
     public static function getOptionData($user_email) {
         if ( empty( $user_email ) ) {
@@ -54,6 +54,7 @@ class Users extends Model
             }
             return $user_data;
         }
+        return false;
     }
 
     /**
@@ -101,18 +102,18 @@ class Users extends Model
         $id = $user['id'] ?? 0;
         $data = [
             'user_email' => $user['user_email'],
-            'wp_user_id' => !empty($user['wp_user_id']) ? $user['wp_user_id'] : null,
-            'wlr_user_id' => !empty($user['wlr_user_id']) ? $user['wlr_user_id'] : null,
-            'optin_status' => $user['optin_status'] ?? 0,
+            'wp_user_id' => !empty($user['wp_user_id']) ? (int)$user['wp_user_id'] : 0,
+            'wlr_user_id' => !empty($user['wlr_user_id']) ? (int)$user['wlr_user_id'] : 0,
+            'optin_status' => (int)$user['optin_status'] ?? 0,
         ];
-        $format = ['%s', '%d', '%d'];
+        $format = ['%s', '%d', '%d', '%d'];
 
-        if ($id == 0) {
+        if (empty($id)) {
             if (!($user['id'] = self::insert($data, $format))) {
                 return false;
             }
         } else {
-            if (!self::updateById($id, $data, $format)) {
+            if (!self::updateById((int)$id, $data, $format)) {
                 return false;
             }
         }
