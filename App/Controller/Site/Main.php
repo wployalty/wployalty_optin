@@ -185,22 +185,9 @@ class Main {
         if ( empty( $user_email ) ) {
 			wp_send_json( $json );
 		}
-		$user_data = get_user_by( 'email', $user_email );
-		if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
-            $optin_data = Users::getOptionData( $user_email );
-            $loyalty_user_data = Woocommerce::getLoyaltyUserData( $user_email );
-
-            $data = array(
-                'id' => $optin_data['id'] ?? 0,
-                'user_email' => $user_email,
-                'wp_user_id' => $user_data->ID,
-                'wlr_user_id' => $loyalty_user_data->id ?? null,
-                'optin_status' => $accept_wployalty_membership,
-            );
-            Users::save($data);
-			$json['success']         = true;
-			$json['data']['message'] = __( 'Updated successfully', 'wp-loyalty-optin' );
-		}
+        self::updateUserOptInStatus($user_email, $accept_wployalty_membership);
+        $json['success']         = true;
+        $json['data']['message'] = __( 'Updated successfully', 'wp-loyalty-optin' );
 		wp_send_json( $json );
 	}
 
@@ -354,10 +341,7 @@ class Main {
         if ( empty( $user_email ) ) {
             return;
         }
-        $user_data = get_user_by( 'email', $user_email );
-        if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
-            update_user_meta( $user_data->ID, 'accept_wployalty_membership', !empty($accept_wployalty_membership) ? "yes" : "no" );
-        }
+        self::updateUserOptInStatus($user_email, $accept_wployalty_membership);
 
     }
 
@@ -367,12 +351,12 @@ class Main {
 			if ( $user_id == 0 ) {
 				return;
 			}
-			$accept_wployalty_membership = get_user_meta( $user_id, 'accept_wployalty_membership', true );
-			if ( empty( $accept_wployalty_membership ) ) {
-                $user_email = get_user_by( 'email', $user_id );
-                $status = Woocommerce::isLoyaltyUser( $user_email ) ? 'yes' : 'no';
-				update_user_meta( $user_id, 'accept_wployalty_membership', $status );
-			}
+            $user_email = self::getEmail();
+            $optin_status = Users::getUserOptinStatus( $user_email );
+            if ($optin_status == 'no_data') {
+                $loyalty_user_data = Woocommerce::getLoyaltyUserData( $user_email );
+                self::updateUserOptInStatus($user_email, !empty($loyalty_user_data) ? 1  : 0);
+            }
 		}
 	}
 
@@ -431,10 +415,33 @@ class Main {
             return;
         }
 
-        $accept_wployalty_membership = $request['extensions']['wlopt_checkout_block']['wpl_optin'] ? "yes" : "no";
-        $user_data = get_user_by( 'email', $user_email );
-        if ( is_object( $user_data ) && isset( $user_data->ID ) ) {
-            update_user_meta( $user_data->ID, 'accept_wployalty_membership', $accept_wployalty_membership );
+        $accept_wployalty_membership = $request['extensions']['wlopt_checkout_block']['wpl_optin'] ? 1 : 0;
+        self::updateUserOptInStatus($user_email, $user_data, $accept_wployalty_membership);
+    }
+
+    /**
+     * Update user optin status
+     *
+     * @param $user_email
+     * @param $optin_status
+     * @return void
+     */
+    public static function updateUserOptInStatus($user_email, $optin_status): void
+    {
+        $user_data = get_user_by('email', $user_email);
+        if (is_object($user_data) && isset($user_data->ID)) {
+            $optin_data = Users::getOptionData($user_email);
+            $loyalty_user_data = Woocommerce::getLoyaltyUserData($user_email);
+            $data = array(
+                'user_email' => $user_email,
+                'wp_user_id' => $user_data->ID,
+                'wlr_user_id' => $loyalty_user_data->id ?? null,
+                'optin_status' => $optin_status,
+            );
+            if (!empty($optin_data)) {
+                $data['id'] = $optin_data['id'] ?? 0;
+            }
+            Users::save($data);
         }
     }
 }
