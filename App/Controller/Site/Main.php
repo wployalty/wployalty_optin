@@ -254,12 +254,12 @@ class Main {
 		if ( empty( $user_id ) ) {
 			return;
 		}
-		$accept_wployalty_membership = Input::get( 'accept_wployalty_membership', 0 ) ? 'yes' : 'no';
-
-		if ( $accept_wployalty_membership == 'no' ) {
-			add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
-		}
-		update_user_meta( $user_id, 'accept_wployalty_membership', sanitize_text_field( $accept_wployalty_membership ) );
+		$accept_wployalty_membership = Input::get( 'accept_wployalty_membership', 0 );
+        if ( empty($accept_wployalty_membership) ) {
+            add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
+        }
+        $user_email = self::getEmail();
+        self::updateUserOptInStatus($user_email, $accept_wployalty_membership);
 	}
 
 	/**
