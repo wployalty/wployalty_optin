@@ -13,6 +13,8 @@ class Setup {
 		register_deactivation_hook( WLOPT_PLUGIN_FILE, [ __CLASS__, 'deactivate' ] );
 		register_uninstall_hook( WLOPT_PLUGIN_FILE, [ __CLASS__, 'uninstall' ] );
 		add_filter( 'plugin_row_meta', [ __CLASS__, 'getPluginRowMeta' ], 10, 2 );
+
+        add_action('plugins_loaded', [__CLASS__, 'runDataBaseMigration']);
 	}
 
 	/**
