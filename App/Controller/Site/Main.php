@@ -66,7 +66,7 @@ class Main {
 			return '';
 		}, 10, 2 );
 
-        add_filter('wlr_before_process_order_earning', '__return_false');
+        add_filter('wlr_before_process_order_earning', '__return_false', 1);
 	}
 
 	/**
@@ -343,7 +343,7 @@ class Main {
             return;
         }
         self::updateUserOptInStatus($user_email, $accept_wployalty_membership);
-
+        self::preventWPLoyaltyMembership();
     }
 
 	public static function handleExistingUserPreference() {
