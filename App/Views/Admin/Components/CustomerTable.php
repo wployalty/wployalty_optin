@@ -29,16 +29,16 @@ if (!empty($customers_details['customers'])) { ?>
             <tr>
                 <td><?php echo esc_html($key + 1); ?></td>
                 <td>
-                    <?php echo esc_html($customer['user_email']); ?>
+                    <?php echo !empty($customer['user_email']) ? esc_html($customer['user_email']) : esc_html__('N/A', 'wp-loyalty-optin'); ?>
                 </td>
                 <td>
-                    <?php echo esc_html($customer['points']); ?>
+                    <?php echo !empty($customer['points']) ? esc_html($customer['points']) : '0'; ?>
                 </td>
                 <td>
-                    <?php echo esc_html($customer['earn_total_point']); ?>
+                    <?php echo !empty($customer['earn_total_point']) ? esc_html($customer['earn_total_point']) : '0'; ?>
                 </td>
                 <td>
-                    <?php echo esc_html($customer['used_total_points']); ?>
+                    <?php echo !empty($customer['used_total_points']) ? esc_html($customer['used_total_points']) : '0'; ?>
                 </td>
             </tr>
         <?php endforeach; ?>

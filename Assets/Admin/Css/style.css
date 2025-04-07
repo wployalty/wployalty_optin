@@ -73,7 +73,7 @@
   border-radius: 0 8px 8px 8px;
   height: 80vh;
   padding: 24px;
-  overflow: scroll;
+  overflow-y: scroll;
 }
 #wlopt-main-page #wlopt-customer-page #wlpot-no-customer-message {
   display: flex;
@@ -90,12 +90,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-left: 16px;
-  margin-top: 10px;
-  margin-right: 10px;
-}
-#wlopt-main-page #wlopt-customer-page .wlopt-customers-header .wlopt-customers-heading {
-  margin-left: 10px;
 }
 #wlopt-main-page #wlopt-customer-page .wlopt-customers-header .wlopt-customers-heading p {
   font-style: normal;

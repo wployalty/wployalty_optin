@@ -39,5 +39,5 @@ $customers_details = $customers_details ?? [];
                 ]
             ); ?>
         </div>
-    </div>l
+    </div>
 </div>
