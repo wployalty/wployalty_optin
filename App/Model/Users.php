@@ -120,11 +120,30 @@ class Users extends Model
         return true;
     }
 
-    public static function getUsersDetails( $user_status ) {
-        $loyalty_users_table = 'wp_wlr_users';
-        $where = "AS ou LEFT JOIN " . $loyalty_users_table . " AS lu ON wlr_user_id = lu.id ";
-        $where .= self::db()->prepare("WHERE ou.optin_status = %d ", $user_status);
-        return self::getRows($where, null);
+    /**
+     * Get users details.
+     *
+     * @param $user_status
+     * @return array|object|\stdClass[]|null
+     */
+    public static function getUsersDetails( $user_status )
+    {
+        $wlr_users_table = 'wp_wlr_users';
+        $optin_users_table = self::getTableName(); // assuming this returns 'wp_wlr_optin_users'
+
+        $query = "SELECT
+                ou.*, 
+                lu.used_total_points, 
+                lu.earn_total_point,
+                lu.points
+            FROM {$optin_users_table} AS ou
+            LEFT JOIN {$wlr_users_table} AS lu ON ou.wlr_user_id = lu.id
+            WHERE ou.optin_status = %d";
+
+        return self::db()->get_results(
+            self::db()->prepare($query, $user_status),
+            ARRAY_A
+        );
     }
 
     /**
