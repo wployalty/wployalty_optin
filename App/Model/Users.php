@@ -30,7 +30,8 @@ class Users extends Model
                  `wp_user_id` bigint(20) unsigned NOT NULL,    
                  `wlr_user_id` bigint(20) unsigned NOT NULL,
                  `optin_status` BIGINT DEFAULT 1,
-                PRIMARY KEY (id)
+                PRIMARY KEY (id),
+                UNIQUE (user_email)
             ) {charset_collate};";
 
         self::execDBQuery($query); // to create or update table
