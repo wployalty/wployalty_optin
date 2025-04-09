@@ -425,19 +425,17 @@ class Main {
     public static function updateUserOptInStatus($user_email, $optin_status): void
     {
         $user_data = get_user_by('email', $user_email);
-        if (is_object($user_data) && isset($user_data->ID)) {
-            $optin_data = Users::getOptionData($user_email);
-            $loyalty_user_data = Woocommerce::getLoyaltyUserData($user_email);
-            $data = array(
-                'user_email' => $user_email,
-                'wp_user_id' => $user_data->ID,
-                'wlr_user_id' => $loyalty_user_data->id ?? null,
-                'optin_status' => $optin_status,
-            );
-            if (!empty($optin_data)) {
-                $data['id'] = $optin_data['id'] ?? 0;
-            }
-            Users::save($data);
+        $optin_data = Users::getOptionData($user_email);
+        $loyalty_user_data = Woocommerce::getLoyaltyUserData($user_email);
+        $data = array(
+            'user_email' => $user_email,
+            'wp_user_id' => $user_data->ID ?? null,
+            'wlr_user_id' => $loyalty_user_data->id ?? null,
+            'optin_status' => $optin_status,
+        );
+        if (!empty($optin_data)) {
+            $data['id'] = $optin_data['id'] ?? 0;
         }
+        Users::save($data);
     }
 }
