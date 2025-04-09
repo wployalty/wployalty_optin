@@ -246,7 +246,7 @@ class Main {
         if ( empty($accept_wployalty_membership) ) {
             add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
         }
-        $user_email = self::getEmail();
+        $user_email = Input::get( 'email', '' );
         self::updateUserOptInStatus($user_email, $accept_wployalty_membership);
 	}
 
@@ -352,12 +352,7 @@ class Main {
 			if ( $user_id == 0 ) {
 				return;
 			}
-            $user_email = self::getEmail();
-            $optin_status = Users::getUserOptinStatus( $user_email );
-            if ($optin_status == 'no_data') {
-                $loyalty_user_data = Woocommerce::getLoyaltyUserData( $user_email );
-                self::updateUserOptInStatus($user_email, !empty($loyalty_user_data) ? 1  : 0);
-            }
+            self::checkStatus();
 		}
 	}
 
