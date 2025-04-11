@@ -238,7 +238,7 @@ class Main {
     public static function getCustomersDetails ($customer_type, $list_no, $page_no)
     {
         $total_users = Users::totalUsersCount( $customer_type );
-        $customer_loyalty_data = Users::getUsersDetails( $customer_type );
+        $customer_loyalty_data = Users::getUsersDetails( $customer_type, $page_no, $list_no );
 
         return array(
             'total_users' => $total_users,

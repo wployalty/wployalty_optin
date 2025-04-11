@@ -10,7 +10,7 @@ defined( "ABSPATH" ) or die();
 $customers_details = $customers_details ?? [];
 $page_no = $customers_details['page_no'] ?? 1;
 $list_no = $customers_details['list_no'] ?? 5;
-$index = 0;
+$index = ($page_no == 1) ? 1 : ($page_no * $list_no) - ($list_no - 1);
 $total_pages = ceil($customers_details['total_users'] / $list_no);
 
 if (!empty($customers_details['customers'])) { ?>
@@ -27,7 +27,7 @@ if (!empty($customers_details['customers'])) { ?>
         <tbody>
         <?php foreach ($customers_details['customers'] as $key => $customer) : ?>
             <tr>
-                <td><?php echo esc_html($key + 1); ?></td>
+                <td><?php echo esc_html($key + $index); ?></td>
                 <td>
                     <?php echo !empty($customer['user_email']) ? esc_html($customer['user_email']) : esc_html__('N/A', 'wp-loyalty-optin'); ?>
                 </td>

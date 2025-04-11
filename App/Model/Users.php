@@ -125,12 +125,15 @@ class Users extends Model
      * Get users details.
      *
      * @param $user_status
+     * @param $page_no
+     * @param $per_limit
      * @return array|object|\stdClass[]|null
      */
-    public static function getUsersDetails( $user_status )
+    public static function getUsersDetails( $user_status, $page_no, $per_limit )
     {
         $wlr_users_table = 'wp_wlr_users';
         $optin_users_table = self::getTableName(); // assuming this returns 'wp_wlr_optin_users'
+        $offset = ( $page_no - 1 ) * $per_limit;
 
         $query = "SELECT
                 ou.*, 
@@ -139,10 +142,11 @@ class Users extends Model
                 COALESCE(lu.points, 'N/A') AS points
             FROM {$optin_users_table} AS ou
             LEFT JOIN {$wlr_users_table} AS lu ON ou.wlr_user_id = lu.id
-            WHERE ou.optin_status = %d";
+            WHERE ou.optin_status = %d
+            LIMIT %d OFFSET %d";
 
         return self::db()->get_results(
-            self::db()->prepare($query, $user_status),
+            self::db()->prepare($query, $user_status, $per_limit, $offset),
             ARRAY_A
         );
     }
