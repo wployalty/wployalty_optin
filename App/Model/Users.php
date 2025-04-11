@@ -134,9 +134,9 @@ class Users extends Model
 
         $query = "SELECT
                 ou.*, 
-                lu.used_total_points, 
-                lu.earn_total_point,
-                lu.points
+                COALESCE(lu.used_total_points, 'N/A') AS used_total_points, 
+                COALESCE(lu.earn_total_point, 'N/A') AS earn_total_point,
+                COALESCE(lu.points, 'N/A') AS points
             FROM {$optin_users_table} AS ou
             LEFT JOIN {$wlr_users_table} AS lu ON ou.wlr_user_id = lu.id
             WHERE ou.optin_status = %d";
