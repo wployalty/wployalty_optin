@@ -420,7 +420,6 @@
   display: flex;
   align-items: center;
   margin-bottom: 15px;
-  justify-content: center;
   flex-wrap: wrap;
   gap: 16px;
   /*.wlopt-copy-button:hover {
