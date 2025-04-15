@@ -13,18 +13,18 @@ defined( "ABSPATH" ) or die();
             <div class="wlopt-settings-header">
                 <div class="wlopt-settings-heading"><p><?php esc_html_e( 'SETTINGS', 'wp-loyalty-optin' ) ?></p></div>
                 <div class="wlopt-button-block">
+                    <div class="wlopt-save-changes">
+                        <button type="submit" id="wlopt-setting-submit-button">
+                            <img src="<?php echo ( isset( $save ) && ! empty( $save ) ) ? esc_url( $save ) : ''; ?>">
+                            <span><?php esc_html_e( 'Save Changes', 'wp-loyalty-optin' ) ?></span>
+                        </button>
+                    </div>
                     <div class="wlopt-back-to-apps">
                         <a class="button" target="_self"
                            href="<?php echo isset( $app_url ) ? esc_url( $app_url ) : '#'; ?>">
                             <img src="<?php echo ( isset( $back ) && ! empty( $back ) ) ? esc_url( $back ) : ''; ?>"
                                  alt="<?php esc_html_e( "Back", "wp-loyalty-optin" ); ?>">
 							<?php esc_html_e( 'Back to WPLoyalty', 'wp-loyalty-optin' ); ?></a>
-                    </div>
-                    <div class="wlopt-save-changes">
-                        <button type="submit" id="wlopt-setting-submit-button">
-                            <img src="<?php echo ( isset( $save ) && ! empty( $save ) ) ? esc_url( $save ) : ''; ?>">
-                            <span><?php esc_html_e( 'Save Changes', 'wp-loyalty-optin' ) ?></span>
-                        </button>
                     </div>
                 </div>
             </div>

@@ -16,6 +16,18 @@ $customers_details = $customers_details ?? [];
         <div class="wlopt-customers-header">
             <div class="wlopt-customers-heading"><p><?php esc_html_e( 'CUSTOMERS', 'wp-loyalty-optin' ) ?></p></div>
             <div class="wlopt-button-block">
+                <button class="wlopt-customer-type wlopt-active-customer-type" data-type="opt-in">
+                    <?php esc_html_e( 'Opt In', 'wp-loyalty-optin' ); ?>
+                </button>
+                <button class="wlopt-customer-type">
+                    <?php esc_html_e( 'Opt Out', 'wp-loyalty-optin' ); ?>
+                </button>
+                <div class="search-container">
+                    <input type="text" id="wlopt-customer-email-search" class="search-input" placeholder="Search email..." />
+                    <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M9 3a6 6 0 104.472 10.472l3.327 3.327a1 1 0 001.414-1.414l-3.327-3.327A6 6 0 009 3zm-4 6a4 4 0 118 0 4 4 0 01-8 0z" clip-rule="evenodd"/>
+                    </svg>
+                </div>
                 <div class="wlopt-back-to-apps">
                     <a class="button" target="_self"
                        href="<?php echo isset( $app_url ) ? esc_url( $app_url ) : '#'; ?>">
@@ -24,13 +36,6 @@ $customers_details = $customers_details ?? [];
                         <?php esc_html_e( 'Back to WPLoyalty', 'wp-loyalty-optin' ); ?></a>
                 </div>
             </div>
-        </div>
-        <div class="wlopt-customer-type-details">
-            <label for="wlopt-customer-type" class="wlopt-customer-type-label"><?php echo esc_html__('Customers type', 'wp-loyalty-optin'); ?></label>
-            <select id="wlopt-customer-type">
-                <option value="opt-in"><?php echo esc_html__('Opt-in Customers', 'wp-loyalty-optin'); ?></option>
-                <option value="opt-out"><?php echo esc_html__('Opt-out Customers', 'wp-loyalty-optin'); ?></option>
-            </select>
         </div>
         <div id="wlopt-customer-details">
             <?php Woocommerce::renderTemplate(

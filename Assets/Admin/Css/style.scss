@@ -12,6 +12,35 @@ $border-color: #E7E7EF;
   background-color: rgba(248, 248, 252, 1);
   padding: 2rem;
 
+  .spinner {
+    display: block;
+    width: 60px;
+    height: 60px;
+    border: 6px solid rgba(232, 228, 228, 0.1);
+    border-top-color: #044695;
+    border-radius: 50% !important;
+    animation: spin 0.8s ease-in-out infinite;
+    margin: 200px auto !important;
+    visibility: inherit;
+    float: inherit;
+    background: inherit;
+    opacity: 1;
+
+    #wlpot-customer-table {
+      display: none !important;
+    }
+
+    .wlopt-customer-footer {
+      display: none !important;
+    }
+
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
   .wlopt-main-header {
     display: flex;
     width: 100%;
@@ -86,7 +115,6 @@ $border-color: #E7E7EF;
       border: 1px solid $border-color;
       border-radius: 0 8px 8px 8px;
       height: 80vh;
-      padding: 24px;
       overflow-y: scroll;
     }
 
@@ -107,6 +135,9 @@ $border-color: #E7E7EF;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-left: 16px;
+      margin-top: 10px;
+      margin-right: 10px;
     }
 
     .wlopt-customers-header .wlopt-customers-heading p {
@@ -114,7 +145,8 @@ $border-color: #E7E7EF;
       font-weight: 700;
       font-size: 16px;
       line-height: 20px;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
+      margin: 0 10px;
     }
 
     .wlopt-back-to-apps a {
@@ -135,22 +167,124 @@ $border-color: #E7E7EF;
       gap: 7px;
     }
 
+    .wlopt-customer-type {
+      display: flex;
+      min-width: max-content !important;
+      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      border-radius: 0.375rem;
+      background-color: rgba(79, 71, 235, 1);
+      padding: 0.75rem 2.5rem;
+      font-size: 0.75rem;
+      line-height: 1rem;
+      font-weight: 550;
+      letter-spacing: 0;
+      color: rgba(255, 255, 255, 1);
+      gap: 8px;
+      border: inherit;
+    }
+
+    .wlopt-active-customer-type {
+      opacity: 0.8;
+      pointer-events: none;
+    }
+
     .wlopt-customer-type-label {
       font-size: 16px;
     }
 
-    #wlpot-customer-table {
-      border-collapse: collapse;
-      margin: 24px auto;
-      width: 80%;
+    .search-container {
+      position: relative;
+      width: 256px;
+    }
 
-      tr {
-        border: 1px solid $border-color;
+    .search-input {
+      width: 100%;
+      padding: 0.45rem 2.5rem 0.45rem 1rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 0.5rem;
+      background-color: #fff;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+      font-size: 1rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #4f46e5;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+    }
+
+    .search-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1rem;
+      height: 1rem;
+      fill: #9ca3af;
+      pointer-events: none;
+    }
+
+    #wlopt-customer-details {
+      overflow-x: auto;
+      border-radius: 12px;
+      background-color: white;
+      margin: 24px auto;
+
+      table {
+        width: 80%;
+        border-collapse: collapse;
+        min-width: 600px;
+        margin: 0 auto;
       }
 
-      td, th {
-        padding: 12px;
-        text-align: center;
+      thead {
+        background-color: #f1f5f9;
+      }
+
+      th, td {
+        padding: 14px 18px;
+        text-align: left;
+        font-size: 14px;
+        color: #1f2937;
+      }
+
+      th {
+        font-weight: 600;
+        color: #374151;
+        border-bottom: 1px solid #e5e7eb;
+      }
+
+      td {
+        border-bottom: 1px solid #f3f4f6;
+      }
+
+      tr {
+        border-left: 1px solid #f3f4f6;
+        border-right: 1px solid #f3f4f6;
+      }
+
+      tr:hover td {
+        background-color: #f9fafb;
+      }
+
+      thead tr:first-child th:first-child {
+        border-top-left-radius: 12px;
+      }
+
+      thead tr:first-child th:last-child {
+        border-top-right-radius: 12px;
+      }
+
+      tbody tr:last-child td:first-child {
+        border-bottom-left-radius: 12px;
+      }
+
+      tbody tr:last-child td:last-child {
+        border-bottom-right-radius: 12px;
       }
     }
 
@@ -201,6 +335,49 @@ $border-color: #E7E7EF;
       letter-spacing: 0;
       width: 32px;
     }
+
+    .wlopt-customer-list-select-wrapper {
+      position: relative;
+      display: inline-block;
+      width: 64px;
+    }
+
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      width: 100%;
+      padding: 10px 14px;
+      background-color: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      font-size: 16px;
+      color: #111827;
+      cursor: pointer;
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: #6366f1;
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3);
+    }
+
+    .wlopt-customer-list-select-wrapper::after {
+      transform: translateY(-50%);
+      pointer-events: none;
+      font-size: 16px;
+      color: #6b7280;
+    }
+
+    .wlopt-button-block {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+      align-items: center;
+      white-space: nowrap;
+    }
   }
 
   #wlopt-settings {
@@ -221,8 +398,8 @@ $border-color: #E7E7EF;
       background: $color-white;
       border: 1px solid $border-color;
       border-radius: 8px;
-      margin: 20px 20px;
-      width: 60%;
+      margin: 24px auto;
+      width: 80%;
       padding: 12px;
       display: flex;
       flex-direction: column;
@@ -293,16 +470,13 @@ $border-color: #E7E7EF;
       margin-right: 10px;
     }
 
-    .wlopt-settings-header .wlopt-settings-heading {
-      margin-left: 10px;
-    }
-
     .wlopt-settings-header .wlopt-settings-heading p {
       font-style: normal;
       font-weight: 700;
       font-size: 16px;
       line-height: 20px;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.06em;
+      margin: 0 10px;
     }
   }
 
@@ -311,16 +485,19 @@ $border-color: #E7E7EF;
     align-items: center;
     margin-bottom: 15px;
     justify-content: center;
+    flex-wrap: wrap;
+    gap: 16px;
 
     .wlopt-copy-label {
-      margin-right: 15px;
+      text-align: center;
     }
 
     .wlopt-copy-container {
       position: relative;
       display: flex;
       flex: 1;
-      max-width: 350px;
+      min-width: 350px;
+      max-width: 360px;
     }
 
     .wlopt-copy-container input {

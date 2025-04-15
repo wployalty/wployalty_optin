@@ -163,7 +163,7 @@ abstract class Model
      */
     public static function getResults($query, $values = [], $pluck = '')
     {
-        return self::pluck(self::db()->get_results(self::prepareQuery($query, $values), static::OUTPUT_TYPE), $pluck);
+        return self::pluck(self::db()->get_results($query, static::OUTPUT_TYPE), $pluck);
     }
 
     /**

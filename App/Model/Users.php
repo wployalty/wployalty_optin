@@ -127,28 +127,33 @@ class Users extends Model
      * @param $user_status
      * @param $page_no
      * @param $per_limit
-     * @return array|object|\stdClass[]|null
+     * @param $like_args
+     * @return array|null
      */
-    public static function getUsersDetails( $user_status, $page_no, $per_limit )
-    {
+    public static function getUsersDetails( $user_status, $page_no, $per_limit, $like_args = '' ) {
         $wlr_users_table = 'wp_wlr_users';
-        $optin_users_table = self::getTableName(); // assuming this returns 'wp_wlr_optin_users'
+        $optin_users_table = self::getTableName();
         $offset = ( $page_no - 1 ) * $per_limit;
+        $where_clauses = ["ou.optin_status = {$user_status}"];
+        if ( !empty( $like_args ) ) {
+            $like = '%' . self::db()->esc_like( $like_args ) . '%';
+            $where_clauses[] = "(ou.user_email LIKE '{$like}')";
+        }
 
-        $query = "SELECT
+        $where_sql = 'WHERE ' . implode(' AND ', $where_clauses);
+
+        $query = "
+            SELECT
                 ou.*, 
                 COALESCE(lu.used_total_points, 'N/A') AS used_total_points, 
                 COALESCE(lu.earn_total_point, 'N/A') AS earn_total_point,
                 COALESCE(lu.points, 'N/A') AS points
             FROM {$optin_users_table} AS ou
             LEFT JOIN {$wlr_users_table} AS lu ON ou.wlr_user_id = lu.id
-            WHERE ou.optin_status = %d
-            LIMIT %d OFFSET %d";
-
-        return self::db()->get_results(
-            self::db()->prepare($query, $user_status, $per_limit, $offset),
-            ARRAY_A
-        );
+            {$where_sql}
+            LIMIT {$per_limit} OFFSET {$offset}
+        ";
+        return self::getResults( $query );
     }
 
     /**

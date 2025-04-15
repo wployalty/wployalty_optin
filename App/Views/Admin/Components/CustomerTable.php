@@ -46,18 +46,20 @@ if (!empty($customers_details['customers'])) { ?>
     </table>
     <div class="wlopt-customer-footer">
         <div class="wlopt-customer-list-actions">
-            <select id="wlpot-customer-list-count">
-                <option value="5" <?php if ($list_no == '5') echo "selected"; ?>><?php echo esc_html__('5', 'wp-loyalty-optin'); ?></option>
-                <option value="10" <?php if ($list_no == '10') echo "selected"; ?>><?php echo esc_html__('10', 'wp-loyalty-optin'); ?></option>
-                <option value="15" <?php if ($list_no == '15') echo "selected"; ?>><?php echo esc_html__('15', 'wp-loyalty-optin'); ?></option>
-                <option value="20" <?php if ($list_no == '20') echo "selected"; ?>><?php echo esc_html__('20', 'wp-loyalty-optin'); ?></option>
-            </select>
+            <div class="wlopt-customer-list-select-wrapper">
+                <select id="wlpot-customer-list-count">
+                    <option value="5" <?php if ($list_no == '5') echo "selected"; ?>><?php echo esc_html__('5', 'wp-loyalty-optin'); ?></option>
+                    <option value="10" <?php if ($list_no == '10') echo "selected"; ?>><?php echo esc_html__('10', 'wp-loyalty-optin'); ?></option>
+                    <option value="15" <?php if ($list_no == '15') echo "selected"; ?>><?php echo esc_html__('15', 'wp-loyalty-optin'); ?></option>
+                    <option value="20" <?php if ($list_no == '20') echo "selected"; ?>><?php echo esc_html__('20', 'wp-loyalty-optin'); ?></option>
+                </select>
+            </div>
             <div class="wlopt-page-actions">
-                <button id="wlopt-prev-page" class="wlopt-page-action" style="<?php if ($page_no <= 1) echo 'cursor: not-allowed; opacity: 0.5;'; ?>" <?php if ($page_no <= 1) echo 'disabled'; ?>>
+                <button id="wlopt-prev-page" class="wlopt-page-action" style="<?php if ($page_no <= 1) echo 'opacity: 0.5; pointer-events: none;'; ?>" <?php if ($page_no <= 1) echo 'disabled'; ?>>
                     <?php echo esc_html__('Prev', 'wp-loyalty-optin'); ?>
                 </button>
                 <div class="wlopt-page-no"><?php echo esc_html($page_no); ?></div>
-                <button id="wlopt-next-page" class="wlopt-page-action" style="<?php if ($page_no >= $total_pages) echo 'cursor: not-allowed; opacity: 0.5;'; ?>" <?php if ($page_no >= $total_pages) echo 'disabled'; ?>>
+                <button id="wlopt-next-page" class="wlopt-page-action" style="<?php if ($page_no >= $total_pages) echo 'pointer-events: none; opacity: 0.5;'; ?>" <?php if ($page_no >= $total_pages) echo 'disabled'; ?>>
                     <?php echo esc_html__('Next', 'wp-loyalty-optin'); ?>
                 </button>
             </div>
