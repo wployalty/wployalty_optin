@@ -26,14 +26,11 @@ $border-color: #E7E7EF;
     background: inherit;
     opacity: 1;
 
-    #wlpot-customer-table {
+    #wlpot-customer-table,
+    .wlopt-customer-footer,
+    #wlpot-no-customer-message {
       display: none !important;
     }
-
-    .wlopt-customer-footer {
-      display: none !important;
-    }
-
   }
 
   @keyframes spin {

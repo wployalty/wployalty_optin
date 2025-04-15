@@ -22,10 +22,9 @@
   background: inherit;
   opacity: 1;
 }
-#wlopt-main-page .spinner #wlpot-customer-table {
-  display: none !important;
-}
-#wlopt-main-page .spinner .wlopt-customer-footer {
+#wlopt-main-page .spinner #wlpot-customer-table,
+#wlopt-main-page .spinner .wlopt-customer-footer,
+#wlopt-main-page .spinner #wlpot-no-customer-message {
   display: none !important;
 }
 @keyframes spin {
