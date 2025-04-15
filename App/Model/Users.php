@@ -149,7 +149,7 @@ class Users extends Model
                 COALESCE(lu.earn_total_point, 'N/A') AS earn_total_point,
                 COALESCE(lu.points, 'N/A') AS points
             FROM {$optin_users_table} AS ou
-            LEFT JOIN {$wlr_users_table} AS lu ON ou.wlr_user_id = lu.id
+            LEFT JOIN {$wlr_users_table} AS lu ON ou.user_email = lu.user_email
             {$where_sql}
             LIMIT {$per_limit} OFFSET {$offset}
         ";

@@ -7,6 +7,8 @@
 
 namespace Wlopt\App;
 
+use Wlopt\App\Model\Users;
+
 defined( "ABSPATH" ) or die();
 
 class Router {
@@ -50,6 +52,8 @@ class Router {
         add_action( 'plugins_loaded', 'Wlopt\App\Controller\Site\Main::initBlocks' , 20);
         add_action( 'woocommerce_store_api_checkout_update_customer_from_request',
             'Wlopt\App\Controller\Site\Main::checkBlockCheckoutEarning', 7, 2 );
+
+        add_filter( 'wlr_delete_customer', [ __CLASS__, 'deleteOptInData' ], 10, 2 );
 	}
 
     /**
@@ -62,5 +66,21 @@ class Router {
 
 		return isset( $options['enable_optin'] ) && $options['enable_optin'] === 'yes';
 	}
+
+    /**
+     * Delete opt-in data if the customer deleted in WPLoyalty
+     *
+     * @param $status
+     * @param $condition
+     * @return mixed
+     */
+    public static function deleteOptInData($status, $condition) {
+        if (!$status || empty($condition) || !is_array($condition)) {
+            return $status;
+        }
+        Users::delete($condition, '%s');
+
+        return $status;
+    }
 
 }
