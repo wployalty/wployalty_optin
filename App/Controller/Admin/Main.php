@@ -75,6 +75,7 @@ class Main {
                             'wlopt_save_setting_nonce' => Woocommerce::create_nonce( 'wlopt_setting_nonce' ),
                             'save'                     => WLOPT_PLUGIN_URL . 'Assets/svg/save.svg',
                             'back'                     => WLOPT_PLUGIN_URL . 'Assets/svg/back.svg',
+                            'info'                     => WLOPT_PLUGIN_URL . 'Assets/svg/info.svg',
                         ],
                         false
                     );

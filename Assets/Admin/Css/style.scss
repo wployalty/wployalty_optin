@@ -400,7 +400,7 @@ $border-color: #E7E7EF;
       padding: 12px;
       display: flex;
       flex-direction: column;
-      gap: 25px;
+      gap: 16px;
     }
 
     .wlopt-button-block {
@@ -427,6 +427,21 @@ $border-color: #E7E7EF;
       letter-spacing: 0;
       color: rgba(255, 255, 255, 1);
       gap: 7px;
+    }
+
+    .wlopt-alert-message {
+      display: flex !important;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 8px;
+      color: #856404;
+      background-color: #fff3cd;
+      border-color: #ffeeba;
+      padding: 0.75rem 1.25rem;
+      border-radius: 0.4rem;
+      font-weight: 600;
+      font-size: 14px;
+      width: fit-content;
     }
 
     .wlopt-save-changes {
