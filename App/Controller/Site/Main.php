@@ -267,20 +267,24 @@ class Main {
 		if ( empty( $user ) || ! is_object( $user ) ) {
 			return;
 		}
-		$accept_wployalty_membership = Users::getUserOptinStatus($user->user_email);
-		if ( isset( $user->ID ) ) {
-            $optin_status = $accept_wployalty_membership ? 1 : 0;
-            if ($accept_wployalty_membership == 'no_data') {
-                $options      = get_option( 'wlopt_settings', [] );
-                $optin_status =  $options['existing_user_wlr_preference'] ?? 0;
-            }
+        $accept_wployalty_membership = Users::getUserOptinStatus($user->user_email);
+        if ( isset( $user->ID ) ) {
+            $optin_user_data = Users::getOptinData($user->user_email);
+            $optin_status = $optin_user_data['optin_status'] ?? 0;
             $loyalty_user_data = Woocommerce::getLoyaltyUserData( $user->user_email );
             $data = array(
+                'id' => $optin_user_data['id'] ?? 0,
                 'user_email'    => $user->user_email,
                 'wp_user_id'    => $user->ID ?? null,
                 'wlr_user_id'   => $loyalty_user_data->ID ?? null,
                 'optin_status'  => $optin_status,
             );
+
+            if ($accept_wployalty_membership == 'no_data') {
+                $options      = get_option( 'wlopt_settings', [] );
+                $optin_status =  $options['existing_user_wlr_preference'] ?? 0;
+                $data['optin_status'] = $optin_status;
+            }
             Users::save($data);
 		}
 		if ( !Users::getUserOptinStatus($user->user_email) ) {
@@ -428,7 +432,7 @@ class Main {
     public static function updateUserOptInStatus($user_email, $optin_status): void
     {
         $user_data = get_user_by('email', $user_email);
-        $optin_data = Users::getOptionData($user_email);
+        $optin_data = Users::getOptinData($user_email);
         $loyalty_user_data = Woocommerce::getLoyaltyUserData($user_email);
         $data = array(
             'user_email' => $user_email,

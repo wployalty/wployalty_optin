@@ -43,7 +43,7 @@ class Users extends Model
      * @param $user_email
      * @return array|false
      */
-    public static function getOptionData($user_email) {
+    public static function getOptinData($user_email) {
         if ( empty( $user_email ) ) {
             return false;
         }
