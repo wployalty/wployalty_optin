@@ -16,12 +16,14 @@ $customers_details = $customers_details ?? [];
         <div class="wlopt-customers-header">
             <div class="wlopt-customers-heading"><p><?php esc_html_e( 'CUSTOMERS', 'wp-loyalty-optin' ) ?></p></div>
             <div class="wlopt-button-block">
-                <button class="wlopt-customer-type wlopt-active-customer-type" data-type="opt-in">
-                    <?php esc_html_e( 'Opt In', 'wp-loyalty-optin' ); ?>
-                </button>
-                <button class="wlopt-customer-type">
-                    <?php esc_html_e( 'Opt Out', 'wp-loyalty-optin' ); ?>
-                </button>
+                <div class="wlopt-customer-list-actions ">
+                    <button class="wlopt-customer-type wlopt-active-customer-type" data-type="opt-in">
+                        <?php esc_html_e( 'Opt In', 'wp-loyalty-optin' ); ?>
+                    </button>
+                    <button class="wlopt-customer-type">
+                        <?php esc_html_e( 'Opt Out', 'wp-loyalty-optin' ); ?>
+                    </button>
+                </div>
                 <div class="search-container">
                     <input type="text" id="wlopt-customer-email-search" class="search-input" placeholder="Search email..." />
                     <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
