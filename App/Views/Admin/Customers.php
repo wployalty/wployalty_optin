@@ -16,7 +16,7 @@ $customers_details = $customers_details ?? [];
         <div class="wlopt-customers-header">
             <div class="wlopt-customers-heading"><p><?php esc_html_e( 'CUSTOMERS', 'wp-loyalty-optin' ) ?></p></div>
             <div class="wlopt-button-block">
-                <div class="wlopt-customer-list-actions ">
+                <div class="wlopt-customer-type-actions">
                     <button class="wlopt-customer-type wlopt-active-customer-type" data-type="opt-in">
                         <?php esc_html_e( 'Opt In', 'wp-loyalty-optin' ); ?>
                     </button>
