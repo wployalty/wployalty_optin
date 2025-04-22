@@ -92,7 +92,14 @@ wlopt = window.wlopt || {};
         let page_no = $(document).find('.wlopt-page-no').html();
         wlopt_jquery.getCustomerData(list_no, page_no);
     });
-    $(document).on('input', '#wlopt-customer-email-search', function () {
+    $(document).on('click', '.search-container .search-icon', function (event) {
+        let list_no = $(document).find('#wlpot-customer-list-count').val();
+        wlopt_jquery.getCustomerData(list_no, 1);
+    });
+    $(document).on('keydown', '#wlopt-customer-email-search', function (event) {
+        if (event.key != 'Enter') {
+            return
+        }
         let list_no = $(document).find('#wlpot-customer-list-count').val();
         wlopt_jquery.getCustomerData(list_no, 1);
     });

@@ -203,7 +203,7 @@
   width: 1rem;
   height: 1rem;
   fill: #9ca3af;
-  pointer-events: none;
+  pointer-events: auto;
 }
 #wlopt-main-page #wlopt-customer-page #wlopt-customer-details {
   overflow-x: auto;
