@@ -403,7 +403,7 @@ class Main {
     public static function checkBlockCheckoutEarning( \WC_Customer $customer, \WP_REST_Request $request ) {
         if ( ! isset( $request['extensions'] )
             || ! isset( $request['extensions']['wlopt_checkout_block'] )
-            || ! isset( $request['extensions']['wlopt_checkout_block']['wpl_optin'] )
+            || ! isset( $request['extensions']['wlopt_checkout_block']['wlr_optin'] )
         ) {
             return;
         }
@@ -418,7 +418,7 @@ class Main {
             return;
         }
 
-        $accept_wployalty_membership = $request['extensions']['wlopt_checkout_block']['wpl_optin'] ? 1 : 0;
+        $accept_wployalty_membership = $request['extensions']['wlopt_checkout_block']['wlr_optin'] ? 1 : 0;
         self::updateUserOptInStatus($user_email, $accept_wployalty_membership);
     }
 

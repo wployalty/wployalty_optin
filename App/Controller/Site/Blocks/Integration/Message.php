@@ -78,7 +78,7 @@ class Message implements IntegrationInterface {
 		};
 
 		return [
-			'wpl_optin' => [
+			'wlr_optin' => [
 				'description' => __( 'Checkout opt-in checkbox', 'wp-loyalty-optin' ),
 				'type'        => [ 'boolean', 'null' ],
 				'context'     => [],

@@ -8,7 +8,7 @@ const {
 } = wc.blocksCheckout;
 const {addAction} = wp.hooks;
 const {__} = wp.i18n;
-const {useState, useCallback} = wp.element;
+const {useState, useCallback, useEffect} = wp.element;
 
 function getSettings() {
     return wc.wcSettings.getSetting("wp-loyalty-optin-message_data");
@@ -26,9 +26,14 @@ if (is_enable_optin_field) {
         const {setExtensionData} = checkoutExtensionData;
         const onCheckboxChange = useCallback((event) => {
             const value = event.target.checked;
-            setExtensionData('wlopt_checkout_block', 'wpl_optin', value);
+            setExtensionData('wlopt_checkout_block', 'wlr_optin', value);
             setWlrOptin(value);
         }, [setWlrOptin, setExtensionData]);
+
+        useEffect(() => {
+            setExtensionData('wlopt_checkout_block', 'wlr_optin', wlrOptin);
+        }, []);
+
         return (
             <div className={'wlr-optin-field'}>
                 <input
@@ -38,7 +43,7 @@ if (is_enable_optin_field) {
                     onChange={onCheckboxChange}
                     className={'wlr-optin-checkbox'}
                 />
-                <label htmlFor={"wpl_optin"}>
+                <label htmlFor={"wlr_optin"}>
                     {__('Check this to become member of WPLoyalty', 'wp-loyalty-optin')}
                 </label>
             </div>
