@@ -57,6 +57,7 @@ class Main {
                         [
                             'customers_details' => $customers_details,
                             'back'              => WLOPT_PLUGIN_URL . 'Assets/svg/back.svg',
+                            'search'            => WLOPT_PLUGIN_URL . 'Assets/svg/search.svg',
                             'app_url'           => admin_url('admin.php?' . http_build_query(array('page' => WLR_PLUGIN_SLUG))) . '#/apps',
                         ],
                         false
