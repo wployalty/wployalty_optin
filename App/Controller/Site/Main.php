@@ -23,13 +23,14 @@ class Main {
 	 */
 	public static $email;
 
-	/**
-	 * Checks status and prevent earning.
-	 *
-	 * @return void
-	 */
-	public static function preventWPLoyaltyMembership() {
-		if ( self::checkStatus() ) {
+    /**
+     * Checks status and prevent earning.
+     *
+     * @param $user_email
+     * @return void
+     */
+	public static function preventWPLoyaltyMembership($user_email = '') {
+		if ( self::checkStatus($user_email) ) {
 			return;
 		}
 		//display message
@@ -69,13 +70,14 @@ class Main {
         add_filter('wlr_before_process_order_earning', '__return_false', 1);
 	}
 
-	/**
-	 * Check status of earning.
-	 *
-	 * @return bool Return true if opted, false if not opted.
-	 */
-	public static function checkStatus() {
-		$user_email = self::getEmail();
+    /**
+     * Check status of earning.
+     *
+     * @param $user_email
+     * @return bool|mixed|string|null
+     */
+	public static function checkStatus($user_email = '') {
+		$user_email = !empty($user_email) ? $user_email : self::getEmail();
 		if ( empty( $user_email ) ) {
 			return apply_filters( 'wlopt_work_on_guest_user', false );
 		}
@@ -95,6 +97,25 @@ class Main {
 
 		return $optin_status;
 	}
+
+    /**
+     * Handle order status change.
+     *
+     * @param $order_id
+     * @param $from_status
+     * @param $to_status
+     * @param $order_obj
+     * @return void
+     */
+    public static function handleOrderStatusChange($order_id, $from_status, $to_status, $order_obj) {
+        if ( is_object( $order_obj ) ) {
+            $user_email = Woocommerce::getOrderEmail( $order_obj );
+
+            if (self::checkStatus($user_email) ) {
+                add_filter('wlr_before_process_order_earning', '__return_true', 1);
+            }
+        }
+    }
 
 	/**
 	 * Get logged user email.
@@ -340,17 +361,13 @@ class Main {
      */
     public static function saveCheckoutFormData( $order, $data ) {
         $accept_wployalty_membership = Input::get( 'accept_wployalty_membership' );
-        $user_email = self::getEmail();
-        if (empty($user_email)) {
-            $user_email = isset( $data['billing_email'] )
-            && ! empty( $data['billing_email'] )
-                ? $data['billing_email'] : "";
-        }
+        $user_email = isset( $data['billing_email'] ) && ! empty( $data['billing_email'] )
+            ? $data['billing_email'] : "";
         if ( empty( $user_email ) ) {
             return;
         }
         self::updateUserOptInStatus($user_email, $accept_wployalty_membership);
-        self::preventWPLoyaltyMembership();
+        self::preventWPLoyaltyMembership($user_email);
     }
 
 	public static function handleExistingUserPreference() {
@@ -410,10 +427,7 @@ class Main {
         if ( ! is_object( $customer ) ) {
             return;
         }
-        $user_email = self::getEmail();
-        if (empty($user_email)) {
-            $user_email = $customer->get_billing_email();
-        }
+        $user_email = $customer->get_billing_email();
         if ( empty( $user_email )  || ! is_email( $user_email ) ) {
             return;
         }

@@ -76,6 +76,14 @@ class Woocommerce {
         return $user_modal->getWhere( $where, "*", true );
     }
 
+    static function isMethodExists( $object, $method_name ) {
+        if ( is_object( $object ) && method_exists( $object, $method_name ) ) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * Is WPLoyalty user.
      *
@@ -104,6 +112,15 @@ class Woocommerce {
 			return false;
 		}
 	}
+
+    public static function getOrderEmail( $order ) {
+        $user_email = '';
+        if ( self::isMethodExists( $order, 'get_billing_email' ) ) {
+            $user_email = sanitize_email( $order->get_billing_email() );
+        }
+
+        return apply_filters( 'wlopt_order_email', $user_email, $order );
+    }
 
 	/**
 	 * render template.
