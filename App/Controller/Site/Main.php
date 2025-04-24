@@ -73,8 +73,11 @@ class Main {
         add_filter( 'wlr_earn_point_friend_referral', '__return_false', 1);
         add_filter( 'wlr_earn_coupon_friend_referral', '__return_false', 1);
 
-        add_filter( 'wlr_earn_point_achievement', '__return_false', 1);
-        add_filter( 'wlr_earn_coupon_achievement', '__return_false', 1);
+        add_filter( 'wlr_achievement_check_status', '__return_true', 1);
+
+        add_filter( 'wlr_is_referral_eligible_for_earning', function ($action_type, $extra) {
+            return self::checkStatus($extra['user_email']);
+        }, 10, 2);
 	}
 
     /**
