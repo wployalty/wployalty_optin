@@ -21,7 +21,7 @@ if (!empty($customers_details['customers'])) { ?>
             <th><?php echo esc_html__('Email', 'wp-loyalty-optin'); ?></th>
             <th><?php echo esc_html__('Point balance', 'wp-loyalty-optin'); ?></th>
             <th><?php echo esc_html__('Total Earned', 'wp-loyalty-optin'); ?></th>
-            <th><?php echo esc_html__(' Redeemed', 'wp-loyalty-optin'); ?></th>
+            <th><?php echo esc_html__('Points Redeemed', 'wp-loyalty-optin'); ?></th>
         </tr>
         </thead>
         <tbody>
