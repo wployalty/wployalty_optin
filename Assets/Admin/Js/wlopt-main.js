@@ -74,7 +74,7 @@ wlopt = window.wlopt || {};
     $(document).on('change', '#wlpot-customer-list-count', function () {
         let list_no = $(document).find('#wlpot-customer-list-count').val();
         let page_no = $(document).find('.wlopt-page-no').html();
-        wlopt_jquery.getCustomerData(list_no, page_no);
+        wlopt_jquery.getCustomerData(list_no, 1);
     });
     $(document).on('click', '#wlopt-prev-page', function () {
         let page_no_html = $(document).find('.wlopt-page-no').html();
