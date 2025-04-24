@@ -68,6 +68,13 @@ class Main {
 		}, 10, 2 );
 
         add_filter('wlr_before_process_order_earning', '__return_false', 1);
+        add_filter( 'wlr_earn_point_advocate_referral', '__return_false', 1);
+        add_filter( 'wlr_earn_coupon_advocate_referral', '__return_false', 1);
+        add_filter( 'wlr_earn_point_friend_referral', '__return_false', 1);
+        add_filter( 'wlr_earn_coupon_friend_referral', '__return_false', 1);
+
+        add_filter( 'wlr_earn_point_achievement', '__return_false', 1);
+        add_filter( 'wlr_earn_coupon_achievement', '__return_false', 1);
 	}
 
     /**
