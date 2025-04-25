@@ -216,7 +216,7 @@ class Main {
             $page_no = Input::get( 'page_no', 1 );
             $search_email = Input::get( 'search_email', '' );
             $customer_type = ($customer_type == 'opt-in') ? 1 : 0;
-            $customers_details = self::getCustomersDetails( $customer_type, $list_no, $page_no, $search_email );
+            $customers_details = self::getCustomersDetails( $customer_type, $list_no, $page_no, filter_var( $search_email, FILTER_SANITIZE_EMAIL ) );
             $html = Woocommerce::renderTemplate(
                 WLOPT_VIEW_PATH . '/Admin/Components/CustomerTable.php', [
                     'customers_details' => $customers_details,
