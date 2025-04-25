@@ -153,6 +153,7 @@ class Main {
 			'saving_button_label'   => __( 'Saving...', 'wp-loyalty-optin' ),
 			'saved_button_label'    => __( 'Save Changes', 'wp-loyalty-optin' ),
 			'onboarding_save_nonce' => wp_create_nonce( 'wlopt_onboarding_save_nonce' ),
+            'validation_error'    => __( 'Basic validation failed', 'wp-loyalty-optin' ),
 		];
 		wp_localize_script( WLOPT_PLUGIN_SLUG . '-main-script', 'wlopt_localize_data', $localize );
 	}
@@ -216,7 +217,7 @@ class Main {
             $page_no = Input::get( 'page_no', 1 );
             $search_email = Input::get( 'search_email', '' );
             $customer_type = ($customer_type == 'opt-in') ? 1 : 0;
-            $customers_details = self::getCustomersDetails( $customer_type, $list_no, $page_no, filter_var( $search_email, FILTER_SANITIZE_EMAIL ) );
+            $customers_details = self::getCustomersDetails( $customer_type, $list_no, $page_no, $search_email );
             $html = Woocommerce::renderTemplate(
                 WLOPT_VIEW_PATH . '/Admin/Components/CustomerTable.php', [
                     'customers_details' => $customers_details,
@@ -224,7 +225,7 @@ class Main {
                 ],
                 false
             );
-            wp_send_json_success( [ 'html' => $html ] );
+            wp_send_json_success( [ 'html' => $html, 'search_value' => $search_email ] );
         } catch ( \Exception $e ) {
             wp_send_json_error( [ 'message' => $e->getMessage() ] );
         }
