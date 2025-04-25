@@ -99,8 +99,12 @@ class Users extends Model
         if (empty($user)) {
             return false;
         }
+        $optin_users_table = self::getTableName();
 
-        $id = $user['id'] ?? 0;
+        $exists_user_id = self::getScalar(
+            self::prepareQuery("SELECT id FROM $optin_users_table WHERE user_email = %s", [$user['user_email']])
+        );
+
         $data = [
             'user_email' => $user['user_email'],
             'wp_user_id' => !empty($user['wp_user_id']) ? (int)$user['wp_user_id'] : 0,
@@ -109,12 +113,12 @@ class Users extends Model
         ];
         $format = ['%s', '%d', '%d', '%d'];
 
-        if (empty($id)) {
+        if (empty($exists_user_id)) {
             if (!($user['id'] = self::insert($data, $format))) {
                 return false;
             }
         } else {
-            if (!self::updateById((int)$id, $data, $format)) {
+            if (!self::updateById((int)$exists_user_id, $data, $format)) {
                 return false;
             }
         }
