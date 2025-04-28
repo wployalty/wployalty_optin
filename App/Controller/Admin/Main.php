@@ -224,7 +224,7 @@ class Main {
                 ],
                 false
             );
-            wp_send_json_success( [ 'html' => $html, 'search_value' => $search_email ] );
+            wp_send_json_success( [ 'html' => $html] );
         } catch ( \Exception $e ) {
             wp_send_json_error( [ 'message' => $e->getMessage() ] );
         }
