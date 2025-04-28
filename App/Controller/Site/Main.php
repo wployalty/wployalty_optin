@@ -302,27 +302,28 @@ class Main {
 		if ( empty( $user ) || ! is_object( $user ) ) {
 			return;
 		}
-        $accept_wployalty_membership = Users::getUserOptinStatus($user->user_email);
+        $email = $user->user_email;
+        $accept_wployalty_membership = Users::getUserOptinStatus($email);
         if ( isset( $user->ID ) ) {
-            $optin_user_data = Users::getOptinData($user->user_email);
+            $optin_user_data = Users::getOptinData($email);
             $optin_status = $optin_user_data['optin_status'] ?? 0;
-            $loyalty_user_data = Woocommerce::getLoyaltyUserData( $user->user_email );
+            $loyalty_user_data = Woocommerce::getLoyaltyUserData( $email );
             $data = array(
                 'id' => $optin_user_data['id'] ?? 0,
-                'user_email'    => $user->user_email,
+                'user_email'    => $email,
                 'wp_user_id'    => $user->ID ?? null,
                 'wlr_user_id'   => $loyalty_user_data->ID ?? null,
                 'optin_status'  => $optin_status,
             );
 
-            if ($accept_wployalty_membership == 'no_data') {
+            if ($accept_wployalty_membership === 'no_data') {
                 $options      = get_option( 'wlopt_settings', [] );
                 $optin_status =  $options['existing_user_wlr_preference'] ?? 0;
                 $data['optin_status'] = $optin_status;
             }
             Users::save($data);
 		}
-		if ( !Users::getUserOptinStatus($user->user_email) ) {
+		if ( !Users::getUserOptinStatus($email) ) {
 			add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
 		}
 	}
