@@ -67,11 +67,12 @@ class Main {
 			return '';
 		}, 10, 2 );
 
-        add_filter('wlr_before_process_order_earning', '__return_false', 1);
+        add_filter( 'wlr_before_process_order_earning', '__return_false', 1);
         add_filter( 'wlr_earn_point_advocate_referral', '__return_false', 1);
         add_filter( 'wlr_earn_coupon_advocate_referral', '__return_false', 1);
         add_filter( 'wlr_earn_point_friend_referral', '__return_false', 1);
         add_filter( 'wlr_earn_coupon_friend_referral', '__return_false', 1);
+        add_filter( 'wlr_hide_product_review_message', '__return_true', 1 );
 
         add_filter( 'wlr_achievement_check_status', '__return_true', 1);
 
