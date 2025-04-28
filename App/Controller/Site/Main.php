@@ -94,7 +94,7 @@ class Main {
 		}
         $optin_status = Users::getUserOptinStatus($user_email);
 
-        if ( $optin_status == 'no_data') {
+        if ( $optin_status === 'no_data') {
             $user_data = get_user_by( 'email', $user_email );
             $loyalty_user_data = Woocommerce::getLoyaltyUserData( $user_email );
             $data = array(
