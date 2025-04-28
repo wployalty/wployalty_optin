@@ -218,8 +218,11 @@ class Main {
 			wp_send_json( $json );
 		}
         self::updateUserOptInStatus($user_email, $accept_wployalty_membership);
-        $json['success']         = true;
-        $json['data']['message'] = __( 'Updated successfully', 'wp-loyalty-optin' );
+        $json = [
+            'success' => true,
+            'message' => __( 'Updated successfully', 'wp-loyalty-optin' ),
+            'reload' => true
+        ];
 		wp_send_json( $json );
 	}
 

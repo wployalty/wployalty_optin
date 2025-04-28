@@ -21,8 +21,10 @@ wlopt = window.wlopt || {};
                 wlopt_nonce: wlopt_localize_data.update_wployalty_membership,
                 accept_wployalty_membership: update_wployalty_membership
             },
-            success: function (json) {
-                window.location.reload();
+            success: function (response) {
+                if (response.reload) {
+                    window.location.reload();
+                }
             }
         });
     });
