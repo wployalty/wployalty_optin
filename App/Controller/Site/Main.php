@@ -374,7 +374,7 @@ class Main {
      */
     public static function saveCheckoutFormData( $order, $data ) {
         $accept_wployalty_membership = Input::get( 'accept_wployalty_membership' );
-        $user_email = isset( $data['billing_email'] ) && ! empty( $data['billing_email'] )
+        $user_email = ! empty( $data['billing_email'] )
             ? $data['billing_email'] : "";
         if ( empty( $user_email ) ) {
             return;
