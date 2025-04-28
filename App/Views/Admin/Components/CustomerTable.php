@@ -68,5 +68,8 @@ if (!empty($customers_details['customers'])) { ?>
         </div>
     </div>
 <?php } else { ?>
-    <div id="wlpot-no-customer-message"><?php echo esc_html__('No Customers', 'wp-loyalty-optin'); ?>.</div>
+    <div id="wlpot-no-customer-message">
+        <?php echo esc_html__('No Customers to display', 'wp-loyalty-optin'); ?>.
+        <p><?php echo esc_html__('No customers found for your search. Please try different filters', 'wp-loyalty-optin'); ?></p>
+    </div>
 <?php } ?>
