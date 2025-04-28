@@ -2,7 +2,7 @@
 /**
  * Plugin Name: WPLoyalty - Optin
  * Plugin URI: https://www.wployalty.net
- * Description: Accept/Decline the WPLoyalty option to user.
+ * Description: WPLoyalty's Opt-in Add-on allows you to give customers the choice to Accept/Decline your loyalty program through a simple checkbox..
  * Version: 1.0.0
  * Author: WPLoyalty
  * Slug: wp-loyalty-optin
