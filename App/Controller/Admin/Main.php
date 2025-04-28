@@ -153,7 +153,6 @@ class Main {
 			'saving_button_label'   => __( 'Saving...', 'wp-loyalty-optin' ),
 			'saved_button_label'    => __( 'Save Changes', 'wp-loyalty-optin' ),
 			'onboarding_save_nonce' => wp_create_nonce( 'wlopt_onboarding_save_nonce' ),
-            'validation_error'    => __( 'Basic validation failed', 'wp-loyalty-optin' ),
 		];
 		wp_localize_script( WLOPT_PLUGIN_SLUG . '-main-script', 'wlopt_localize_data', $localize );
 	}

@@ -126,11 +126,6 @@ wlopt = window.wlopt || {};
             success: function (response) {
                 if (response.data.html) {
                     $(document).find('#wlopt-customer-details').html(response.data.html);
-                    if (email_search !== '' && response.data.search_value === '') {
-                        alertify.set('notifier', 'position', 'top-right');
-                        alertify.error(wlopt_localize_data.validation_error);
-                        $(document).find('#wlopt-customer-email-search').val(response.data.search_value);
-                    }
                 }
             },
             error: function (xhr, status, error) {
