@@ -79,6 +79,8 @@ class Main {
         add_filter( 'wlr_is_referral_eligible_for_earning', function ($action_type, $extra) {
             return self::checkStatus($extra['user_email']);
         }, 10, 2);
+
+        add_filter( 'wlr_is_referral_eligible_for_earning', '__return_false', 1 );
 	}
 
     /**
