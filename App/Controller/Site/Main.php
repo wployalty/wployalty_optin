@@ -80,7 +80,14 @@ class Main {
             return self::checkStatus($extra['user_email']);
         }, 10, 2);
 
-        add_filter( 'wlr_check_social_share_status', '__return_false', 1 );
+        add_filter( 'wlr_check_social_share_status', '__return_false' );
+
+        add_filter( 'wlr_before_add_to_loyalty_customer', function ($status, $user_id, $user_email) {
+            if (!empty($user_email)) {
+                return self::checkStatus($user_email);
+            }
+            return $status;
+        }, 10, 3 );
 	}
 
     /**
