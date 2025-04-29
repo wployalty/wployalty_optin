@@ -80,7 +80,7 @@ class Main {
             return self::checkStatus($extra['user_email']);
         }, 10, 2);
 
-        add_filter( 'wlr_is_referral_eligible_for_earning', '__return_false', 1 );
+        add_filter( 'wlr_check_social_share_status', '__return_false', 1 );
 	}
 
     /**
