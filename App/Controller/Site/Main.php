@@ -55,6 +55,15 @@ class Main {
 		add_filter( 'wlr_show_signup_message_for_guest_user', '__return_false' );
 		//hide birthday input
 		add_filter( 'wlr_show_birthday_input_for_guest_user', '__return_false' );
+
+        add_filter( 'wlr_birthday_points_user_eligibility', function ($status, $user_email) {
+            if (!empty($user_email)) {
+                return self::checkStatus($user_email);
+            }
+
+            return $status;
+        });
+
 		//hide earn message in block cart & checkout
 		add_filter( 'wlr_points_rewards_earn_points_message', function ( $message, $short_code_list ) {
 			return '';
@@ -80,6 +89,7 @@ class Main {
         add_filter( 'wlr_check_social_share_status', '__return_false', 1 );
 
         add_filter( 'wlr_point_approve_add_product_review_points', '__return_false', 1 );
+        add_filter( 'wlr_point_post_add_product_review_points', '__return_false', 1 );
 
         add_filter( 'wlr_before_add_to_loyalty_customer', function ($status, $user_id, $user_email) {
             if (!empty($user_email)) {
