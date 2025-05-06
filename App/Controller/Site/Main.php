@@ -108,11 +108,12 @@ class Main {
         if ( $optin_status === 'no_data') {
             $user_data = get_user_by( 'email', $user_email );
             $loyalty_user_data = Woocommerce::getLoyaltyUserData( $user_email );
+            $optin_status = !empty( $loyalty_user_data ) ? 1 : 0;
             $data = array(
                 'user_email' => $user_email,
                 'wp_user_id' => $user_data->ID,
                 'wlr_user_id' => $loyalty_user_data->id ?? null,
-                'optin_status' => !empty( $loyalty_user_data ) ? 1 : 0,
+                'optin_status' => $optin_status,
             );
             Users::save($data);
         }
@@ -135,6 +136,8 @@ class Main {
 
             if (self::checkStatus($user_email) ) {
                 add_filter('wlr_before_process_order_earning', '__return_true', 1);
+            } else {
+                add_filter('wlr_before_process_order_earning', '__return_false', 1);
             }
         }
     }
