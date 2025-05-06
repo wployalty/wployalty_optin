@@ -12,6 +12,7 @@ use Wlopt\App\Controller\Site\Blocks\Integration\Message;
 use Wlopt\App\Helper\Input;
 use Wlopt\App\Helper\Woocommerce;
 use Wlopt\App\Model\Users;
+use Wlr\App\Premium\Controllers\Site\Referral;
 
 defined( "ABSPATH" ) or die();
 
@@ -68,17 +69,13 @@ class Main {
 		}, 10, 2 );
 
         add_filter( 'wlr_before_process_order_earning', '__return_false', 1);
-        add_filter( 'wlr_earn_point_advocate_referral', '__return_false', 1);
-        add_filter( 'wlr_earn_coupon_advocate_referral', '__return_false', 1);
-        add_filter( 'wlr_earn_point_friend_referral', '__return_false', 1);
-        add_filter( 'wlr_earn_coupon_friend_referral', '__return_false', 1);
         add_filter( 'wlr_hide_product_review_message', '__return_true', 1 );
 
         add_filter( 'wlr_achievement_check_status', '__return_true', 1);
 
-        add_filter( 'wlr_is_referral_eligible_for_earning', function ($action_type, $extra) {
+        add_filter( 'wlr_is_referral_eligible_for_earning', function ($status, $action_type, $extra) {
             return self::checkStatus($extra['user_email']);
-        }, 10, 2);
+        }, 10, 3);
 
         add_filter( 'wlr_check_social_share_status', '__return_false', 1 );
 
