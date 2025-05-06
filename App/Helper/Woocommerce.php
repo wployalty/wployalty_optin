@@ -72,7 +72,7 @@ class Woocommerce {
         }
         global $wpdb;
         $user_modal = new Users();
-        $where = $wpdb->prepare( "user_email = %s AND is_banned_user = %d ", array( $user_email, 0 ) );
+        $where = $wpdb->prepare( "user_email = %s AND is_banned_user = %d ", array( $user_email, $exclude_banned_user ) );
         return $user_modal->getWhere( $where, "*", true );
     }
 
