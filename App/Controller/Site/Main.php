@@ -89,8 +89,6 @@ class Main {
             return self::checkStatus($extra['user_email']);
         }, 10, 3);
 
-        add_filter( 'wlr_check_social_share_status', '__return_false', 1 );
-
         add_filter( 'wlr_point_approve_add_product_review_points', '__return_false', 1 );
         add_filter( 'wlr_point_post_add_product_review_points', '__return_false', 1 );
 
