@@ -96,9 +96,10 @@ class Users extends Model
      */
     public static function save( $user )
     {
-        if (empty($user)) {
+        if (empty($user) || !is_email($user['user_email'])) {
             return false;
         }
+
         $optin_users_table = self::getTableName();
 
         $exists_user_id = self::getScalar(

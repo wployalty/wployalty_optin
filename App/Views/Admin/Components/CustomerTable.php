@@ -26,10 +26,11 @@ if (!empty($customers_details['customers'])) { ?>
         </thead>
         <tbody>
         <?php foreach ($customers_details['customers'] as $key => $customer) : ?>
+            <?php if (!empty($customer['user_email']) && is_email($customer['user_email'])) : ?>
             <tr>
                 <td><?php echo esc_html($key + $index); ?></td>
                 <td>
-                    <?php echo !empty($customer['user_email']) ? esc_html($customer['user_email']) : esc_html__('N/A', 'wp-loyalty-optin'); ?>
+                    <?php echo esc_html($customer['user_email']); ?>
                 </td>
                 <td>
                     <?php echo !empty($customer['points']) ? esc_html($customer['points']) : '0'; ?>
@@ -41,6 +42,7 @@ if (!empty($customers_details['customers'])) { ?>
                     <?php echo !empty($customer['used_total_points']) ? esc_html($customer['used_total_points']) : '0'; ?>
                 </td>
             </tr>
+            <?php endif; ?>
         <?php endforeach; ?>
         </tbody>
     </table>
