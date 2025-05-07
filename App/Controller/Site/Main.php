@@ -81,6 +81,9 @@ class Main {
         add_filter( 'wlr_hide_product_review_message', '__return_true', 1 );
 
         add_filter( 'wlr_achievement_check_status', '__return_true', 1);
+        add_filter( 'wlr_is_eligible_for_earning', function ( $status, $action_type, $extra ) {
+            return self::checkStatus($extra['user_email']);
+        }, 10, 3 );
 
         add_filter( 'wlr_is_referral_eligible_for_earning', function ($status, $action_type, $extra) {
             return self::checkStatus($extra['user_email']);
