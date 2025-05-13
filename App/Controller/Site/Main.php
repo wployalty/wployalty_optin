@@ -12,7 +12,6 @@ use Wlopt\App\Controller\Site\Blocks\Integration\Message;
 use Wlopt\App\Helper\Input;
 use Wlopt\App\Helper\Woocommerce;
 use Wlopt\App\Model\Users;
-use Wlr\App\Premium\Controllers\Site\Referral;
 
 defined( "ABSPATH" ) or die();
 
@@ -119,8 +118,8 @@ class Main {
             $optin_status = !empty( $loyalty_user_data ) ? 1 : 0;
             $data = array(
                 'user_email' => $user_email,
-                'wp_user_id' => $user_data->ID,
-                'wlr_user_id' => $loyalty_user_data->id ?? null,
+                'wp_user_id' => $user_data ? $user_data->ID : null,
+                'wlr_user_id' => $loyalty_user_data ? $loyalty_user_data->id : null,
                 'optin_status' => $optin_status,
             );
             Users::save($data);
