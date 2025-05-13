@@ -71,6 +71,7 @@ $border-color: #E7E7EF;
     z-index: 10;
     width: 100%;
     align-items: center;
+    flex-wrap: wrap;
 
     a {
       display: flex;
@@ -530,7 +531,7 @@ $border-color: #E7E7EF;
       position: relative;
       display: flex;
       flex: 1;
-      min-width: 350px;
+      width: 100%;
       max-width: 360px;
     }
 

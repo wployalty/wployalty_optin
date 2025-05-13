@@ -64,6 +64,7 @@
   z-index: 10;
   width: 100%;
   align-items: center;
+  flex-wrap: wrap;
 }
 #wlopt-main-page .wlopt-tabs a {
   display: flex;
@@ -470,7 +471,7 @@
   position: relative;
   display: flex;
   flex: 1;
-  min-width: 350px;
+  width: 100%;
   max-width: 360px;
 }
 #wlopt-main-page .wlopt-copy-field .wlopt-copy-container input {
