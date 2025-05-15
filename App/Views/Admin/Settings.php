@@ -44,9 +44,14 @@ defined( "ABSPATH" ) or die();
                     </div>
                     <div class="wlopt-alert-message">
                         <img src="<?php echo ( isset( $info ) && ! empty( $info ) ) ? esc_url( $info ) : ''; ?>">
-                        <span>
-                            <?php esc_html_e( 'Existing loyalty customers will be added to the Opt-in customers list upon logging in.', 'wp-loyalty-optin' ); ?>
-                        </span>
+                        <div>
+                            <span class="wlr-notice-header">
+                                <?php esc_html_e( 'Important', 'wp-loyalty-optin' ); ?>:
+                            </span>
+                            <span>
+                                <?php esc_html_e( 'Existing loyalty customers will be automatically added to the Opt-in customers list upon their next logging in', 'wp-loyalty-optin' ); ?>.
+                            </span>
+                        </div>
                     </div>
                     <div class="wlopt-field-block">
                         <div class="wlopt-copy-field">
