@@ -41,7 +41,7 @@ class Router {
         //register & login case
 		add_action( 'woocommerce_register_form', 'Wlopt\App\Controller\Site\Main::addRegistrationCheckbox' );
 		add_action( 'woocommerce_register_post', 'Wlopt\App\Controller\Site\Main::validateInRegisterForm', 10, 3 );
-		add_action( 'user_register', 'Wlopt\App\Controller\Site\Main::registerUserHandler', 9, 1 );
+		add_action( 'user_register', 'Wlopt\App\Controller\Site\Main::registerUserHandler', 1, 1 );
 		add_action( 'wp_login', 'Wlopt\App\Controller\Site\Main::loginUserHandler', 9, 2 );
 
         //Classic Checkout

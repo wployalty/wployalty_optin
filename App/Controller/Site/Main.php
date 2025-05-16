@@ -301,6 +301,9 @@ class Main {
 		$accept_wployalty_membership = Input::get( 'accept_wployalty_membership', 0 );
         if ( empty($accept_wployalty_membership) ) {
             add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
+        } else {
+            add_filter( 'wlr_before_add_to_loyalty_customer', '__return_true', 10, 1 );
+            add_filter( 'wlr_is_eligible_for_earning', '__return_true' );
         }
         $user_email = Input::get( 'email', '' );
         self::updateUserOptInStatus($user_email, $accept_wployalty_membership);
