@@ -88,8 +88,24 @@ class Main {
             return self::checkStatus($extra['user_email']);
         }, 10, 3);
 
-        add_filter( 'wlr_point_approve_add_product_review_points', '__return_false', 1 );
-        add_filter( 'wlr_point_post_add_product_review_points', '__return_false', 1 );
+        add_filter( 'wlr_point_approve_add_product_review_points', function ($status, $comment) {
+            if (!empty($comment->comment_author_email)) {
+                return self::checkStatus($comment->comment_author_email);
+            }
+            return $status;
+        }, 1, 2 );
+
+        add_filter( 'wlr_point_post_add_product_review_points', function ($status, $comment_id) {
+            if (empty($comment_id)) {
+                return $status;
+            }
+
+            $comment   = get_comment( $comment_id );
+            if (!empty($comment->comment_author_email)) {
+                return self::checkStatus($comment->comment_author_email);
+            }
+            return $status;
+        }, 1, 2 );
 
         add_filter( 'wlr_before_add_to_loyalty_customer', function ($status, $user_id, $user_email) {
             if (!empty($user_email)) {
