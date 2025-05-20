@@ -464,7 +464,8 @@ $border-color: #E7E7EF;
       border-radius: 0.4rem;
       font-weight: 600;
       font-size: 14px;
-      width: auto;
+      width: 80%;
+      margin: 24px auto;
 
       div {
         display: flex;
@@ -473,7 +474,7 @@ $border-color: #E7E7EF;
 
         .wlr-notice-header {
           font-weight: 600;
-          color: #524949;
+          color: #000;
           font-size: 16px;
 
         }

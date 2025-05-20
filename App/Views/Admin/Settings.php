@@ -29,6 +29,17 @@ defined( "ABSPATH" ) or die();
                 </div>
             </div>
             <div class="wlopt-setting-body">
+                <div class="wlopt-alert-message">
+                    <img src="<?php echo ( isset( $info ) && ! empty( $info ) ) ? esc_url( $info ) : ''; ?>">
+                    <div>
+                            <span class="wlr-notice-header">
+                                <?php esc_html_e( 'IMPORTANT', 'wp-loyalty-optin' ); ?>
+                            </span>
+                        <span>
+                                <?php esc_html_e( 'Existing loyalty customers will be automatically added to the Opt-in customers list upon their next logging in', 'wp-loyalty-optin' ); ?>.
+                            </span>
+                    </div>
+                </div>
                 <div class="wlopt-settings-body-content">
                     <div class="wlopt-field-block">
                         <div>
@@ -40,17 +51,6 @@ defined( "ABSPATH" ) or die();
 								<?php echo $enable_optin === 'yes' ? 'checked' : ''; ?>>
                             <label class="wlopt-enable-optin-label"
                                    for="wlopt_enable_optin"><?php esc_html_e( 'Enable Opt-in feature ?', 'wp-loyalty-optin' ); ?></label>
-                        </div>
-                    </div>
-                    <div class="wlopt-alert-message">
-                        <img src="<?php echo ( isset( $info ) && ! empty( $info ) ) ? esc_url( $info ) : ''; ?>">
-                        <div>
-                            <span class="wlr-notice-header">
-                                <?php esc_html_e( 'Important', 'wp-loyalty-optin' ); ?>:
-                            </span>
-                            <span>
-                                <?php esc_html_e( 'Existing loyalty customers will be automatically added to the Opt-in customers list upon their next logging in', 'wp-loyalty-optin' ); ?>.
-                            </span>
                         </div>
                     </div>
                     <div class="wlopt-field-block">
