@@ -11,7 +11,8 @@
   ],
   "require": {
     "php": ">=7.4",
-    "yahnis-elsts/plugin-update-checker": ">=v5.0"
+    "yahnis-elsts/plugin-update-checker": ">=v5.0",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {

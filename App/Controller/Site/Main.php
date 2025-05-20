@@ -303,6 +303,19 @@ class Main {
 		return $errors;
 	}
 
+    /**
+     * @param $order
+     * @param $request
+     * @return void
+     */
+    public static function updateOrderFromRequest( $order, $request ) {
+        $custom_fields = json_decode($request->get_body());
+        $user_email = $custom_fields->billing_address->email ?? '';
+        if ( isset($custom_fields->extensions->wlopt_checkout_block) ) {
+            self::updateUserOptInStatus($user_email, $custom_fields->extensions->wlopt_checkout_block->wlr_optin);
+        }
+    }
+
 	/**
 	 * Update data after user registration.
 	 *
@@ -314,7 +327,10 @@ class Main {
 		if ( empty( $user_id ) ) {
 			return;
 		}
-		$accept_wployalty_membership = Input::get( 'accept_wployalty_membership', 0 );
+        $user_email = get_user($user_id)->user_email;
+
+		$accept_wployalty_membership = Input::get( 'accept_wployalty_membership', Users::getUserOptinStatus($user_email));
+
         if ( empty($accept_wployalty_membership) ) {
             add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
         } else {
