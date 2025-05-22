@@ -56,6 +56,7 @@ class Router {
             'Wlopt\App\Controller\Site\Main::checkBlockCheckoutEarning', 7, 2 );
 
         add_filter( 'wlr_delete_customer', [ __CLASS__, 'deleteOptInData' ], 10, 2 );
+        add_action( 'wp_set_comment_status', 'Wlopt\App\Controller\Site\Main::handleReviewApproval', 1, 2  );
 	}
 
     /**

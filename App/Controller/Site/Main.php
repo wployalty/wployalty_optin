@@ -95,6 +95,13 @@ class Main {
             return $status;
         }, 1, 2 );
 
+        add_filter( 'wlr_check_product_review_is_eligible', function ($status, $data) {
+            if (empty($data['user_email'])) {
+                return $status;
+            }
+            return self::checkStatus($data['user_email']);
+        } );
+
         add_filter( 'wlr_point_post_add_product_review_points', function ($status, $comment_id) {
             if (empty($comment_id)) {
                 return $status;
@@ -114,6 +121,47 @@ class Main {
             return $status;
         }, 10, 3 );
 	}
+
+    /**
+     * Handle review approval functions
+     *
+     * @param $comment_id
+     * @param $comment_status
+     * @return void
+     */
+    public static function handleReviewApproval( $comment_id, $comment_status )
+    {
+        if ($comment_status === 'approve') {
+            $comment = get_comment($comment_id);
+            if ($comment->comment_type === 'review') {
+                add_filter( 'wlr_check_product_review_is_eligible', function ($status, $data) {
+                    if (empty($data['user_email'])) {
+                        return $status;
+                    }
+                    return self::checkStatus($data['user_email']);
+                }, 1, 2 );
+
+                add_filter( 'wlr_point_approve_add_product_review_points', function ($status, $comment) {
+                    if (!empty($comment->comment_author_email)) {
+                        return self::checkStatus($comment->comment_author_email);
+                    }
+                    return $status;
+                }, 1, 2 );
+
+                add_filter( 'wlr_point_post_add_product_review_points', function ($status, $comment_id) {
+                    if (empty($comment_id)) {
+                        return $status;
+                    }
+
+                    $comment   = get_comment( $comment_id );
+                    if (!empty($comment->comment_author_email)) {
+                        return self::checkStatus($comment->comment_author_email);
+                    }
+                    return $status;
+                }, 1, 2 );
+            }
+        }
+    }
 
     /**
      * Check status of earning.
