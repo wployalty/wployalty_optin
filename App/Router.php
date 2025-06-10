@@ -34,7 +34,7 @@ class Router {
 			add_action( 'wp_ajax_update_wployalty_membership', 'Wlopt\App\Controller\Site\Main::updateMembershipPreference' );
 		}
         add_action( 'wp_enqueue_scripts', 'Wlopt\App\Controller\Site\Main::siteAssets' );
-        add_action( 'init', 'Wlopt\App\Controller\Site\Main::preventWPLoyaltyMembership' );
+        add_action( 'init', 'Wlopt\App\Controller\Site\Main::preventWPLoyaltyMembership', 1 );
         add_action( 'template_redirect', 'Wlopt\App\Controller\Site\Main::handleExistingUserPreference' );
         add_action( 'woocommerce_order_status_changed', 'Wlopt\App\Controller\Site\Main::handleOrderStatusChange', 1, 4 );
         add_shortcode( 'wlopt_update_loyalty_membership', 'Wlopt\App\Controller\Site\Main::updateMembership' );
