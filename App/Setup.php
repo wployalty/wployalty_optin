@@ -52,7 +52,7 @@ class Setup {
                     $model->create();
                 }
             } catch ( Exception $e ) {
-                exit( esc_html( WLR_PLUGIN_NAME . __( 'Plugin required table creation failed.', 'wp-loyalty-rules' ) ) );
+                exit( esc_html( WLR_PLUGIN_NAME . __( 'Plugin required table creation failed.', 'wp-loyalty-optin' ) ) );
             }
         }
     }

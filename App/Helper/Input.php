@@ -55,6 +55,7 @@ class Input {
 		if ( ! in_array( $type, self::$input_types ) ) {
 			throw new \UnexpectedValueException( 'Expected a valid type on get method' );
 		}
+        // phpcs:disable
 		switch ( $type ) {
 			case 'params':
 				return isset( $_REQUEST[ $var ] ) ? self::sanitize( $_REQUEST[ $var ], $sanitize ) : $default;
@@ -67,6 +68,7 @@ class Input {
 			default:
 				return $default;
 		}
+        // phpcs:enable
 	}
 
 	/**

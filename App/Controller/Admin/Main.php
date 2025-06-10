@@ -133,13 +133,15 @@ class Main {
 			WLOPT_PLUGIN_SLUG . '-alertify',
 			WLOPT_PLUGIN_URL . 'Assets/Admin/Js/alertify.js',
 			[],
-			WLOPT_PLUGIN_VERSION . '&t=' . time()
+			WLOPT_PLUGIN_VERSION . '&t=' . time(),
+            true
 		);
 		wp_register_script(
 			WLOPT_PLUGIN_SLUG . '-main-script',
 			WLOPT_PLUGIN_URL . 'Assets/Admin/Js/wlopt-main.js',
 			[ 'jquery' ],
-			WLOPT_PLUGIN_VERSION . '&t=' . time()
+			WLOPT_PLUGIN_VERSION . '&t=' . time(),
+            true
 		);
 		wp_enqueue_script( WLOPT_PLUGIN_SLUG . '-main-script' );
 

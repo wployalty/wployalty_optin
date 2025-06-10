@@ -241,7 +241,8 @@ class Main {
 			WLOPT_PLUGIN_SLUG . '-main',
 			WLOPT_PLUGIN_URL . 'Assets/Site/Js/main' . $suffix . '.js',
 			[ 'jquery' ],
-			WLOPT_PLUGIN_VERSION . '&t=' . time()
+			WLOPT_PLUGIN_VERSION . '&t=' . time(),
+            true
 		);
 		$localize = [
 			'ajax_url'                    => admin_url( 'admin-ajax.php' ),
@@ -272,9 +273,9 @@ class Main {
 		?>
         <div class="wlopt-update-membership">
             <input type="checkbox" name="update_wployalty_membership"
-                   id="update_wployalty_membership"<?php echo $checked ?>>
+                   id="update_wployalty_membership"<?php echo esc_attr( $checked ) ?>>
             <label for="update_wployalty_membership"
-                   class="wlr-text-color"><?php echo __( 'Check this to become a member of WPLoyalty program.',
+                   class="wlr-text-color"><?php echo esc_html__( 'Check this to become a member of WPLoyalty program.',
 					'wp-loyalty-optin' ) ?></label>
         </div>
 		<?php

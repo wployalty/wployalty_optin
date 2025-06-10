@@ -140,7 +140,7 @@ class Woocommerce {
 			$content = ob_get_clean();
 		}
 		if ( $display ) {
-			echo $content;
+			echo $content; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		} else {
 			return $content;
 		}

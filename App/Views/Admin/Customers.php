@@ -27,14 +27,14 @@ $customers_details = $customers_details ?? [];
                 <div class="search-container">
                     <input type="text" id="wlopt-customer-email-search" class="search-input" placeholder="Search email..." />
                     <div class="search-icon">
-                        <img src="<?php echo ( isset( $search ) && ! empty( $search ) ) ? esc_url( $search ) : ''; ?>"
+                        <img src="<?php echo ( isset( $search ) && ! empty( $search ) ) ? esc_url( $search ) : ''; //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>"
                              alt="<?php esc_html_e( "search", "wp-loyalty-optin" ); ?>">
                     </div>
                 </div>
                 <div class="wlopt-back-to-apps">
                     <a class="button" target="_self"
                        href="<?php echo isset( $app_url ) ? esc_url( $app_url ) : '#'; ?>">
-                        <img src="<?php echo ( isset( $back ) && ! empty( $back ) ) ? esc_url( $back ) : ''; ?>"
+                        <img src="<?php echo ( isset( $back ) && ! empty( $back ) ) ? esc_url( $back ) : ''; //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>"
                              alt="<?php esc_html_e( "Back", "wp-loyalty-optin" ); ?>">
                         <?php esc_html_e( 'Back to WPLoyalty', 'wp-loyalty-optin' ); ?></a>
                 </div>

@@ -6,6 +6,9 @@
  * */
 
 defined( "ABSPATH" ) or die();
+
+$extra_content = apply_filters( 'wlopt_extra_content', ($extra ?? null) );
+
 ?>
 <div id="wlopt-main-page">
     <div>
@@ -28,8 +31,12 @@ defined( "ABSPATH" ) or die();
             ><i class="wlr wlrop-settings"></i><?php esc_html_e( 'Settings', 'wp-loyalty-optin' ) ?></a>
         </div>
         <div>
-			<?php echo apply_filters( 'wlopt_extra_content', ( isset( $extra ) ? $extra : null ) ); ?>
-			<?php echo isset( $tab_content ) ? $tab_content : null ?>
+            <?php
+                if ( !empty( $extra_content ) ) {
+                    echo wp_kses_post( $extra_content );
+                }
+            ?>
+			<?php echo isset( $tab_content ) ? wp_kses_post($tab_content) : null ?>
         </div>
     </div>
 </div>
