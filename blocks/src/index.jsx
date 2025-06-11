@@ -44,7 +44,7 @@ if (is_enable_optin_field) {
                     className={'wlr-optin-checkbox'}
                 />
                 <label htmlFor={"wlr_optin"}>
-                    {__('Check this to become member of WPLoyalty', 'wp-loyalty-optin')}
+                    {useState(getSetting('user_option_label', ''))}
                 </label>
             </div>
         );

@@ -115,7 +115,8 @@ class Message implements IntegrationInterface {
 		return [
 			'user_optin'            => Main::checkStatus(),
 			'is_enable_optin_field' => apply_filters( 'wlopt_enable_optin_field', true ),
-			'optin_parent_block'    => [ 'woocommerce/checkout-contact-information-block' ]
+			'optin_parent_block'    => [ 'woocommerce/checkout-contact-information-block' ],
+            'user_option_label'     => apply_filters('wlr_opt_user_option_label', __('Check this to become member of WPLoyalty', 'wp-loyalty-optin'))
 		];
 	}
 }
