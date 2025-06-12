@@ -83,7 +83,10 @@ $myUpdateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateCh
 );
 $myUpdateChecker->getVcsApi()->enableReleaseAssets();
 add_action( 'plugins_loaded', function () {
-	if ( ! class_exists( '\Wlr\App\Helpers\Input' ) ) {
+    if ( class_exists( \Wlopt\App\Helper\Plugin::class ) ) {
+        \Wlopt\App\Setup::init();
+    }
+    if ( ! class_exists( '\Wlr\App\Helpers\Input' ) ) {
 		return;
 	}
 	if ( ! class_exists( '\Wlopt\App\Router' ) ) {
@@ -93,7 +96,3 @@ add_action( 'plugins_loaded', function () {
 		\Wlopt\App\Router::init();
 	}
 } );
-
-if ( class_exists( \Wlopt\App\Helper\Plugin::class ) ) {
-	\Wlopt\App\Setup::init();
-}
