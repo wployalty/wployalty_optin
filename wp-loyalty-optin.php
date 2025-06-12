@@ -82,10 +82,10 @@ $myUpdateChecker = \YahnisElsts\PluginUpdateChecker\v5\PucFactory::buildUpdateCh
 	'wp-loyalty-optin'
 );
 $myUpdateChecker->getVcsApi()->enableReleaseAssets();
+if ( class_exists( \Wlopt\App\Helper\Plugin::class ) ) {
+    \Wlopt\App\Setup::init();
+}
 add_action( 'plugins_loaded', function () {
-    if ( class_exists( \Wlopt\App\Helper\Plugin::class ) ) {
-        \Wlopt\App\Setup::init();
-    }
     if ( ! class_exists( '\Wlr\App\Helpers\Input' ) ) {
 		return;
 	}
