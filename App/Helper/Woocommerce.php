@@ -42,12 +42,6 @@ class Woocommerce {
 				return false;
 			}
 		}
-		/*$user    = get_user_by( 'email', $user_email );
-		$user_id = isset( $user->ID ) && ! empty( $user->ID ) ? $user->ID : 0;
-		if ( ! apply_filters( 'wlr_before_add_to_loyalty_customer', true,
-			$user_id, $user_email ) ) {
-			return true;
-		}*/
 		if ( isset( static::$banned_user[ $user_email ] ) ) {
 			return static::$banned_user[ $user_email ];
 		}
