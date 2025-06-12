@@ -33,10 +33,6 @@ class Main {
 		if ( self::checkStatus($user_email) ) {
 			return;
 		}
-		//display message
-		add_filter( 'wlr_before_display_messages', '__return_false' );
-		//Loyalty assets
-		add_filter( 'wlr_before_loyalty_assets', '__return_false' );
 		//Launcher assets
 		add_filter( 'wll_before_launcher_display', '__return_false' );
 		add_filter( 'wll_before_launcher_assets', '__return_false' );
@@ -491,6 +487,12 @@ class Main {
     }
 
 	public static function handleExistingUserPreference() {
+
+        if (!self::checkStatus() && function_exists( 'is_order_received_page' ) && !is_order_received_page()) {
+            add_filter( 'wlr_before_display_messages', '__return_false' );
+            add_filter( 'wlr_before_loyalty_assets', '__return_false' );
+        }
+
 		if ( is_user_logged_in() ) {
 			$user_id = get_current_user_id();
 			if ( $user_id == 0 ) {
