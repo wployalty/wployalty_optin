@@ -7,6 +7,7 @@
 
 namespace Wlopt\App;
 
+use Wlopt\App\Controller\Site\Main;
 use Wlopt\App\Model\Users;
 
 defined( "ABSPATH" ) or die();
@@ -33,6 +34,12 @@ class Router {
 		if ( wp_doing_ajax() ) {
 			add_action( 'wp_ajax_update_wployalty_membership', 'Wlopt\App\Controller\Site\Main::updateMembershipPreference' );
 		}
+        add_filter( 'wlr_before_add_to_loyalty_customer', function ($status, $user_id, $user_email) {
+            if (!empty($user_email)) {
+                return Main::checkStatus($user_email);
+            }
+            return $status;
+        }, 10, 3 );
         add_action( 'wp_enqueue_scripts', 'Wlopt\App\Controller\Site\Main::siteAssets' );
         add_action( 'init', 'Wlopt\App\Controller\Site\Main::preventWPLoyaltyMembership', 1 );
         add_action( 'template_redirect', 'Wlopt\App\Controller\Site\Main::handleExistingUserPreference' );
