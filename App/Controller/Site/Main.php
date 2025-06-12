@@ -376,7 +376,7 @@ class Main {
 
 		$accept_wployalty_membership = Input::get( 'accept_wployalty_membership', Users::getUserOptinStatus($user_email));
 
-        if ( empty($accept_wployalty_membership) ) {
+        if ( empty($accept_wployalty_membership) || $accept_wployalty_membership === 'no_data' ) {
             add_filter( 'wlr_before_add_to_loyalty_customer', '__return_false', 10, 1 );
         } else {
             add_filter( 'wlr_before_add_to_loyalty_customer', '__return_true', 10, 1 );
