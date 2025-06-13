@@ -28,8 +28,8 @@ defined( "ABSPATH" ) or die();
             ><i class="wlr wlrop-settings"></i><?php esc_html_e( 'Settings', 'wp-loyalty-optin' ) ?></a>
         </div>
         <div>
-            <?php echo apply_filters( 'wlopt_extra_content', ( isset( $extra ) ? $extra : null ) ); ?>
-			<?php echo isset( $tab_content ) ? $tab_content : null ?>
+            <?php echo apply_filters( 'wlopt_extra_content', ( isset( $extra ) ? $extra : null ) ); //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+			<?php echo isset( $tab_content ) ? $tab_content : null; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
         </div>
     </div>
 </div>
