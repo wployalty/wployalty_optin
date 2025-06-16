@@ -8,7 +8,6 @@
  * Slug: wp-loyalty-optin
  * Text Domain: wp-loyalty-optin
  * Domain Path: /i18n/languages/
- * Requires Plugins: woocommerce,wp-loyalty-rules
  * Requires at least: 4.9.0
  * WC requires at least: 6.5
  * WC tested up to: 9.4
