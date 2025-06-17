@@ -10,7 +10,7 @@ defined( "ABSPATH" ) or die();
 <div id="wlopt-main-page">
     <div>
         <div class="wlopt-main-header">
-            <h1><?php echo esc_html( WLOPT_PLUGIN_NAME ); ?> </h1>
+            <h1><?php echo esc_html__( 'WPLoyalty - Optin', 'wp-loyalty-optin' ); ?> </h1>
             <div><b><?php echo esc_html( "v" . WLOPT_PLUGIN_VERSION ); ?></b></div>
         </div>
         <div class="wlopt-tabs">

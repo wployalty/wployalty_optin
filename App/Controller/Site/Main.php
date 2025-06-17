@@ -57,7 +57,7 @@ class Main {
             }
 
             return $status;
-        });
+        }, 10, 2);
 
 		//hide earn message in block cart & checkout
 		add_filter( 'wlr_points_rewards_earn_points_message', function ( $message, $short_code_list ) {
@@ -96,7 +96,7 @@ class Main {
                 return $status;
             }
             return self::checkStatus($data['user_email']);
-        } );
+        }, 10, 2 );
 
         add_filter( 'wlr_point_post_add_product_review_points', function ($status, $comment_id) {
             if (empty($comment_id)) {
@@ -324,7 +324,7 @@ class Main {
 			'type'     => 'checkbox',
 			'id'       => 'accept_wployalty_membership',
 			'class'    => [ 'form-row-wide accept_wployalty_membership' ],
-			'label'    => __( 'Check this to become a member of WPLoyalty program.', 'woocommerce' ),
+			'label'    => __( 'Check this to become a member of WPLoyalty program.', 'wp-loyalty-optin' ),
 			'required' => false,
 		] );
 	}
@@ -418,8 +418,7 @@ class Main {
             );
 
             if ($accept_wployalty_membership === 'no_data') {
-                $options      = get_option( 'wlopt_settings', [] );
-                $optin_status =  $options['existing_user_wlr_preference'] ?? 0;
+                $optin_status =  apply_filters('wlopt_existing_user_wlr_preference', 0);
                 $data['optin_status'] = $optin_status;
             }
             Users::save($data);
@@ -444,7 +443,7 @@ class Main {
             'type'     => 'checkbox',
             'id'       => 'accept_wployalty_membership',
             'class'    => array( 'form-row-wide accept_wployalty_membership' ),
-            'label'    => __( 'Check this to become a member of WPLoyalty program.', 'woocommerce' ),
+            'label'    => __( 'Check this to become a member of WPLoyalty program.', 'wp-loyalty-optin' ),
             'required' => false,
         ), self::checkStatus() );
 

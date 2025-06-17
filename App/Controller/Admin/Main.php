@@ -56,27 +56,22 @@ class Main {
                     WLOPT_VIEW_PATH . '/Admin/Customers.php',
                         [
                             'customers_details' => $customers_details,
-                            'back'              => WLOPT_PLUGIN_URL . 'Assets/svg/back.svg',
-                            'search'            => WLOPT_PLUGIN_URL . 'Assets/svg/search.svg',
                             'app_url'           => admin_url('admin.php?' . http_build_query(array('page' => WLR_PLUGIN_SLUG))) . '#/apps',
+                            'customers_table'    => Woocommerce::renderTemplate(
+                                    WLOPT_VIEW_PATH . '/Admin/Components/CustomerTable.php', [
+                                    'customers_details' => $customers_details,
+                                    'page_no' => 1,
+                                ], false )
                         ],
                         false
                     );
 					break;
 				case 'settings':
-					$options = get_option( 'wlopt_settings', [] );
-					if ( ! is_array( $options ) ) {
-						$options = [];
-					}
 					$main_page_params['tab_content'] = Woocommerce::renderTemplate(
                     WLOPT_VIEW_PATH . '/Admin/Settings.php',
                         [
-                            'options'                  => $options,
                             'app_url'                  => admin_url('admin.php?' . http_build_query(array('page' => WLR_PLUGIN_SLUG))) . '#/apps',
                             'wlopt_save_setting_nonce' => Woocommerce::create_nonce( 'wlopt_setting_nonce' ),
-                            'save'                     => WLOPT_PLUGIN_URL . 'Assets/svg/save.svg',
-                            'back'                     => WLOPT_PLUGIN_URL . 'Assets/svg/back.svg',
-                            'info'                     => WLOPT_PLUGIN_URL . 'Assets/svg/info.svg',
                         ],
                         false
                     );
@@ -122,20 +117,6 @@ class Main {
 			[],
 			WLOPT_PLUGIN_VERSION . "&t=" . time()
 		);
-		wp_enqueue_style(
-			WLOPT_PLUGIN_SLUG . '-alertify',
-			WLOPT_PLUGIN_URL . 'Assets/Admin/Css/alertify.css',
-			[],
-			WLOPT_PLUGIN_VERSION
-		);
-		// Enqueueing scripts
-		wp_enqueue_script(
-			WLOPT_PLUGIN_SLUG . '-alertify',
-			WLOPT_PLUGIN_URL . 'Assets/Admin/Js/alertify.js',
-			[],
-			WLOPT_PLUGIN_VERSION . '&t=' . time(),
-            true
-		);
 		wp_register_script(
 			WLOPT_PLUGIN_SLUG . '-main-script',
 			WLOPT_PLUGIN_URL . 'Assets/Admin/Js/wlopt-main.js',
@@ -144,6 +125,9 @@ class Main {
             true
 		);
 		wp_enqueue_script( WLOPT_PLUGIN_SLUG . '-main-script' );
+        wp_enqueue_style( WLR_PLUGIN_SLUG . '-alertify', WLR_PLUGIN_URL . 'Assets/Admin/Css/alertify.min.css', array(), WLR_PLUGIN_VERSION);
+        wp_enqueue_script( WLR_PLUGIN_SLUG . '-alertify', WLR_PLUGIN_URL . 'Assets/Admin/Js/alertify.min.js', array(), WLR_PLUGIN_VERSION . '&t=' . time());
+        wp_enqueue_style( WLR_PLUGIN_SLUG . '-wlr-font', WLR_PLUGIN_URL . 'Assets/Site/Css/wlrop-fonts.css', array(), WLR_PLUGIN_VERSION);
 
 		//localize script
 		$localize = [
@@ -152,8 +136,8 @@ class Main {
 			'ajax_url'              => admin_url( 'admin-ajax.php' ),
 			'save_nonce'            => wp_create_nonce( 'wlopt_save_setting_nonce' ),
             'get_customer_details'  => wp_create_nonce( 'wlopt_customer_details_nonce' ),
-			'saving_button_label'   => __( 'Saving...', 'wp-loyalty-optin' ),
-			'saved_button_label'    => __( 'Save Changes', 'wp-loyalty-optin' ),
+			'copy_clipboard'        => __( 'Copied to clipboard', 'wp-loyalty-optin' ),
+            'copy_error_message'    => __( 'Could not copy text.', 'wp-loyalty-optin' ),
 			'onboarding_save_nonce' => wp_create_nonce( 'wlopt_onboarding_save_nonce' ),
 		];
 		wp_localize_script( WLOPT_PLUGIN_SLUG . '-main-script', 'wlopt_localize_data', $localize );
@@ -172,33 +156,6 @@ class Main {
             }
         </style>
 		<?php
-	}
-
-    /**
-     * Save settings.
-     *
-     * @return void
-     */
-	public static function saveSettings() {
-		$wlrop_nonce = Input::get( 'wlopt_nonce' );
-		if ( ! Woocommerce::verify_nonce( $wlrop_nonce, 'wlopt_save_setting_nonce' ) ) {
-			wp_send_json_error( [ 'message' => __( 'Security verification failed', 'wp-loyalty-optin' ) ] );
-		}
-		try {
-			$value = sanitize_text_field( Input::get( 'enable_optin' ) );
-			if ( ! in_array( $value, [ 'yes', 'no' ] ) ) {
-				wp_send_json_error( [ 'message' => __( 'Invalid value', 'wp-loyalty-optin' ) ] );
-			}
-			$options = get_option( 'wlopt_settings', [] );
-			if ( ! is_array( $options ) ) {
-				$options = [];
-			}
-			$options['enable_optin'] = $value;
-			update_option( 'wlopt_settings', $options );
-			wp_send_json_success( [ 'message' => __( 'Settings saved successfully', 'wp-loyalty-optin' ) ] );
-		} catch ( \Exception $e ) {
-			wp_send_json_error( [ 'message' => $e->getMessage() ] );
-		}
 	}
 
     /**

@@ -47,8 +47,7 @@ if ( ! function_exists( 'isWLROPLoyaltyActive' ) ) {
 		}
 
 		return in_array( 'wp-loyalty-rules/wp-loyalty-rules-lite.php', $active_plugins ) || array_key_exists( 'wp-loyalty-rules/wp-loyalty-rules-lite.php', $active_plugins )
-		       || in_array( 'wp-loyalty-rules/wp-loyalty-rules.php', $active_plugins ) || array_key_exists( 'wp-loyalty-rules/wp-loyalty-rules.php', $active_plugins )
-		       || in_array( 'wployalty/wp-loyalty-rules-lite.php', $active_plugins ) || array_key_exists( 'wployalty/wp-loyalty-rules-lite.php', $active_plugins );
+		       || in_array( 'wp-loyalty-rules/wp-loyalty-rules.php', $active_plugins ) || array_key_exists( 'wp-loyalty-rules/wp-loyalty-rules.php', $active_plugins );
 	}
 }
 

@@ -22,14 +22,6 @@ class Setup {
 	 */
 	public static function activate() {
         self::runDataBaseMigration();
-
-        $wlopt_settings = get_option('wlopt_settings', []);
-        if (empty($wlopt_settings)) {
-            update_option( 'wlopt_settings', [
-                'enable_optin'           => 'no',
-                'is_onboarding_complete' => 'no',
-            ] );
-        }
 	}
 
     /**

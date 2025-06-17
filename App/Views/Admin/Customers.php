@@ -9,7 +9,7 @@ use Wlopt\App\Helper\Woocommerce;
 
 defined( "ABSPATH" ) or die();
 
-$customers_details = $customers_details ?? [];
+$customers_table = $customers_table ?? '';
 ?>
 <div id="wlopt-customer-page">
     <div class="wlopt-customer-page-holder">
@@ -27,25 +27,19 @@ $customers_details = $customers_details ?? [];
                 <div class="search-container">
                     <input type="text" id="wlopt-customer-email-search" class="search-input" placeholder="Search email..." />
                     <div class="search-icon">
-                        <img src="<?php echo ( isset( $search ) && ! empty( $search ) ) ? esc_url( $search ) : ''; //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>"
-                             alt="<?php esc_html_e( "search", "wp-loyalty-optin" ); ?>">
+                        <i class="wlrop-search"></i>
                     </div>
                 </div>
                 <div class="wlopt-back-to-apps">
                     <a class="button" target="_self"
                        href="<?php echo isset( $app_url ) ? esc_url( $app_url ) : '#'; ?>">
-                        <img src="<?php echo ( isset( $back ) && ! empty( $back ) ) ? esc_url( $back ) : ''; //phpcs:ignore PluginCheck.CodeAnalysis.ImageFunctions.NonEnqueuedImage ?>"
-                             alt="<?php esc_html_e( "Back", "wp-loyalty-optin" ); ?>">
+                        <i class="wlrop-back"></i>
                         <?php esc_html_e( 'Back to WPLoyalty', 'wp-loyalty-optin' ); ?></a>
                 </div>
             </div>
         </div>
         <div id="wlopt-customer-details">
-            <?php Woocommerce::renderTemplate(
-                WLOPT_VIEW_PATH . '/Admin/Components/CustomerTable.php', [
-                    'customers_details' => $customers_details,
-                ]
-            ); ?>
+            <?php echo $customers_table ?>
         </div>
     </div>
 </div>

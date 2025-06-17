@@ -292,6 +292,7 @@
 }
 .wlrop-info_circle:before {
   content: "\e99f";
+  font-size: 18px;
 }
 .wlrop-trophy:before {
   content: "\e9a4";
@@ -506,6 +507,7 @@
 }
 .wlrop-back:before {
   content: "\e90c";
+  font-size: 18px;
 }
 .wlrop-calendar:before {
   content: "\e90d";
@@ -566,6 +568,7 @@
 }
 .wlrop-search:before {
   content: "\e924";
+  font-size: 18px;
 }
 .wlrop-tick:before {
   content: "\e925";

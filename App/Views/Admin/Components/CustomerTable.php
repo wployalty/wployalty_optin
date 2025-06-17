@@ -50,12 +50,12 @@ if (!empty($customers_details['customers'])) { ?>
         <div class="wlopt-customer-list-actions">
             <div class="wlopt-customer-list-select-wrapper">
                 <select id="wlpot-customer-list-count">
-                    <option value="5" <?php if ($list_no == '5') echo "selected"; ?>><?php echo esc_html__('5', 'wp-loyalty-optin'); ?></option>
-                    <option value="10" <?php if ($list_no == '10') echo "selected"; ?>><?php echo esc_html__('10', 'wp-loyalty-optin'); ?></option>
-                    <option value="15" <?php if ($list_no == '15') echo "selected"; ?>><?php echo esc_html__('15', 'wp-loyalty-optin'); ?></option>
-                    <option value="20" <?php if ($list_no == '20') echo "selected"; ?>><?php echo esc_html__('20', 'wp-loyalty-optin'); ?></option>
-                    <option value="50" <?php if ($list_no == '50') echo "selected"; ?>><?php echo esc_html__('50', 'wp-loyalty-optin'); ?></option>
-                    <option value="100" <?php if ($list_no == '100') echo "selected"; ?>><?php echo esc_html__('100', 'wp-loyalty-optin'); ?></option>
+                    <option value="5" <?php if ($list_no == '5') echo "selected"; ?>><?php echo esc_html('5'); ?></option>
+                    <option value="10" <?php if ($list_no == '10') echo "selected"; ?>><?php echo esc_html('10'); ?></option>
+                    <option value="15" <?php if ($list_no == '15') echo "selected"; ?>><?php echo esc_html('15'); ?></option>
+                    <option value="20" <?php if ($list_no == '20') echo "selected"; ?>><?php echo esc_html('20'); ?></option>
+                    <option value="50" <?php if ($list_no == '50') echo "selected"; ?>><?php echo esc_html('50'); ?></option>
+                    <option value="100" <?php if ($list_no == '100') echo "selected"; ?>><?php echo esc_html('100'); ?></option>
                 </select>
             </div>
             <div class="wlopt-page-actions">

@@ -24,12 +24,8 @@ class Router {
 			add_action( 'admin_footer', 'Wlopt\App\Controller\Admin\Main::menuHide' );
 			add_action( 'admin_enqueue_scripts', 'Wlopt\App\Controller\Admin\Main::adminAssets' );
 			if ( wp_doing_ajax() ) {
-				add_action( 'wp_ajax_wlopt_save_settings', 'Wlopt\App\Controller\Admin\Main::saveSettings' );
                 add_action( 'wp_ajax_wlopt_get_customer_details', 'Wlopt\App\Controller\Admin\Main::showCustomerDetails' );
 			}
-		}
-		if ( ! self::isOptinEnabled() ) {
-			return;
 		}
 		if ( wp_doing_ajax() ) {
 			add_action( 'wp_ajax_update_wployalty_membership', 'Wlopt\App\Controller\Site\Main::updateMembershipPreference' );
@@ -64,17 +60,6 @@ class Router {
 
         add_filter( 'wlr_delete_customer', [ __CLASS__, 'deleteOptInData' ], 10, 2 );
         add_action( 'wp_set_comment_status', 'Wlopt\App\Controller\Site\Main::handleReviewApproval', 1, 2  );
-	}
-
-    /**
-     * Check opt-in is enabled.
-     *
-     * @return bool
-     */
-	private static function isOptinEnabled() {
-		$options = get_option( 'wlopt_settings', [] );
-
-		return isset( $options['enable_optin'] ) && $options['enable_optin'] === 'yes';
 	}
 
     /**
