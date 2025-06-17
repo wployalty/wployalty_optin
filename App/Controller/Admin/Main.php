@@ -51,7 +51,7 @@ class Main {
 			$main_page_params = apply_filters( 'wlopt_manage_pages_data', $main_page_params );
 			switch ( $view ) {
 				case 'optin_users':
-                    $customers_details = self::getCustomersDetails(1, 5, 1);
+                    $customers_details = self::getCustomersDetails();
                     $main_page_params['tab_content'] = Woocommerce::renderTemplate(
                     WLOPT_VIEW_PATH . '/Admin/Customers.php',
                         [
