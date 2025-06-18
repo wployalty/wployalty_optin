@@ -174,7 +174,6 @@ class Main {
             $list_no = Input::get( 'list_no', 5 );
             $page_no = Input::get( 'page_no', 1 );
             $search_email = Input::get( 'search_email', '' );
-            $customer_type = ($customer_type == 'opt-in') ? 1 : 0;
             $customers_details = self::getCustomersDetails( $customer_type, $list_no, $page_no, $search_email );
             $html = Woocommerce::renderTemplate(
                 WLOPT_VIEW_PATH . '/Admin/Components/CustomerTable.php', [
@@ -192,14 +191,15 @@ class Main {
     /**
      * Get customers details
      *
-     * @param int $customer_type
+     * @param string $customer_type
      * @param int $list_no
      * @param int $page_no
      * @param string $search_email
      * @return array
      */
-    public static function getCustomersDetails ($customer_type = 1, $list_no = 5, $page_no = 1, $search_email = '')
+    public static function getCustomersDetails ($customer_type = 'opt-in', $list_no = 5, $page_no = 1, $search_email = '')
     {
+        $customer_type = ($customer_type == 'opt-in') ? 1 : 0;
         $total_users = Users::totalUsersCount( $customer_type );
         $customer_loyalty_data = Users::getUsersDetails( $customer_type, $page_no, $list_no, $search_email );
 

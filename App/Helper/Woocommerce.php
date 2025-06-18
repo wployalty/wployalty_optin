@@ -27,14 +27,6 @@ class Woocommerce {
 		}
 	}
 
-	public static function getInstance( array $config = array() ) {
-		if ( ! self::$instance ) {
-			self::$instance = new self( $config );
-		}
-
-		return self::$instance;
-	}
-
 	public static function isBannedUser( $user_email = "" ) {
 		if ( empty( $user_email ) ) {
 			$user_email = self::get_login_user_email();
@@ -89,7 +81,7 @@ class Woocommerce {
         return !empty($result);
     }
 
-	static function get_login_user_email() {
+	public static function get_login_user_email() {
 		$user       = get_user_by( 'id', get_current_user_id() );
 		$user_email = '';
 		if ( ! empty( $user ) ) {
