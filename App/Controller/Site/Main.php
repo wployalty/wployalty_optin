@@ -218,9 +218,8 @@ class Main {
 		if ( ! empty( self::$email ) ) {
 			return self::$email;
 		}
-		$woo_helper = Woocommerce::getInstance();
 
-		return self::$email = $woo_helper->get_login_user_email();
+		return self::$email = Woocommerce::get_login_user_email();
 	}
 
 	/**
@@ -269,7 +268,7 @@ class Main {
 		?>
         <div class="wlopt-update-membership">
             <input type="checkbox" name="update_wployalty_membership"
-                   id="update_wployalty_membership"<?php echo esc_attr( $checked ) ?>>
+                   id="update_wployalty_membership" <?php echo esc_attr( $checked ) ?>>
             <label for="update_wployalty_membership"
                    class="wlr-text-color"><?php echo esc_html__( 'Check this to become a member of WPLoyalty program.',
 					'wp-loyalty-optin' ) ?></label>
@@ -418,7 +417,7 @@ class Main {
             );
 
             if ($accept_wployalty_membership === 'no_data') {
-                $optin_status =  apply_filters('wlopt_existing_user_wlr_preference', 0);
+                $optin_status =  apply_filters('wlopt_existing_user_wlr_preference', !empty($loyalty_user_data) ? 1 : 0);
                 $data['optin_status'] = $optin_status;
             }
             Users::save($data);

@@ -25,7 +25,7 @@ $customers_table = $customers_table ?? '';
                     </button>
                 </div>
                 <div class="search-container">
-                    <input type="text" id="wlopt-customer-email-search" class="search-input" placeholder="Search email..." />
+                    <input type="text" id="wlopt-customer-email-search" class="search-input" placeholder="<?php esc_attr_e('Search email...', 'wp-loyalty-optin') ?>" />
                     <div class="search-icon">
                         <i class="wlrop-search"></i>
                     </div>
