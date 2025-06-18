@@ -10,7 +10,9 @@
     }
   ],
   "require": {
-    "yahnis-elsts/plugin-update-checker": ">=v5.0"
+    "php": ">=7.4",
+    "yahnis-elsts/plugin-update-checker": ">=v5.0",
+    "ext-json": "*"
   },
   "autoload": {
     "psr-4": {

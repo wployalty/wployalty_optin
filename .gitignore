@@ -3,3 +3,6 @@ vendor
 composer.lock
 development.txt
 Assets/Admin/Css/style.css.map
+blocks/package-lock.json
+blocks/node_modules
+blocks/build

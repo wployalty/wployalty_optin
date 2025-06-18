@@ -1,5 +1,5 @@
 /**
- * @author      WPLoyalty (Ilaiyaraja)
+ * @author      WPLoyalty (Ilaiyaraja, Sabhari)
  * @license     http://www.gnu.org/licenses/gpl-3.0.html
  * @link        https://www.wployalty.net
  * */
@@ -10,36 +10,21 @@ if (typeof (wlopt_jquery) == 'undefined') {
 wlopt = window.wlopt || {};
 
 (function (wlopt) {
-
-    wlopt_jquery(document).on('click', '#decline_wployalty_membership', function () {
-        let decline_wployalty_membership = wlopt_jquery("#decline_wployalty_membership").is(':checked') ? 1 : 0;
+    wlopt_jquery(document).on('click', '#update_wployalty_membership', function () {
+        let update_wployalty_membership = wlopt_jquery("#update_wployalty_membership").is(':checked') ? 1 : 0;
         wlopt_jquery.ajax({
             url: wlopt_localize_data.ajax_url,
             type: "POST",
             dataType: 'json',
             data: {
-                action: "decline_wployalty_membership",
-                wlopt_nonce: wlopt_localize_data.decline_wployalty_membership,
-                decline_wployalty_membership: decline_wployalty_membership,
+                action: "update_wployalty_membership",
+                wlopt_nonce: wlopt_localize_data.update_wployalty_membership,
+                accept_wployalty_membership: update_wployalty_membership
             },
-            success: function (json) {
-                window.location.reload();
-            }
-        });
-    });
-    wlopt_jquery(document).on('click', '#accept_wployalty_membership', function () {
-        let accept_wployalty_membership = wlopt_jquery("#accept_wployalty_membership").is(':checked') ? 1 : 0;
-        wlopt_jquery.ajax({
-            url: wlopt_localize_data.ajax_url,
-            type: "POST",
-            dataType: 'json',
-            data: {
-                action: "accept_wployalty_membership",
-                wlopt_nonce: wlopt_localize_data.accept_wployalty_membership,
-                accept_wployalty_membership: accept_wployalty_membership,
-            },
-            success: function (json) {
-                window.location.reload();
+            success: function (response) {
+                if (response.reload) {
+                    window.location.reload();
+                }
             }
         });
     });
