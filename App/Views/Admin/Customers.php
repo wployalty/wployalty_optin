@@ -39,7 +39,7 @@ $customers_table = $customers_table ?? '';
             </div>
         </div>
         <div id="wlopt-customer-details">
-            <?php echo $customers_table ?>
+            <?php echo $customers_table; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped  ?>
         </div>
     </div>
 </div>
