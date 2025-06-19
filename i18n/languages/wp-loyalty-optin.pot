@@ -2,22 +2,21 @@
 # This file is distributed under the GPLv2 or later.
 msgid ""
 msgstr ""
-"Project-Id-Version: WPLoyalty - Optin 1.0.0\n"
+"Project-Id-Version: WPLoyalty - Opt-in 1.0.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-loyalty-optin\n"
 "Last-Translator: WPloyalty\n"
 "Language-Team: WPLoyalty\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-06-19T08:52:27+00:00\n"
+"POT-Creation-Date: 2025-06-19T08:54:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: wp-loyalty-optin\n"
 
 #. Plugin Name of the plugin
 #: wp-loyalty-optin.php
-#: App/Views/Admin/Main.php:13
-msgid "WPLoyalty - Optin"
+msgid "WPLoyalty - Opt-in"
 msgstr ""
 
 #. Plugin URI of the plugin
@@ -185,6 +184,10 @@ msgstr ""
 #: App/Views/Admin/Customers.php:37
 #: App/Views/Admin/Settings.php:20
 msgid "Back to WPLoyalty"
+msgstr ""
+
+#: App/Views/Admin/Main.php:13
+msgid "WPLoyalty - Optin"
 msgstr ""
 
 #: App/Views/Admin/Main.php:22
