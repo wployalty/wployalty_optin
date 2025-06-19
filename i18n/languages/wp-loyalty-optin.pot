@@ -9,13 +9,14 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-03-10T03:08:58+00:00\n"
+"POT-Creation-Date: 2025-06-19T08:52:27+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.10.0\n"
 "X-Domain: wp-loyalty-optin\n"
 
 #. Plugin Name of the plugin
 #: wp-loyalty-optin.php
+#: App/Views/Admin/Main.php:13
 msgid "WPLoyalty - Optin"
 msgstr ""
 
@@ -26,7 +27,7 @@ msgstr ""
 
 #. Description of the plugin
 #: wp-loyalty-optin.php
-msgid "Accept/Decline the WPLoyalty option to user."
+msgid "The WPLoyalty Opt-in Add-on allows you to give customers the choice to Accept/Decline your loyalty program through a simple checkbox."
 msgstr ""
 
 #. Author of the plugin
@@ -44,31 +45,16 @@ msgstr ""
 msgid "WPLoyalty: Optin"
 msgstr ""
 
-#: App/Controller/Admin/Main.php:136
-msgid "Saving..."
+#: App/Controller/Admin/Main.php:139
+msgid "Copied to clipboard"
 msgstr ""
 
-#: App/Controller/Admin/Main.php:137
-#: App/Views/Admin/settings.php:21
-msgid "Save Changes"
+#: App/Controller/Admin/Main.php:140
+msgid "Could not copy text."
 msgstr ""
 
-#: App/Controller/Admin/Main.php:161
-#: App/Controller/Admin/Main.php:202
+#: App/Controller/Admin/Main.php:170
 msgid "Security verification failed"
-msgstr ""
-
-#: App/Controller/Admin/Main.php:166
-#: App/Controller/Admin/Main.php:208
-msgid "Invalid value"
-msgstr ""
-
-#: App/Controller/Admin/Main.php:174
-msgid "Settings saved successfully"
-msgstr ""
-
-#: App/Controller/Admin/Main.php:219
-msgid "Onboarding process completed successfully"
 msgstr ""
 
 #: App/Controller/Site/Blocks/Integration/Message.php:70
@@ -79,23 +65,30 @@ msgstr ""
 msgid "Checkout opt-in checkbox"
 msgstr ""
 
-#: App/Controller/Site/Main.php:153
+#: App/Controller/Site/Blocks/Integration/Message.php:119
+msgid "Check this to become member of WPLoyalty"
+msgstr ""
+
+#: App/Controller/Site/Main.php:273
+#: App/Controller/Site/Main.php:326
+#: App/Controller/Site/Main.php:445
 msgid "Check this to become a member of WPLoyalty program."
 msgstr ""
 
-#: App/Controller/Site/Main.php:165
+#: App/Controller/Site/Main.php:290
 msgid "Update data failed"
 msgstr ""
 
-#: App/Controller/Site/Main.php:169
+#: App/Controller/Site/Main.php:294
 msgid "Invalid nonce"
 msgstr ""
 
-#: App/Controller/Site/Main.php:184
+#: App/Controller/Site/Main.php:305
 msgid "Updated successfully"
 msgstr ""
 
-#: App/Controller/Site/Main.php:222
+#: App/Controller/Site/Main.php:344
+#: App/Controller/Site/Main.php:462
 msgid "Must be valid"
 msgstr ""
 
@@ -129,55 +122,91 @@ msgstr ""
 msgid "%1$s requires minimum WPLoyalty version %2$s"
 msgstr ""
 
-#: App/Setup.php:52
+#: App/Setup.php:47
+msgid "Plugin required table creation failed."
+msgstr ""
+
+#: App/Setup.php:79
 msgid "Support"
 msgstr ""
 
-#: App/Views/Admin/main.php:21
-msgid "Customers"
+#: App/Views/Admin/Components/CustomerTable.php:20
+msgid "S NO"
 msgstr ""
 
-#: App/Views/Admin/main.php:27
-msgid "Settings"
+#: App/Views/Admin/Components/CustomerTable.php:21
+msgid "Email"
 msgstr ""
 
-#: App/Views/Admin/onboarding.php:6
-msgid "Update Preference"
+#: App/Views/Admin/Components/CustomerTable.php:22
+msgid "Point balance"
 msgstr ""
 
-#: App/Views/Admin/onboarding.php:11
-msgid "Loyalty acceptance preference for existing users"
+#: App/Views/Admin/Components/CustomerTable.php:23
+msgid "Total Earned"
 msgstr ""
 
-#: App/Views/Admin/onboarding.php:15
-msgid "Opt in"
+#: App/Views/Admin/Components/CustomerTable.php:24
+msgid "Points Redeemed"
 msgstr ""
 
-#: App/Views/Admin/onboarding.php:16
-msgid "Opt out"
+#: App/Views/Admin/Components/CustomerTable.php:63
+msgid "Prev"
 msgstr ""
 
-#: App/Views/Admin/settings.php:9
-msgid "SETTINGS"
+#: App/Views/Admin/Components/CustomerTable.php:67
+msgid "Next"
 msgstr ""
 
-#: App/Views/Admin/settings.php:15
-msgid "Back"
+#: App/Views/Admin/Components/CustomerTable.php:74
+msgid "No Customers to display"
 msgstr ""
 
-#: App/Views/Admin/settings.php:16
+#: App/Views/Admin/Components/CustomerTable.php:75
+msgid "No customers found for your search. Please try different filters"
+msgstr ""
+
+#: App/Views/Admin/Customers.php:17
+msgid "CUSTOMERS"
+msgstr ""
+
+#: App/Views/Admin/Customers.php:21
+msgid "Opt In"
+msgstr ""
+
+#: App/Views/Admin/Customers.php:24
+msgid "Opt Out"
+msgstr ""
+
+#: App/Views/Admin/Customers.php:28
+msgid "Search email..."
+msgstr ""
+
+#: App/Views/Admin/Customers.php:37
+#: App/Views/Admin/Settings.php:20
 msgid "Back to WPLoyalty"
 msgstr ""
 
-#: App/Views/Admin/settings.php:37
-msgid "Enable Opt-in feature ?"
+#: App/Views/Admin/Main.php:22
+msgid "Customers"
 msgstr ""
 
-#: App/Views/Admin/settings.php:43
+#: App/Views/Admin/Main.php:28
+msgid "Settings"
+msgstr ""
+
+#: App/Views/Admin/Settings.php:14
+msgid "SETTINGS"
+msgstr ""
+
+#: App/Views/Admin/Settings.php:29
+msgid "IMPORTANT"
+msgstr ""
+
+#: App/Views/Admin/Settings.php:32
+msgid "Existing loyalty customers will be automatically added to the Opt-in customers list upon their next logging in"
+msgstr ""
+
+#: App/Views/Admin/Settings.php:40
 msgid "Use this shortcode to let user update preference to wployalty membership:"
-msgstr ""
-
-#: blocks/build/index.js:1
-#: blocks/src/index.jsx:42
-msgid "Check this to become member of WPLoyalty"
 msgstr ""

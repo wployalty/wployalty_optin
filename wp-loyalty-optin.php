@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WPLoyalty - Optin
+ * Plugin Name: WPLoyalty - Opt-in
  * Plugin URI: https://www.wployalty.net
  * Description: The WPLoyalty Opt-in Add-on allows you to give customers the choice to Accept/Decline your loyalty program through a simple checkbox.
  * Version: 1.0.0
@@ -55,7 +55,7 @@ if ( ! isWLROPGWooCommerceActive() || ! isWLROPLoyaltyActive() ) {
 	return;
 }
 //Define the plugin version
-defined( 'WLOPT_PLUGIN_NAME' ) or define( 'WLOPT_PLUGIN_NAME', 'WPLoyalty - Optin' );
+defined( 'WLOPT_PLUGIN_NAME' ) or define( 'WLOPT_PLUGIN_NAME', 'WPLoyalty - Opt-in' );
 defined( 'WLOPT_PLUGIN_VERSION' ) or define( 'WLOPT_PLUGIN_VERSION', '1.0.0' );
 defined( 'WLOPT_MINIMUM_PHP_VERSION' ) or define( 'WLOPT_MINIMUM_PHP_VERSION', '7.4' );
 defined( 'WLOPT_MINIMUM_WP_VERSION' ) or define( 'WLOPT_MINIMUM_WP_VERSION', '4.9' );
